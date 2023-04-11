@@ -1,0 +1,266 @@
+
+# FUNCTIONS -------------------------------------------------
+source $HOME/dotfiles/terminal/zshfunctions.zsh
+install_nvim
+install_fzf
+# -----------------------------------------------------------
+
+# PROMPT -----------------------------------------------------
+autoload -U colors && colors
+setopt auto_cd
+setopt multios
+setopt prompt_subst
+source $HOME/dotfiles/terminal/zshprompt.zsh
+# -----------------------------------------------------------
+
+
+# PLUGINS----------------------------------------------------
+install_zsh_plugin "zsh-autosuggestions"
+install_zsh_plugin "zsh-syntax-highlighting"
+install_zsh_plugin "zsh-history-substring-search"
+autoload -U compaudit compinit; compinit
+# -----------------------------------------------------------
+
+
+# ZSH OPTIONS----------------------------------------------
+ZSH_HIGHLIGHT_STYLES[arg0]=fg=#7daea3
+HYPHEN_INSENSITIVE="true"
+ENABLE_CORRECTION="true"
+COMPLETION_WAITING_DOTS="true"
+CASE_SENSITIVE="false"
+ZSH_DISABLE_COMPFIX="true"
+setopt COMPLETE_ALIASES
+setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt INC_APPEND_HISTORY
+
+if [[ "$CASE_SENSITIVE" = true ]]; then
+  zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
+else
+  if [[ "$HYPHEN_INSENSITIVE" = true ]]; then
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+  else
+    zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+  fi
+fi
+
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+
+# setup window title (zsh / nvim / lima)
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd set-title-precmd
+add-zsh-hook preexec set-title-preexec
+
+# remove underline while typing commands
+(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+
+# zstyle ':completion:*:*:cdr:*:*' menu select
+# zstyle ':completion:*' menu select
+
+#unsetopt menu_complete   # do not autoselect the first completion entry
+#unsetopt flowcontrol
+#setopt auto_menu         # show completion menu on successive tab press
+#setopt complete_in_word
+#setopt always_to_end
+
+setopt COMPLETE_IN_WORD
+# don't move the cursor to the end AFTER a completion was inserted
+setopt NO_ALWAYS_TO_END
+
+setopt LIST_PACKED
+
+# zstyle ':completion:*:*:*:*:*' menu no-select
+zstyle ':completion:*:*:*:*:*' menu select yes=50
+# zstyle ':completion:*:*:*:*:*' menu select=long
+# zstyle ':completion:*:*:*:*:*' menu select yes
+zstyle ':completion:*' special-dirs true
+zstyle ':completion:*' list-colors ''
+
+# Categorize completion suggestions with headings:
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format %F{2}--- %d ---%f
+zstyle ':completion:*' rehash true # to get new binaries into PATH
+
+# better complete with the most recent files first
+zstyle ':completion:*' file-sort access
+# zstyle ':completion:*' file-sort modification
+
+
+zstyle ':completion:*:*:(vim|nvim|vi|cat|more|less):*' ignored-patterns '*.(o|png|pptx|pdf|docx|jpeg|jpg|xlsx)'
+
+# https://stackoverflow.com/questions/72705377/zsh-how-to-limit-file-completion-to-current-directory-only-like-bash
+unset '_comps[source]'
+
+# KEYBOARD --------------------------------------------------
+bindkey '^[[1;5C' forward-word               # "option key + arrow"
+bindkey '^[[1;5D' backward-word              # "option key + arrow"
+
+bindkey '^?' backward-delete-char            # [Backspace] - delete backward
+if [[ "${terminfo[kdch1]}" != "" ]]; then
+  bindkey "${terminfo[kdch1]}" delete-char   # [Delete] - delete forward
+else
+  bindkey "^[[3~" delete-char
+  bindkey "^[3;5~" delete-char
+  bindkey "\e[3~" delete-char
+fi
+
+bindkey -v
+# go back to insert mode also with ESC (-a = -M vicmd)
+bindkey -a "^[" vi-insert
+
+# press v in cmd mode to open vim and edit file
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+
+# alt+arrows to jump words
+bindkey "\e\e[D" backward-word
+bindkey "\e\e[C" forward-word
+bindkey "^[OH" beginning-of-line
+bindkey "^[OF" end-of-line
+
+bindkey '^[[1;5C' forward-word    # [alt-RightArrow] - move forward one word
+bindkey '^[[1;5D' backward-word   # [alt-LeftArrow] - move backward one word
+
+# fix incremental search when enabling vim-mode
+bindkey "^[OA" up-line-or-beginning-search
+bindkey "^[OB" down-line-or-beginning-search
+bindkey -M vicmd "k" up-line-or-beginning-search
+bindkey -M vicmd "j" down-line-or-beginning-search
+
+# fix after vim mode activated
+bindkey "^K" kill-line
+bindkey "^_" undo
+# bindkey "^0" redo
+bindkey "^a" beginning-of-line
+bindkey "^e" end-of-line
+
+# bindkey "^e" fzf-history-widget
+# bindkey -r "^h"
+bindkey "^h" vi-backward-delete-char
+bindkey "^x" delete-char
+
+# shift+enter for completing suggestion and shift+cmd+enter for accepting and
+# executing suggestion. This requires add this keystrokes in iterm2
+bindkey '^[xxy' autosuggest-accept
+bindkey '^[xxx' autosuggest-execute
+bindkey ' ' magic-space # do history expansion on space
+
+# cancel menu with esc
+zmodload -i zsh/complist
+bindkey -M menuselect '^[' undo
+
+# enable press up/down to navigate in history of a command
+if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
+  function zle-line-init() {
+    echoti smkx
+  }
+  function zle-line-finish() {
+    echoti rmkx
+  }
+  zle -N zle-line-init
+  zle -N zle-line-finish
+fi
+# start typing + [Up-Arrow] - fuzzy find history forward
+if [[ "${terminfo[kcuu1]}" != "" ]]; then
+  autoload -U up-line-or-beginning-search
+  zle -N up-line-or-beginning-search
+  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+fi
+# start typing + [Down-Arrow] - fuzzy find history backward
+if [[ "${terminfo[kcud1]}" != "" ]]; then
+  autoload -U down-line-or-beginning-search
+  zle -N down-line-or-beginning-search
+  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+fi
+
+# https://stackoverflow.com/questions/13341900/zsh-how-do-i-set-autocomplete-so-that-it-inserts-the-completion-when-cursor-is
+# be able to press tab inside a word and use the prefix beginning-to-end) as
+# word for completion
+bindkey '^i' expand-or-complete-prefix
+
+# -----------------------------------------------------------
+
+
+# OTHERS ----------------------------------------------------
+$HOME/dotfiles/os/dry/dry 0.0166666666667 2> /dev/null >/dev/null
+# -----------------------------------------------------------
+
+# VARIABLES ------------------------------------------------------
+export LC_ALL=en_US.UTF-8
+# http://meefirst.blogspot.com/2012/04/changing-colour-of-directory-listings.html
+unset LSCOLORS
+export CLICOLOR=1
+export CLICOLOR_FORCE=1
+export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.dmg=01;31:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.pdf=01;35:*.DOC=01;35:*.DOCX=01;35:*.doc=01;35:*.docx=00;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:*.c=01;36:*.java=01;36:*.r=01;36:*.pl=01;36:*.dat=01;37:*.log=01;37:*.pptx=01;35:';
+export TERM=xterm-256color
+
+PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+PATH=.:$HOME/.local/bin:/usr/local/bin:$PATH
+
+export VISUAL="nvim"
+export EDITOR="nvim"
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # after LS_COLOR definition
+
+export MYSHELL=/bin/zsh
+[[ -f $HOME/.local/bin/zsh ]] && export MYSHELL=$HOME/.local/bin/zsh
+
+export GREP_COLOR='1;33'
+export GREP_COLORS='mt=1;33'
+# -----------------------------------------------------------
+
+[[ ! -f $HOME/.local/bin/zoxide ]] && curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+eval "$(zoxide init zsh)"
+
+
+# ALIASES -----------------------------------------------------
+alias c='code'
+alias cpwd="pwd | tr -d '\n' | sed s'/ $//g' | pbcopy"
+alias dot='cd ~/dotfiles'
+alias l.='ls -d .* --color=auto'
+alias ll='ls -las'
+alias ls='ls --color=auto -F -I Pictures -I Documents -I Movies -I Music -I Public -I Applications -I Library -I Desktop -I Downloads -I dotfiles'
+alias lt='ls -t'
+alias o='open'
+alias nvimrc='nvim ~/.config/nvim/init.vim'
+alias t='cd ~/Downloads'
+alias vi='nvim'
+alias zshrc='vi ~/.zshrc ; source ~/.zshrc'
+alias grep='grep --color'
+
+alias 0='cd ~/0*'
+alias 1='cd ~/1*'
+alias 2='cd ~/2*'
+alias 3='cd ~/3*'
+alias 4='cd ~/4*'
+alias 5='cd ~/5*'
+
+alias pyserver='python3 -m http.server'
+alias vsdir='cd ~/Library/Application\ Support/Code/User/'
+alias vsext='cd ~/.vscode/extensions'
+alias uber='cd ~/Library/Application\ Support/Übersicht/widgets'
+
+alias jsonshow='python -m json.tool'
+alias tt="vi ~/todo"
+alias tmuxls='tmux ls'
+alias tmuxj='tmux attach-session -t'
+alias tmm="env TERM=screen-256color tmux new-session -A -s main"
+alias tm="env TERM=screen-256color tmux new-session"
+alias dia='v diary'
+alias ler='v learn'
+alias pow='v power'
+alias testgit='ssh -T git@github.com'
+
+[ -f ~/misc/aliases.zsh ] && source ~/misc/aliases.zsh
+
+
+# -----------------------------------------------------------
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
