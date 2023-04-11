@@ -1,0 +1,57 @@
+sudo yabai --load-sa
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+
+#yabai -m config mouse_follows_focus          on
+#yabai -m config focus_follows_mouse          autoraise
+
+yabai -m config window_shadow off
+
+yabai -m config layout bsp
+yabai -m config auto_balance                    on
+
+yabai -m config top_padding 24
+yabai -m config bottom_padding 24
+yabai -m config left_padding 24
+yabai -m config right_padding 24
+
+yabai -m config window_gap 10
+
+yabai -m config window_border off
+# yabai -m config window_border_width 3
+# yabai -m config window_border_radius   20
+
+yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="^Share content$" manage=off
+yabai -m rule --add app="^New Folder$" manage=off
+yabai -m rule --add app="^Find$" manage=off
+yabai -m rule --add app="^Microsoft Teams$" space=5
+
+yabai -m rule --add title='^Share' manage=off
+yabai -m rule --add title='^End' manage=off
+yabai -m rule --add app="Spotify"  space=6
+
+yabai -m config active_window_border_color      0xFF888888
+# yabai -m config active_window_border_color      0x88888888
+# yabai -m config active_window_border_color      0x52EBDBB2
+# yabai -m config normal_window_border_color      0x82606060
+# yabai -m config insert_window_border_color      0xB2EBDBB2
+
+#yabai -m config active_window_border_color   0xff0F72AB
+#yabai -m config normal_window_border_color   0xff505050
+#yabai -m config insert_window_border_color   0xffd75f5f
+
+# yabai signals
+yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
+
+yabai -m config mouse_modifier               fn
+yabai -m config mouse_action1                move
+yabai -m config mouse_action2                resize
+
+yabai -m config --space 7 layout             float
+
+yabai -m signal --add event=space_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"appspace-widget-appspace-coffee\"'"
+yabai -m signal --add event=window_focused action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"appspace-widget-appspace-coffee\"'"
+yabai -m signal --add event=application_front_switched action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"appspace-widget-appspace-coffee\"'"
+
+
