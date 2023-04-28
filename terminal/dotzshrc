@@ -253,9 +253,6 @@ alias tmuxls='tmux ls'
 alias tmuxj='tmux attach-session -t'
 alias tmm="env TERM=screen-256color tmux new-session -A -s main"
 alias tm="env TERM=screen-256color tmux new-session"
-alias dia='v diary'
-alias ler='v learn'
-alias pow='v power'
 alias testgit='ssh -T git@github.com'
 
 [ -f ~/misc/aliases.zsh ] && source ~/misc/aliases.zsh
