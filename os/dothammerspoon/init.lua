@@ -635,6 +635,12 @@ _all_wins_filter:subscribe(hs.window.filter.windowCreated, function(window, appN
     win_title = window:title()
     print('Window created ... maximising: ' .. win_title)
     print('Window created ... DONE: ' .. win_title)
+
+    if win_title == "Teams" then
+       hs.timer.usleep(2000000)
+       focusedanother = window:focusWindowWest(false)
+       print("Refocused other window "..tostring(focusedanother))
+   end
 end)
 
 
