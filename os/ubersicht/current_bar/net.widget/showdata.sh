@@ -7,8 +7,8 @@ maxwidth=2
 # padchar="▪"
 # padchar="■"
 # padchar="◜"
- # padchar="k"
- padchar="◦"
+# padchar="k"
+padchar="◦"
 # padchar="⠄"
 
 PREF_NETS="$HOME/.pref_nets"
@@ -26,6 +26,9 @@ AWK=/usr/local/bin/awk
 nickname=`cat "$PREF_NETS" | grep "$netname " |  $AWK {'print $2'}  `
 
 netname=$nickname
+if [ "$netname" == "" ] ;then
+    netname="nd"
+fi
 
 
 VPNAPP="/opt/cisco/anyconnect/bin/vpn"
@@ -48,6 +51,8 @@ chrlen=${#netname}
     # netname="↓"$netname
 
 # fi
+
+
 
 if [[ "$chrlen" -gt "$maxwidth" ]]; then
     V=`echo $netname | cut -c 1-$maxwidth`

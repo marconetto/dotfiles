@@ -204,7 +204,7 @@ function changeVolume(diff)
       hs.audiodevice.defaultOutputDevice():setMuted(false)
     end
     hs.alert.closeAll(0.0)
-    -- hs.timer.usleep(10000)
+    hs.timer.usleep(10000)
     hs.audiodevice.defaultOutputDevice():setVolume(new)
     message = "vol "..new
     -- hs.alert.show(message, {}, 2)
@@ -605,11 +605,11 @@ hs.timer.doEvery(60, fixkeyboard())
 function showhelp()
   return function()
 
-      show_alert("7=help 8=keyb 9=monitor 0=cyclewall", 7)
+      show_alert("6=help 7=net 8=keyfix 9=monitor 0=cyclewall", 7)
   end
 end
 
-hs.hotkey.bind(threekeys, '7', showhelp(), nil,nil)
+hs.hotkey.bind(threekeys, '6', showhelp(), nil,nil)
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -691,7 +691,7 @@ ev = hs.eventtap.new({hs.eventtap.event.types.mouseMoved, hs.eventtap.event.type
 -------------------------------------------------------------------------------
 -- show network info
 -------------------------------------------------------------------------------
-function showsysteminfo_func()
+function shownetinfo_func()
 
       command = "/Sy*/L*/Priv*/Apple8*/V*/C*/R*/airport -I | sed -e 's/^  *SSID: //p' -e d | tr -d '\n'"
       ssid, status, termType, rc = hs.execute(command,false)
@@ -704,14 +704,14 @@ function showsysteminfo_func()
       hs.osascript.applescript(command)
 end
 
-function showsysteminfo()
+function shownetinfo()
   return function()
 
-   showsysteminfo_func()
+   shownetinfo_func()
   end
 end
 
-hs.hotkey.bind(threekeys, '6', showsysteminfo(), nil,nil)
+hs.hotkey.bind(threekeys, '7', shownetinfo(), nil,nil)
 
 -------------------------------------------------------------------------------
 -- yabai functions
@@ -760,36 +760,36 @@ end
 -------------------------------------------------------------------------------
 --
 -------------------------------------------------------------------------------
-function showmousespeed_func()
+-- function showmousespeed_func()
 
-    speed = hs.mouse.trackingSpeed()
-    msg = "mouse speed..."..speed
-    show_alert(msg, 5)
-end
+    -- speed = hs.mouse.trackingSpeed()
+    -- msg = "mouse speed..."..speed
+    -- show_alert(msg, 5)
+-- end
 
- function showmousespeed()
-  return function()
-      showmousespeed_func()
-  end
-end
-hs.hotkey.bind(threekeys, '4', showmousespeed(), nil,nil)
+ -- function showmousespeed()
+  -- return function()
+      -- showmousespeed_func()
+  -- end
+-- end
+-- hs.hotkey.bind(threekeys, '4', showmousespeed(), nil,nil)
 
-function setmousespeed_func()
+-- function setmousespeed_func()
 
-    speed = hs.mouse.trackingSpeed(0.125)
-    msg = "mouse speed..."..speed
-    show_alert(msg, 5)
-end
+    -- speed = hs.mouse.trackingSpeed(2.0)
+    -- msg = "set mouse speed..."..speed
+    -- show_alert(msg, 5)
+-- end
 
- function setmousespeed()
-  return function()
-      setmousespeed_func()
-  end
-end
-hs.hotkey.bind(threekeys, '5', setmousespeed(), nil,nil)
+ -- function setmousespeed()
+  -- return function()
+      -- setmousespeed_func()
+  -- end
+-- end
+-- hs.hotkey.bind(threekeys, '5', setmousespeed(), nil,nil)
 
 --
-wifiwatcher = hs.wifi.watcher.new(showsysteminfo())
+wifiwatcher = hs.wifi.watcher.new(shownetinfo())
 wifiwatcher:start()
 
 ------------------------------------------------------------------------------
