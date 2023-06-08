@@ -980,6 +980,7 @@ let g:gruvbox_material_transparent_background = 1
 let g:gruvbox_material_background = 'soft'
 let g:gruvbox_transparent_background = 1
 " avoid problem with tmux
+let g:gruvbox_material_enable_italic = 0
 let g:gruvbox_material_disable_italic_comment = 1
 
 colorscheme gruvbox-material
