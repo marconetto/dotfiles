@@ -1,3 +1,4 @@
+hs.ipc.cliInstall()
 hs.window.animationDuration = 0
 
 function set_alert_color()
@@ -48,7 +49,7 @@ function cleanuberalert()
         message = ""
         messagefile=os.getenv("HOME")..DIR_SIMPLE_ALERT.."/message.txt"
         command="echo \""..message.."\" > "..messagefile
-        output, status, termType, rc = hs.execute(command,false)
+        hs.execute(command,false)
 
         command="tell application \"Übersicht\" to refresh widget id \"simplealert-widget-simplealert-coffee\""
         hs.osascript.applescript(command)
@@ -63,7 +64,7 @@ function uberalert(message, duration)
 
     messagefile=os.getenv("HOME")..DIR_SIMPLE_ALERT.."/message.txt"
     command="echo \""..message.."\" > "..messagefile
-    output, status, termType, rc = hs.execute(command,false)
+    hs.execute(command,false)
 
     command="tell application \"Übersicht\" to refresh widget id \"simplealert-widget-simplealert-coffee\""
     hs.osascript.applescript(command)
@@ -110,6 +111,11 @@ show_alert("config reloaded", 1)
 
 local hyperkeys = {"ctrl", "alt", "cmd", "shift"}
 local threekeys = {"ctrl", "alt", "cmd"}
+
+hs.hotkey.bind({"cmd", "alt", "ctrl"}, "r", function()
+  hs.reload()
+end)
+
 
 hs.hotkey.bind(hyperkeys, "a", function()
       hs.alert.closeAll(0.0)
@@ -200,16 +206,17 @@ function changeVolume(diff)
   return function()
     local current = hs.audiodevice.defaultOutputDevice():volume()
     local new = math.min(100, math.max(0, math.floor(current + diff)))
-    if new > 0 then
-      hs.audiodevice.defaultOutputDevice():setMuted(false)
-    end
-    hs.alert.closeAll(0.0)
-    hs.timer.usleep(10000)
+
+    new = math.floor(new/10+0.5) * 10
+    -- if new > 0 then
+      -- hs.audiodevice.defaultOutputDevice():setMuted(false)
+    -- end
+    -- hs.alert.closeAll(0.0)
+    -- hs.timer.usleep(90000)
     hs.audiodevice.defaultOutputDevice():setVolume(new)
     message = "vol "..new
     -- hs.alert.show(message, {}, 2)
     show_alert(message, 1)
-
   end
 end
 
@@ -249,10 +256,10 @@ function myNext()
   end
 end
 
-local inc_volume = 3
+local inc_volume = 10
 
 hs.hotkey.bind(hyperkeys, 'i', changeVolume(-inc_volume),
-    nil, changeVolume(-inc_volume))
+     nil, changeVolume(-inc_volume))
 
 hs.hotkey.bind(hyperkeys, 'o', changeVolume(inc_volume),
     nil, changeVolume(inc_volume))
@@ -792,6 +799,22 @@ end
 wifiwatcher = hs.wifi.watcher.new(shownetinfo())
 wifiwatcher:start()
 
+
+
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+function cleandesktop()
+  return function()
+
+      command = "rm $HOME/Desktop/* -rf"
+      hs.execute(command,false)
+      msg = "cleaned desktop..."
+      show_alert(msg, 2)
+  end
+end
+
+hs.hotkey.bind(threekeys, '5', cleandesktop(), nil,nil)
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
 ------------------------------------------------------------------------------
