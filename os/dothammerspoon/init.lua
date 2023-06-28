@@ -259,10 +259,10 @@ end
 local inc_volume = 10
 
 hs.hotkey.bind(hyperkeys, 'i', changeVolume(-inc_volume),
-     nil, changeVolume(-inc_volume))
+     nil, nil)
 
 hs.hotkey.bind(hyperkeys, 'o', changeVolume(inc_volume),
-    nil, changeVolume(inc_volume))
+    nil, nil)
 
 hs.hotkey.bind(hyperkeys, 'u', toggleMute())
 
@@ -807,7 +807,7 @@ wifiwatcher:start()
 function cleandesktop()
   return function()
 
-      command = "rm $HOME/Desktop/* -rf"
+      command = "rm -rf $HOME/Desktop/*"
       hs.execute(command,false)
       msg = "cleaned desktop..."
       show_alert(msg, 2)
