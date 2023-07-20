@@ -1,0 +1,3 @@
+export BASH_SILENCE_DEPRECATION_WARNING=1
+source $HOME/dotfiles/terminal/bashprompt.sh
+source $HOME/dotfiles/terminal/commonshell.sh
