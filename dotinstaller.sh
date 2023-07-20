@@ -8,6 +8,9 @@ DOTFILESDIR=$HOME/dotfiles
 DOTFILESDOTZSHRC=$DOTFILESDIR/terminal/dotzshrc
 ZSHRCFILE=$HOME/.zshrc
 
+DOTFILESDOTBASHRC=$DOTFILESDIR/terminal/dotbashrc
+BASHRCFILE=$HOME/.bashrc
+
 NVIMRCDIR=$HOME/.config/nvim
 NVIMRCFILE=$HOME/.config/nvim/init.vim
 DOTFILESNVIMRC=$DOTFILESDIR/editors/neovim/init.vimv2
@@ -34,6 +37,16 @@ if [ -f $ZSHRCFILE ]; then
     fi
 fi
 ln -s $DOTFILESDOTZSHRC $ZSHRCFILE
+
+
+if [ -f $BASHRCFILE ]; then
+    if [ -L $BASHRCFILE ]; then
+        rm $BASHRCFILE
+    else
+        mv $BASHRCFILE "$BASHRCFILE"_"$DOTPREFIX"
+    fi
+fi
+ln -s $DOTFILESDOTBASHRC $BASHRCFILE
 
 # for getting full nvimrc directory, not only the init file
 if [ -d $NVIMRCDIR ]; then
