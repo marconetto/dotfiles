@@ -29,3 +29,10 @@ v(){
     fi
     return 0
 }
+
+vd() {
+
+GOTODIR=`dirs -v | fzf`
+DIR=`echo $GOTODIR | awk '{print $2}'`
+eval cd "$DIR"
+}

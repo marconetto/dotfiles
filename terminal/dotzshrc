@@ -100,6 +100,9 @@ zstyle ':completion:*:*:(vim|nvim|vi|cat|more|less):*' ignored-patterns '*.(o|pn
 # https://stackoverflow.com/questions/72705377/zsh-how-to-limit-file-completion-to-current-directory-only-like-bash
 unset '_comps[source]'
 
+# for dirs
+set -o autopushd
+
 # KEYBOARD --------------------------------------------------
 bindkey '^[[1;5C' forward-word               # "option key + arrow"
 bindkey '^[[1;5D' backward-word              # "option key + arrow"
