@@ -32,7 +32,7 @@ v(){
 
 vd() {
 
-GOTODIR=`dirs -v | fzf`
+GOTODIR=`dirs -v | grep -v ~$ | fzf`
 DIR=`echo $GOTODIR | awk '{print $2}'`
 eval cd "$DIR"
 }

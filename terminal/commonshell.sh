@@ -21,6 +21,8 @@ export GREP_COLOR='1;33'
 export GREP_COLORS='mt=1;33'
 # -----------------------------------------------------------
 
+#LS_IGNOREDIRECTORIES='-I Pictures -I Documents -I Movies -I Music -I Public -I Applications -I Library -I Desktop -I Downloads -I dotfiles'
+
 
 # ALIASES -----------------------------------------------------
 alias c='code'
