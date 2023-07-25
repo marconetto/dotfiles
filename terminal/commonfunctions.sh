@@ -1,3 +1,10 @@
+function install_fzf(){
+    if [[ ! -d $HOME/.fzf ]]; then
+       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+       ~/.fzf/install --all
+   fi
+}
+
 
 function ff(){
    find . -iname "*$1*"

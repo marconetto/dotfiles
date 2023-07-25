@@ -1,12 +1,3 @@
-
-function install_fzf(){
-
-    if [[ ! -d $HOME/.fzf ]]; then
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-        ~/.fzf/install --all
-    fi
-}
-
 function install_nvim(){
     ORI_DIR=$HOME
     if  [[ $PWD  != "." ]]; then
@@ -61,7 +52,7 @@ function mcd () {
 # executes ls when changing directory
 function chpwd() {
     emulate -L zsh
-    ls  --color=auto -F
+    ls  --color=auto -F -I Pictures -I Documents -I Movies -I Music -I Public -I Applications -I Library -I Desktop -I Downloads -I dotfiles  2> /dev/null
 }
 
 # https://tldp.org/HOWTO/Xterm-Title-3.html

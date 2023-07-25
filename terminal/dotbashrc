@@ -7,3 +7,7 @@ source $HOME/dotfiles/terminal/commonfunctions.sh
 
 
 cd() { builtin cd "$@" && ls; }
+
+
+[[ ! -f $HOME/.local/bin/zoxide ]] && curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+eval "$(zoxide init bash)"
