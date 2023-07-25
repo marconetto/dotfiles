@@ -5,6 +5,7 @@ source $HOME/dotfiles/terminal/bashprompt.sh
 source $HOME/dotfiles/terminal/commonshell.sh
 source $HOME/dotfiles/terminal/commonfunctions.sh
 
+install_fzf
 
 cd() { builtin cd "$@" && ls; }
 
