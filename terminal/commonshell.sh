@@ -57,6 +57,7 @@ alias tmuxls='tmux ls'
 alias tmuxj='tmux attach-session -t'
 alias tmm="env TERM=screen-256color tmux new-session -A -s main"
 alias tm="env TERM=screen-256color tmux new-session"
+alias t0='tmux attach-session -t 0'
 alias testgit='ssh -T git@github.com'
 alias sshk='ssh -o StrictHostKeychecking=no'
 alias myip='MYIP=`curl -s ifconfig.me` ; echo $MYIP '
