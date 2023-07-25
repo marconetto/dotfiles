@@ -1,14 +1,21 @@
 bind -s 'set completion-ignore-case on'
 
+
 export BASH_SILENCE_DEPRECATION_WARNING=1
 source $HOME/dotfiles/terminal/bashprompt.sh
 source $HOME/dotfiles/terminal/commonshell.sh
 source $HOME/dotfiles/terminal/commonfunctions.sh
 
+install_nvim
 install_fzf
 
 cd() { builtin cd "$@" && ls; }
 
 
+export TMUXSHELL=/usr/bin/bash
+[[ -f $HOME/.local/bin/bash ]] && export TMUXSHELL=$HOME/.local/bin/bash
+
 [[ ! -f $HOME/.local/bin/zoxide ]] && curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
 eval "$(zoxide init bash)"
+
+

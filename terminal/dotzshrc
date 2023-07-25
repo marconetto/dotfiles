@@ -197,8 +197,8 @@ source $HOME/dotfiles/terminal/commonshell.sh
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # after LS_COLOR definition
 
-export MYSHELL=/bin/zsh
-[[ -f $HOME/.local/bin/zsh ]] && export MYSHELL=$HOME/.local/bin/zsh
+export TMUXSHELL=/bin/zsh
+[[ -f $HOME/.local/bin/zsh ]] && export TMUXSHELL=$HOME/.local/bin/zsh
 
 [[ ! -f $HOME/.local/bin/zoxide ]] && curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
 eval "$(zoxide init zsh)"
