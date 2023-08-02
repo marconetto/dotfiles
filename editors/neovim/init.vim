@@ -129,7 +129,6 @@ require'nvim-treesitter.configs'.setup {
     "json",
     "vim",
     "yaml",
-    "python",
     "javascript",
     "typescript",
     "lua",
@@ -142,6 +141,7 @@ local lspconfig = require'lspconfig'
 
 lspconfig.pylsp.setup{}
 lspconfig.tsserver.setup{}
+lspconfig.jsonls.setup{}
 
 --Enable (broadcasting) snippet capability for completion
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -629,11 +629,11 @@ autocmd CursorHold * silent lua vim.diagnostic.open_float()
 
 augroup filetype_python
   autocmd!
-  autocmd FileType python set list
-  autocmd FileType python set listchars=tab:▸\ ,trail:¬,nbsp:.,extends:❯,precedes:❮
-  autocmd FileType python set number
-  autocmd FileType python set cursorline
-  autocmd FileType python set signcolumn=yes
+  autocmd FileType python,json set list
+  autocmd FileType python,json set listchars=tab:▸\ ,trail:¬,nbsp:.,extends:❯,precedes:❮
+  autocmd FileType python,json set number
+  autocmd FileType python,json set cursorline
+  autocmd FileType python,json set signcolumn=yes
 augroup END
 
 au InsertEnter *  :echo ""
@@ -699,7 +699,7 @@ let g:indentguides_firstlevel = 1
 let g:indent_guides_enable_on_vim_startup = 0
 
 
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'javascript']
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'c', 'javascript','json']
 
 " plugin: quickscope
 let g:qs_highlight_on_keys = ['f', 'F']
