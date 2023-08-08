@@ -13,6 +13,7 @@ export TERM=xterm-256color
 
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 PATH=.:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/nvim/bin:$PATH
 
 export VISUAL="nvim"
 export EDITOR="nvim"

@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+if [ ! -n "$BASH_VERSION" ]; then
+    echo "installer script was not invoked using bash"
+    exit 1
+fi
+
+script_path="$(realpath "$0")"
+SCRIPT_DIR="$(dirname "$script_path")"
 
 DOTPREFIX=`date "+%Y_%m_%d_%H_%M_%S"`
 DOTFILESDIR=$HOME/dotfiles
@@ -82,5 +89,14 @@ if ! command -v tmux &> /dev/null ; then
         sh ${SCRIPT_DIR}/terminal/install_tmux.sh
     else
         echo "run: ${SCRIPT_DIR}/terminal/install_tmux.sh"
+    fi
+fi
+
+if ! command -v nvim &> /dev/null ; then
+    echo "nvim is not available"
+    if [ $INSTALLMISSING == 1 ]; then
+        sh ${SCRIPT_DIR}/terminal/install_nvim.sh
+    else
+        echo "run: ${SCRIPT_DIR}/terminal/install_nvim.sh"
     fi
 fi

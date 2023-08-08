@@ -2,7 +2,6 @@
 # FUNCTIONS -------------------------------------------------
 source $HOME/dotfiles/terminal/zshfunctions.zsh
 source $HOME/dotfiles/terminal/commonfunctions.sh
-install_nvim
 install_fzf
 # -----------------------------------------------------------
 
