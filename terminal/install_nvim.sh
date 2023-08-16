@@ -11,6 +11,7 @@ if [[ ! -d $HOME/.local/nvim ]] ; then
         chmod u+x nvim.appimage
         echo "Extracting appimage for neovim..."
         ./nvim.appimage --appimage-extract > /dev/null
+        mkdir $HOME/.local/nvim -p > /dev/null
         mv ./squashfs-root/usr $HOME/.local/nvim/
         rm -rf ./squashfs-root
         rm ./nvim.appimage
