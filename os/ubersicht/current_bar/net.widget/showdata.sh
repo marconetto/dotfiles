@@ -11,6 +11,8 @@ maxwidth=2
 padchar="◦"
 # padchar="⠄"
 
+TESTVPN=$HOME/misc/testvpn.sh
+
 PREF_NETS="$HOME/.pref_nets"
 
 if [ ! -f "$PREF_NETS" ]; then
@@ -26,31 +28,34 @@ AWK=/usr/local/bin/awk
 nickname=`cat "$PREF_NETS" | grep "$netname " |  $AWK {'print $2'}  `
 
 netname=$nickname
-if [ "$netname" == "" ] ;then
+if [ "$netname" == "" ] ; then
     netname="nd"
 fi
 
 
-VPNAPP="/opt/cisco/anyconnect/bin/vpn"
-SEQ="/usr/local/opt/coreutils/libexec/gnubin/seq"
 
-if [ ! -f "$VPNAPP" ]; then
-    vpnconnected="Disconnected"
-else
-    vpnconnected=`/opt/cisco/anyconnect/bin/vpn state | grep state | head -1 | sed 's/.*\\: //' | tr -d '\n' `
+# VPNAPP="/opt/cisco/anyconnect/bin/vpn"
+# SEQ="/usr/local/opt/coreutils/libexec/gnubin/seq"
+
+# if [ ! -f "$VPNAPP" ]; then
+    # vpnconnected="Disconnected"
+# else
+    # vpnconnected=`/opt/cisco/anyconnect/bin/vpn state | grep state | head -1 | sed 's/.*\\: //' | tr -d '\n' `
+# fi
+
+
+vpnconnected="no"
+if [ -f $TESTVPN ] ; then
+    vpnconnected=`$TESTVPN`
 fi
-
 
 chrlen=${#netname}
 # something strage happens counting with and utf-8
 # so putting this before adding the utf-8
 # TODO?  use wc -m to count chars..
-# if [[ "$vpnconnected" == "Connected" ]]; then
-    # netname="↑"$netname
-# else
-    # netname="↓"$netname
-
-# fi
+if [[ "$vpnconnected" == "yes" ]]; then
+    netname="🔸"$netname
+fi
 
 
 
