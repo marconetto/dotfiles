@@ -5,6 +5,7 @@ yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 #yabai -m config focus_follows_mouse          autoraise
 
 yabai -m config window_shadow off
+yabai -m config window_border_blur off
 
 yabai -m config layout bsp
 yabai -m config auto_balance                    on
@@ -55,3 +56,13 @@ yabai -m signal --add event=window_focused action="osascript -e 'tell applicatio
 yabai -m signal --add event=application_front_switched action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"appspace-widget-appspace-coffee\"'"
 
 
+# yabai -m config window_animation_duration    1.00
+# yabai -m config window_animation_frame_rate  100
+yabai -m config window_animation_duration    0.2
+yabai -m config window_animation_frame_rate  60
+yabai -m config window_border_radius         8
+
+yabai -m config window_shadow off
+
+yabai -m signal --add event=dock_did_restart action="yabai -m config window_shadow off"
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa && sleep 1 && yabai -m config window_shadow off"
