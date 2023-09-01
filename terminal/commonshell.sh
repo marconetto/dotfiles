@@ -35,7 +35,7 @@ alias ll='ls -las'
 alias ls='ls --color=auto -F -I Pictures -I Documents -I Movies -I Music -I Public -I Applications -I Library -I Desktop -I Downloads -I dotfiles'
 alias lt='ls -t'
 alias o='open'
-alias nvimrc='nvim ~/.config/nvim/init.vim'
+alias nvimrc='nvim ~/.config/nvim/init.lua'
 alias t='cd ~/Downloads'
 alias vi='nvim'
 alias zshrc='vi ~/.zshrc ; source ~/.zshrc'
@@ -47,6 +47,14 @@ alias 2='cd ~/2*'
 alias 3='cd ~/3*'
 alias 4='cd ~/4*'
 alias 5='cd ~/5*'
+
+alias '..'='cd ..'
+alias '...'='cd ../..'
+alias '....'='cd ../../..'
+alias '.....'='cd ../../../..'
+
+
+alias lnf='ln -sfn'
 
 alias pyserver='python3 -m http.server'
 alias vsdir='cd ~/Library/Application\ Support/Code/User/'
