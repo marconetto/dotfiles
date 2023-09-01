@@ -211,11 +211,33 @@ require("lazy").setup(
                 lsp.nvim_workspace()
                 lsp.setup()
                 vim.diagnostic.config({ virtual_text = true })
+
+                require("mason-lspconfig").setup({
+                    ensure_installed = {
+                        "tsserver",
+                        "bashls",
+                        "cssls",
+                        "lua_ls",
+                        "html",
+                        "jsonls",
+                        "pyright",
+                        "yamlls",
+                        "bicep",
+                    },
+                })
             end,
         },
         -- proper syntax colors -------------------------------------------------------------
         {
             'nvim-treesitter/nvim-treesitter',
+            -- cond = function()
+            --     if vim.fn.executable('make') == 1 then
+            --         return true
+            --     else
+            --         return false
+            --     end
+            -- end,
+            --
             config = function()
                 require('nvim-treesitter.configs').setup({
                     highlight = {
@@ -679,7 +701,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
 -- vim.o.updatetime = 250
 -- vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
 
-vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="cursor", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
+vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
 
 -- vim.cmd [[
 --   autocmd BufNewFile,BufRead * if empty(&filetype) or &filetype != 'text' or (line('$') == 1 and getline(1) == '') then echo 'hello' end
