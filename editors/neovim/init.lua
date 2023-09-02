@@ -311,6 +311,13 @@ require("lazy").setup(
         },
         {
             'nvim-telescope/telescope-fzf-native.nvim',
+            cond = function()
+                if vim.fn.executable('make') == 1 then
+                    return true
+                else
+                    return false
+                end
+            end,
             build = 'make'
         },
         -- toggle comment --------------------------------------------------------------------
@@ -382,6 +389,13 @@ require("lazy").setup(
         },
         {
             "iamcco/markdown-preview.nvim",
+            cond = function()
+                if vim.fn.executable('yarn') == 1 then
+                    return true
+                else
+                    return false
+                end
+            end,
             lazy = true,
             ft = "markdown",
             build = "cd app && yarn install",
