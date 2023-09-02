@@ -54,7 +54,15 @@ require("lazy").setup(
                 end
 
                 local function file_path()
-                    return string.format("%s", vim.fn.expand("%:p:h:t"))
+                    if vim.fn.has("mac") == 1 then
+                        return string.format("%s", vim.fn.expand("%:p:h:t"))
+                    else
+                        local f = io.popen("/bin/hostname")
+                        local hostname = f:read("*a") or ""
+                        f:close()
+                        hostname = string.gsub(hostname, "\n$", "")
+                        return string.format("[%s] %s", hostname, vim.fn.expand("%:p:h:t"))
+                    end
                 end
 
                 local custom_theme = require "lualine.themes.gruvbox_dark"
