@@ -186,12 +186,21 @@ require("lazy").setup(
         },
         -- lsp -----------------------------------------------------------------------------
         {
+            "williamboman/mason.nvim",
+            "williamboman/mason-lspconfig.nvim",
+            cond = function()
+                if vim.fn.executable('npm') == 1 then
+                    return true
+                else
+                    return false
+                end
+            end,
+        },
+        {
             "VonHeikemen/lsp-zero.nvim",
             dependencies = {
                 "lukas-reineke/lsp-format.nvim",
                 "neovim/nvim-lspconfig",
-                "williamboman/mason.nvim",
-                "williamboman/mason-lspconfig.nvim",
                 "hrsh7th/nvim-cmp",
                 "hrsh7th/cmp-buffer",
                 "hrsh7th/cmp-path",
@@ -212,32 +221,40 @@ require("lazy").setup(
                 lsp.setup()
                 vim.diagnostic.config({ virtual_text = true })
 
-                require("mason-lspconfig").setup({
-                    ensure_installed = {
-                        "tsserver",
-                        "bashls",
-                        "cssls",
-                        "lua_ls",
-                        "html",
-                        "jsonls",
-                        "pyright",
-                        "yamlls",
-                        "bicep",
-                    },
-                })
+                local module_name = "mason-lspconfig"
+                local module_path = package.searchpath(module_name, package.path)
+                print(module_path)
+                if module_path then
+                    print("exists")
+                end
+
+                if vim.fn.executable('npm') == 1 then
+                    require("mason-lspconfig").setup({
+                        ensure_installed = {
+                            "tsserver",
+                            "bashls",
+                            "cssls",
+                            "lua_ls",
+                            "html",
+                            "jsonls",
+                            "pyright",
+                            "yamlls",
+                            "bicep",
+                        },
+                    })
+                end
             end,
         },
         -- proper syntax colors -------------------------------------------------------------
         {
             'nvim-treesitter/nvim-treesitter',
-            -- cond = function()
-            --     if vim.fn.executable('make') == 1 then
-            --         return true
-            --     else
-            --         return false
-            --     end
-            -- end,
-            --
+            cond = function()
+                if vim.fn.executable('make') == 1 then
+                    return true
+                else
+                    return false
+                end
+            end,
             config = function()
                 require('nvim-treesitter.configs').setup({
                     highlight = {
