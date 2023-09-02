@@ -221,13 +221,6 @@ require("lazy").setup(
                 lsp.setup()
                 vim.diagnostic.config({ virtual_text = true })
 
-                local module_name = "mason-lspconfig"
-                local module_path = package.searchpath(module_name, package.path)
-                print(module_path)
-                if module_path then
-                    print("exists")
-                end
-
                 require("mason-lspconfig").setup({
                     ensure_installed = {
                         "lua_ls",
