@@ -207,4 +207,4 @@ eval "$(zoxide init zsh)"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # interactive cd using history of visited directories
-bindkey -s '^G' 'zi^J'
+bindkey -s '^o' 'zi^J'
