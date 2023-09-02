@@ -387,6 +387,13 @@ require("lazy").setup(
         -- kitty -----------------------------------------------------------------------------
         {
             "knubie/vim-kitty-navigator",
+            cond = function()
+                if vim.fn.has("mac") == 1 then
+                    return true
+                else
+                    return false
+                end
+            end,
             build = "cp ./*.py ~/.config/kitty/",
             init = function()
                 vim.g.kitty_navigator_no_mappings = 1
