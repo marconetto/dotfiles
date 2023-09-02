@@ -228,6 +228,11 @@ require("lazy").setup(
                     print("exists")
                 end
 
+                require("mason-lspconfig").setup({
+                    ensure_installed = {
+                        "lua_ls",
+                    },
+                })
                 if vim.fn.executable('npm') == 1 then
                     require("mason-lspconfig").setup({
                         ensure_installed = {
