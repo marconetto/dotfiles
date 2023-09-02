@@ -6,7 +6,7 @@ if [[ ! -d $HOME/.local/nvim ]] ; then
         #wget $FILE
         #tar zxf nvim-linux64.tar.gz
         #mv nvim-linux64 $HOME/.local/nvim
-        FILE=https://github.com/neovim/neovim/releases/download/v0.9.0/nvim.appimage
+        FILE=https://github.com/neovim/neovim/releases/download/v0.9.1/nvim.appimage
         wget $FILE
         chmod u+x nvim.appimage
         echo "Extracting appimage for neovim..."
@@ -16,7 +16,7 @@ if [[ ! -d $HOME/.local/nvim ]] ; then
         rm -rf ./squashfs-root
         rm ./nvim.appimage
     else
-        FILE=https://github.com/neovim/neovim/releases/download/v0.9.0/nvim-macos.tar.gz
+        FILE=https://github.com/neovim/neovim/releases/download/v0.9.1/nvim-macos.tar.gz
         wget $FILE
         tar zxf nvim-macos.tar.gz
         mv nvim-macos $HOME/.local/nvim
