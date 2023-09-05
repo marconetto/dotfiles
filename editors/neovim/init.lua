@@ -331,7 +331,20 @@ require("lazy").setup(
         -- highlight current word ------------------------------------------------------------
         {
 
-            'dominikduda/vim_current_word'
+            -- 'dominikduda/vim_current_word'
+            'RRethy/vim-illuminate',
+            cond = function()
+                if vim.fn.has("mac") == 1 then
+                    return True
+                else
+                    return False
+                end
+            end,
+            event = "BufReadPost",
+            opts = { delay = 500 },
+            config = function(_, opts)
+                require("illuminate").configure(opts)
+            end,
         },
         -- auto pair brackets ----------------------------------------------------------------
         {
@@ -498,6 +511,21 @@ vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
 
 vim.cmd [[
+
+" remove trailing spaces when saving file
+" autocmd BufWritePre * :%s/\s\+$//e
+function! StripTrailingWhitespaces()
+"function! <SID>StripTrailingWhitespaces()
+  if !&binary && &filetype != 'diff'
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+  endif
+endfun
+
+
+nnoremap <silent> <Leader><leader>w :call StripTrailingWhitespaces()<cr>:silent w<cr>:echo ""<CR>
+
 
 nnoremap <leader>z :x<CR>
 nnoremap <leader>q :q!<CR>
@@ -671,6 +699,29 @@ endif
 " temporary solution for not showing ~@k when scrolling
 set noshowcmd
 let g:lsp_diagnostics_float_delay = 5000
+
+
+fu! ToggleCurline ()
+  if &cursorline && &cursorcolumn
+    set nocursorline
+    set nocursorcolumn
+    IlluminatePause
+
+  else
+    set cursorline
+    set cursorcolumn
+    IlluminateResume
+  endif
+endfunction
+
+map <silent><leader><leader>c :call ToggleCurline()<CR>
+
+set lazyredraw
+let g:loaded_matchparen=0
+let g:vimtex_matchparen_enabled =0
+let g:matchparen_timeout = 2
+let g:matchparen_insert_timeout = 2
+
 ]]
 
 
@@ -747,39 +798,11 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
 
 vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
 
--- vim.cmd [[
---   autocmd BufNewFile,BufRead * if empty(&filetype) or &filetype != 'text' or (line('$') == 1 and getline(1) == '') then echo 'hello' end
--- ]]
 
+if vim.fn.has("mac") == 0 then
+    vim.cmd [[
 
-
---   autocmd!
---   autocmd FileType lua,python,json,bash,sh,bicep,zsh set list
---   autocmd FileType lua,python,json,bash,sh,bicep,zsh set listchars=tab:▸\ ,trail:¬,nbsp:.,extends:❯,precedes:❮
---  autocmd FileType lua,python,json,bash,sh,bicep,zsh set number
--- autocmd FileType lua,python,json,bash,sh,bicep,zsh set cursorline
---autocmd FileType lua,python,json,bash,sh,bicep,zsh set signcolumn=yes
---augroup END
-
--- vim.cmd("autocmd VimEnter * highlight Pmenu guifg=#073642 guibg=#002b36")
--- vim.cmd("autocmd VimEnter * highlight PmenuSel guifg=#002b36 guibg=#b58900")
--- vim.cmd("autocmd VimEnter * highlight PmenuSbar guifg=#073642 guibg=#002b36")
--- vim.cmd("autocmd VimEnter * highlight PmenuThumb guifg=#586e75 guibg=#002b36")
-
--- vim.fn.sign_define('LspDiagnosticsSignError', { text = "", texthl = "LspDiagnosticsDefaultError" })
--- vim.fn.sign_define('LspDiagnosticsSignWarning', { text = "", texthl = "LspDiagnosticsDefaultWarning" })
--- vim.fn.sign_define('LspDiagnosticsSignInformation', { text = "", texthl = "LspDiagnosticsDefaultInformation" })
--- vim.fn.sign_define('LspDiagnosticsSignHint', { text = "", texthl = "LspDiagnosticsDefaultHint" })
-
---vim.cmd([[highlight DiagnosticVirtualTextError guibg=#ff212e]])
---vim.cmd([[highlight DiagnosticVirtualTextWarn guibg=#ff212e]])
---vim.cmd([[highlight DiagnosticVirtualTextInfo guibg=#ff212e]])
---vim.cmd([[highlight DiagnosticVirtualTextHint guibg=#ff212e]])
-------------------------------------------------------------------
-------------------------------------------------------------------
-------------------------------------------------------------------
-------------------------------------------------------------------
---MISC------------------------------------------------------------
---MISC------------------------------------------------------------
-
--- print(os.getenv("SHELL"))
+set nocursorline
+set nocursorcolumn
+]]
+end
