@@ -1,12 +1,22 @@
 #!/usr/bin/env bash
 
-
 if [ ! -n "$BASH_VERSION" ]; then
     echo "installer script was not invoked using bash"
     exit 1
 fi
 
-script_path="$(realpath "$0")"
+if [ "${BASH_SOURCE[0]}" -ef "$0" ]
+then
+    echo "Usage: source ${BASH_SOURCE[0]}"
+    exit 1
+fi
+
+GREEN="\e[32m"
+RED="\e[31m"
+YELLOW="\e[33m"
+RESET="\e[0m"
+
+script_path="$(realpath "$BASH_SOURCE[0]}")"]
 SCRIPT_DIR="$(dirname "$script_path")"
 
 DOTPREFIX=`date "+%Y_%m_%d_%H_%M_%S"`
@@ -19,84 +29,117 @@ DOTFILESDOTBASHRC=$DOTFILESDIR/terminal/dotbashrc
 BASHRCFILE=$HOME/.bashrc
 
 NVIMRCDIR=$HOME/.config/nvim
-NVIMRCFILE=$HOME/.config/nvim/init.vim
-DOTFILESNVIMRC=$DOTFILESDIR/editors/neovim/init.vimv2
+DOTNVIMRCDIR=$DOTFILESDIR/editors/neovim/
 
 DOTFILESDOTTMUX=$DOTFILESDIR/terminal/dottmux.conf
 DOTTMUX=$HOME/.tmux.conf
 
-INSTALLMISSING=0
-if [[ "$#" -eq 1 && "$1" == "-a" ]] ; then
+
+function setup_shells(){
+
+    if [ -f $ZSHRCFILE ]; then
+        if [ -L $ZSHRCFILE ]; then
+            rm $ZSHRCFILE
+        else
+            mv $ZSHRCFILE "$ZSHRCFILE"_"$DOTPREFIX"
+        fi
+    fi
+
+    ln -s $DOTFILESDOTZSHRC $ZSHRCFILE
+    echo -e "${GREEN}[DONE]: ${YELLOW}created new $ZSHRCFILE"
+
+    if [ -f $BASHRCFILE ]; then
+        if [ -L $BASHRCFILE ]; then
+            rm $BASHRCFILE
+        else
+            mv $BASHRCFILE "$BASHRCFILE"_"$DOTPREFIX"
+        fi
+    fi
+    ln -s $DOTFILESDOTBASHRC $BASHRCFILE
+    echo -e "${GREEN}[DONE]: ${YELLOW}created new $BASHRCFILE"
+
+
     INSTALLMISSING=1
-fi
-
-set -x
-
-if [ ! -d $HOME/.config ]; then
-    mkdir $HOME/.config
-fi
-
-if [ -f $ZSHRCFILE ]; then
-    if [ -L $ZSHRCFILE ]; then
-        rm $ZSHRCFILE
+    if ! command -v zsh &> /dev/null ; then
+        echo -e "${RED}[FAILED]: ${YELLOW}find existing zsh"
+       if [ $INSTALLMISSING == 1 ]; then
+          sh ${SCRIPT_DIR}/terminal/install_zsh.sh > /dev/null
+          if [ -f $HOME/.local/bin/zsh ]; then
+             echo -e "${GREEN}[DONE]: ${YELLOW}installed zsh"
+          fi
+       else
+          echo "run: ${SCRIPT_DIR}/terminal/install_zsh.sh"
+       fi
     else
-        mv $ZSHRCFILE "$ZSHRCFILE"_"$DOTPREFIX"
+       echo -e "${GREEN}[DONE]: ${YELLOW}found existing zsh"
     fi
-fi
-ln -s $DOTFILESDOTZSHRC $ZSHRCFILE
+
+    source $BASHRCFILE
+}
 
 
-if [ -f $BASHRCFILE ]; then
-    if [ -L $BASHRCFILE ]; then
-        rm $BASHRCFILE
+function setup_nvim(){
+
+    if [ -d $NVIMRCDIR ]; then
+        mv $NVIMRCDIR "$NVIMRCDIR"_"$DOTPREFIX"
+       echo -e "${GREEN}[DONE]: ${YELLOW}backup existing nvim dir to ${NVIMRCDIR}_${DOTPREFIX}"
+    fi
+
+    ln -s $DOTNVIMRCDIR $NVIMRCDIR
+    echo -e "${GREEN}[DONE]: ${YELLOW}link to new nvim config"
+
+
+    INSTALLMISSING=1
+
+    if ! command -v nvim &> /dev/null ; then
+        echo -e "${RED}[FAILED]: ${YELLOW}find existing neovim"
+        if [ $INSTALLMISSING == 1 ]; then
+            sh ${SCRIPT_DIR}/terminal/install_nvim.sh > /dev/null  2>&1
+
+            if  command -v nvim &> /dev/null ; then
+                 echo -e "${GREEN}[DONE]: ${YELLOW}installed nvim"
+            fi
+        fi
     else
-        mv $BASHRCFILE "$BASHRCFILE"_"$DOTPREFIX"
+        echo -e "${GREEN}[DONE]: ${YELLOW}found existing neovim"
+
     fi
-fi
-ln -s $DOTFILESDOTBASHRC $BASHRCFILE
+}
 
-# for getting full nvimrc directory, not only the init file
-if [ -d $NVIMRCDIR ]; then
-    mv $NVIMRCDIR "$NVIMRCDIR"_"$DOTPREFIX"
-fi
 
-mkdir $NVIMRCDIR
-ln -s $DOTFILESNVIMRC $NVIMRCFILE
+function setup_tmux(){
 
-if [ -f $DOTTMUX ]; then
-    if [ -L $DOTTMUX ]; then
-        rm $DOTTMUX
+    if [ -f $DOTTMUX ]; then
+        if [ -L $DOTTMUX ]; then
+            rm $DOTTMUX
+        else
+            mv $DOTTMUX "$DOTTMUX"_"$DOTPREFIX"
+        fi
+    fi
+
+    ln -s $DOTFILESDOTTMUX $DOTTMUX
+
+    INSTALLMISSING=1
+    if ! command -v tmux &> /dev/null ; then
+        echo -e "${RED}[FAILED]: ${YELLOW}tmux not available"
+        if [ $INSTALLMISSING == 1 ]; then
+            sh ${SCRIPT_DIR}/terminal/install_tmux.sh
+            if  command -v tmux &> /dev/null ; then
+               echo -e "${GREEN}[DONE]: ${YELLOW}installed tmux"
+            fi
+        fi
     else
-        mv $DOTTMUX "$DOTTMUX"_"$DOTPREFIX"
+        echo -e "${GREEN}[DONE]: ${YELLOW}found existing tmux"
     fi
-fi
-ln -s $DOTFILESDOTTMUX $DOTTMUX
+}
 
-set +x
+mkdir -p $HOME/.config
+mkdir -p $HOME/.local
 
-if ! command -v zsh &> /dev/null ; then
-    echo "zsh is not available"
-    if [ $INSTALLMISSING == 1 ]; then
-       sh ${SCRIPT_DIR}/terminal/install_zsh.sh
-    else
-       echo "run: ${SCRIPT_DIR}/terminal/install_zsh.sh"
-    fi
-fi
+setup_shells
 
-if ! command -v tmux &> /dev/null ; then
-    echo "tmux is not available"
-    if [ $INSTALLMISSING == 1 ]; then
-        sh ${SCRIPT_DIR}/terminal/install_tmux.sh
-    else
-        echo "run: ${SCRIPT_DIR}/terminal/install_tmux.sh"
-    fi
-fi
+setup_nvim
 
-if ! command -v nvim &> /dev/null ; then
-    echo "nvim is not available"
-    if [ $INSTALLMISSING == 1 ]; then
-        sh ${SCRIPT_DIR}/terminal/install_nvim.sh
-    else
-        echo "run: ${SCRIPT_DIR}/terminal/install_nvim.sh"
-    fi
-fi
+setup_tmux
+
+

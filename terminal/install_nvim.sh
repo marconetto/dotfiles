@@ -1,6 +1,8 @@
-cd /tmp > /dev/null
-if [[ ! -d $HOME/.local/nvim ]] ; then
-    if [[ `uname` == "Linux" ]]; then
+#!/usr/bin/env bash
+
+if ! command -v zsh &> /dev/null ; then
+    cd /tmp > /dev/null
+    if [ `uname` == "Linux" ]; then
         # problem with GLIBC
         #FILE=https://github.com/neovim/neovim/releases/download/v0.8.3/nvim-linux64.tar.gz
         #wget $FILE
