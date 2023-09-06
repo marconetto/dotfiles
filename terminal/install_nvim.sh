@@ -9,7 +9,7 @@ if ! command -v nvim &> /dev/null ; then
         #tar zxf nvim-linux64.tar.gz
         #mv nvim-linux64 $HOME/.local/nvim
         FILE=https://github.com/neovim/neovim/releases/download/v0.9.1/nvim.appimage
-        curl -O $FILE
+        curl -LO $FILE
         chmod u+x nvim.appimage
         echo "Extracting appimage for neovim..."
         ./nvim.appimage --appimage-extract > /dev/null
@@ -19,7 +19,7 @@ if ! command -v nvim &> /dev/null ; then
         rm ./nvim.appimage
     else
         FILE=https://github.com/neovim/neovim/releases/download/v0.9.1/nvim-macos.tar.gz
-        curl -O $FILE
+        curl -LO $FILE
         tar zxf nvim-macos.tar.gz
         mv nvim-macos $HOME/.local/nvim
     fi
