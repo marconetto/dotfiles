@@ -144,4 +144,4 @@ setup_nvim
 
 setup_tmux
 
-source $BASHRCFILE
+source $BASHRCFILE > /dev/null  2>&1
