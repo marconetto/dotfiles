@@ -75,7 +75,7 @@ function setup_shells(){
         echo -e "${RED}[FAILED]: ${YELLOW}find existing zsh"
        if [ $INSTALLMISSING == 1 ]; then
           sh ${SCRIPT_DIR}/terminal/install_zsh.sh > /dev/null 2>&1
-          has_command("zsh")
+          has_command "zsh"
        fi
     else
        echo -e "${GREEN}[DONE]: ${YELLOW}find existing zsh"
@@ -101,7 +101,7 @@ function setup_nvim(){
         echo -e "${RED}[FAILED]: ${YELLOW}find existing neovim"
         if [ $INSTALLMISSING == 1 ]; then
             sh ${SCRIPT_DIR}/terminal/install_nvim.sh > /dev/null  2>&1
-            has_command("nvim")
+            has_command "nvim"
         fi
     else
         echo -e "${GREEN}[DONE]: ${YELLOW}find existing neovim"
@@ -110,10 +110,10 @@ function setup_nvim(){
 
     if [ `sudo whoami` = "root" ] ; then
         echo -e "${GREEN}[DONE]: ${YELLOW}has sudo access to install npm and unzip"
- 
+
         sudo apt-get -qq install -y npm unzip > /dev/null 2>&1
-        has_command("npm")
-        has_command("unzip")
+        has_command "npm"
+        has_command "unzip"
     fi
 
 }
@@ -136,7 +136,7 @@ function setup_tmux(){
         echo -e "${RED}[FAILED]: ${YELLOW}tmux not available"
         if [ $INSTALLMISSING == 1 ]; then
             sh ${SCRIPT_DIR}/terminal/install_tmux.sh > /dev/null 2>&1
-            has_command("tmux")
+            has_command "tmux"
         fi
     else
         echo -e "${GREEN}[DONE]: ${YELLOW}find existing tmux"
