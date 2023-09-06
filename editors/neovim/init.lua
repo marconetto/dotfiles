@@ -243,6 +243,7 @@ require("lazy").setup(
                             "lua_ls",
                             "html",
                             "jsonls",
+                            -- "shfmt",
                             "pyright",
                             "yamlls",
                             "bicep",
@@ -395,6 +396,7 @@ require("lazy").setup(
                 require('gitsigns').setup {}
             end
         },
+        -- preview markdown in browser -------------------------------------------------------
         {
             "iamcco/markdown-preview.nvim",
             cond = function()
@@ -427,6 +429,10 @@ require("lazy").setup(
             end,
 
         },
+        -- {
+        --
+        --     "elentok/format-on-save.nvim"
+        -- }
     }
 )
 
@@ -460,15 +466,15 @@ cmp.setup({
 vim.opt.termguicolors = true -- Enable 24-bit RGB colors
 vim.opt.updatetime = 200
 
-vim.opt.clipboard = 'unnamedplus' -- Copy/paste to system clipboard
-vim.opt.swapfile = false          -- Don't use swapfile
-vim.opt.ignorecase = true         -- Search case insensitive...
-vim.opt.smartcase = true          -- ... but not it begins with upper case
+-- vim.opt.clipboard = 'unnamedplus' -- Copy/paste to system clipboard -- PLEASE NO!
+vim.opt.swapfile = false  -- Don't use swapfile
+vim.opt.ignorecase = true -- Search case insensitive...
+vim.opt.smartcase = true  -- ... but not it begins with upper case
 
-vim.opt.expandtab = true          -- expand tabs into spaces
-vim.opt.shiftwidth = 4            -- number of spaces to use for each step of indent.
-vim.opt.tabstop = 4               -- number of spaces a TAB counts for
-vim.opt.autoindent = true         -- copy indent from current line when starting a new line
+vim.opt.expandtab = true  -- expand tabs into spaces
+vim.opt.shiftwidth = 4    -- number of spaces to use for each step of indent.
+vim.opt.tabstop = 4       -- number of spaces a TAB counts for
+vim.opt.autoindent = true -- copy indent from current line when starting a new line
 vim.opt.wrap = true
 
 vim.opt.cursorline = true
@@ -814,3 +820,34 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
         end
     end,
 })
+
+--
+--
+-- local format_on_save = require("format-on-save")
+-- local formatters = require("format-on-save.formatters")
+--
+-- format_on_save.setup({
+--     exclude_path_patterns = {
+--         "/node_modules/",
+--         ".local/share/nvim/lazy",
+--     },
+--     formatter_by_ft = {
+--         css = formatters.lsp,
+--         html = formatters.lsp,
+--         java = formatters.lsp,
+--         javascript = formatters.lsp,
+--         json = formatters.lsp,
+--         lua = formatters.lsp,
+--         markdown = formatters.prettierd,
+--         python = formatters.black,
+--         rust = formatters.lsp,
+--         scad = formatters.lsp,
+--         scss = formatters.lsp,
+--         sh = formatters.shfmt,
+--         terraform = formatters.lsp,
+--         typescript = formatters.prettierd,
+--         typescriptreact = formatters.prettierd,
+--         yaml = formatters.lsp,
+--     }
+--
+-- })
