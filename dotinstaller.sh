@@ -46,7 +46,7 @@ function setup_shells(){
     fi
 
     ln -s $DOTFILESDOTZSHRC $ZSHRCFILE
-    echo -e "${GREEN}[DONE]: ${YELLOW}created new $ZSHRCFILE"
+    echo -e "${GREEN}[DONE]: ${YELLOW}create new $ZSHRCFILE"
 
     if [ -f $BASHRCFILE ]; then
         if [ -L $BASHRCFILE ]; then
@@ -56,7 +56,7 @@ function setup_shells(){
         fi
     fi
     ln -s $DOTFILESDOTBASHRC $BASHRCFILE
-    echo -e "${GREEN}[DONE]: ${YELLOW}created new $BASHRCFILE"
+    echo -e "${GREEN}[DONE]: ${YELLOW}create new $BASHRCFILE"
 
 
     INSTALLMISSING=1
@@ -96,7 +96,7 @@ function setup_nvim(){
             sh ${SCRIPT_DIR}/terminal/install_nvim.sh > /dev/null  2>&1
 
             if  command -v nvim &> /dev/null ; then
-                echo -e "${GREEN}[DONE]: ${YELLOW}installed nvim"
+                echo -e "${GREEN}[DONE]: ${YELLOW}install nvim"
             else
                 echo -e "${RED}[FAILED]: ${YELLOW}cannot install neovim"
             fi
@@ -123,9 +123,11 @@ function setup_tmux(){
     if ! command -v tmux &> /dev/null ; then
         echo -e "${RED}[FAILED]: ${YELLOW}tmux not available"
         if [ $INSTALLMISSING == 1 ]; then
-            sh ${SCRIPT_DIR}/terminal/install_tmux.sh
+            sh ${SCRIPT_DIR}/terminal/install_tmux.sh > /dev/null 2>&1
             if  command -v tmux &> /dev/null ; then
-               echo -e "${GREEN}[DONE]: ${YELLOW}installed tmux"
+               echo -e "${GREEN}[DONE]: ${YELLOW}install tmux"
+            else
+               echo -e "${RED}[FAILED]: ${YELLOW}cannot install tmux"
             fi
         fi
     else
