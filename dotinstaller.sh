@@ -74,7 +74,6 @@ function setup_shells(){
        echo -e "${GREEN}[DONE]: ${YELLOW}found existing zsh"
     fi
 
-    source $BASHRCFILE
 }
 
 
@@ -142,4 +141,4 @@ setup_nvim
 
 setup_tmux
 
-
+source $BASHRCFILE
