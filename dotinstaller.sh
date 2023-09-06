@@ -143,7 +143,7 @@ function setup_nvim(){
     if ! command -v nvim &> /dev/null ; then
         echo -e "${RED}[FAILED]: ${YELLOW}find existing neovim"
         if [ $INSTALLMISSING == 1 ]; then
-            sh ${SCRIPT_DIR}/terminal/install_nvim.sh > /dev/null  2>&1
+            sh ${SCRIPT_DIR}/terminal/install_nvim.sh #> /dev/null  2>&1
             has_command "nvim"
         fi
     else
