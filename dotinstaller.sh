@@ -154,3 +154,4 @@ setup_tmux
 
 source $BASHRCFILE > /dev/null  2>&1
 echo -e "new bashrc has been sourced"
+
