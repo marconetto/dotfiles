@@ -477,12 +477,12 @@ vim.opt.showmode = false
 
 vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true }) -- required for yank line
 vim.keymap.set('x', '<c-y>', require('osc52').copy_visual)
--- vim.keymap.set('x', '<leader>y', require('osc52').copy_visual) --- not working???
+vim.keymap.set('x', '<leader>y', require('osc52').copy_visual)                    --- not working???
 
 
-vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true })
+-- vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true })
 -- vim.keymap.set('n', 'Y', '<leader>c_', {remap = true})
-vim.keymap.set('x', '<leader>y', require('osc52').copy_visual)
+-- vim.keymap.set('x', '<leader>y', require('osc52').copy_visual)
 
 
 require("telescope").load_extension "file_browser"
