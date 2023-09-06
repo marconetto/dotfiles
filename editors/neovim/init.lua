@@ -727,6 +727,12 @@ let g:vimtex_matchparen_enabled =0
 let g:matchparen_timeout = 2
 let g:matchparen_insert_timeout = 2
 
+" do something (cut or delete) then press dot to replace down or up
+nnoremap c* /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
+nnoremap c# /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
+nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+
 ]]
 
 
