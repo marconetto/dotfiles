@@ -137,6 +137,8 @@ function setup_tmux(){
     ln -s $DOTFILESDOTTMUX $DOTTMUX
 
     INSTALLMISSING=1
+    # force new tmux version to handle clipboard copying properly
+
     #if ! command -v tmux &> /dev/null ; then
     #    echo -e "${RED}[FAILED]: ${YELLOW}tmux not available"
         if [ $INSTALLMISSING == 1 ]; then
