@@ -2,8 +2,20 @@
 
 # https://github.com/nelsonenzo/tmux-appimage
 
-if command -v fusermount &> /dev/null
-then
+
+has_appimage_support(){
+
+
+    LIB=`ldconfig -p | grep libfuse.so.2`
+    CMD=`command -v fusermount`
+    if [ -n "$LIB" ] && [ -n "$CMD" ]; then
+        echo "1"
+    else
+       echo "0"
+    fi
+}
+
+if [ $(has_appimage_support) -eq "1" ] ; then
     echo "installing tmux via appimage"
     set -x
     curl -s https://api.github.com/repos/nelsonenzo/tmux-appimage/releases/latest \
