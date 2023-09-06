@@ -63,7 +63,7 @@ function setup_shells(){
     if ! command -v zsh &> /dev/null ; then
         echo -e "${RED}[FAILED]: ${YELLOW}find existing zsh"
        if [ $INSTALLMISSING == 1 ]; then
-          sh ${SCRIPT_DIR}/terminal/install_zsh.sh > /dev/null
+          sh ${SCRIPT_DIR}/terminal/install_zsh.sh > /dev/null 2>&1
           if [ -f $HOME/.local/bin/zsh ]; then
              echo -e "${GREEN}[DONE]: ${YELLOW}installed zsh"
           fi
