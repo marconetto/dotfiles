@@ -35,6 +35,17 @@ DOTFILESDOTTMUX=$DOTFILESDIR/terminal/dottmux.conf
 DOTTMUX=$HOME/.tmux.conf
 
 
+function has_command(){
+
+    testcommand=$1
+
+    if ! command -v $testcommand &> /dev/null ; then
+       echo -e "${RED}[FAILED]: ${YELLOW}cannot install $testcommand"
+    else
+       echo -e "${GREEN}[DONE]: ${YELLOW}can access $testcommand"
+    fi
+}
+
 function setup_shells(){
 
     if [ -f $ZSHRCFILE ]; then
@@ -64,11 +75,7 @@ function setup_shells(){
         echo -e "${RED}[FAILED]: ${YELLOW}find existing zsh"
        if [ $INSTALLMISSING == 1 ]; then
           sh ${SCRIPT_DIR}/terminal/install_zsh.sh > /dev/null 2>&1
-          if [ -f $HOME/.local/bin/zsh ]; then
-             echo -e "${GREEN}[DONE]: ${YELLOW}installed zsh"
-          fi
-       else
-           echo -e "${RED}[FAILED]: ${YELLOW}cannot install zsh"
+          has_command("zsh")
        fi
     else
        echo -e "${GREEN}[DONE]: ${YELLOW}find existing zsh"
@@ -94,16 +101,21 @@ function setup_nvim(){
         echo -e "${RED}[FAILED]: ${YELLOW}find existing neovim"
         if [ $INSTALLMISSING == 1 ]; then
             sh ${SCRIPT_DIR}/terminal/install_nvim.sh > /dev/null  2>&1
-
-            if  command -v nvim &> /dev/null ; then
-                echo -e "${GREEN}[DONE]: ${YELLOW}install nvim"
-            else
-                echo -e "${RED}[FAILED]: ${YELLOW}cannot install neovim"
-            fi
+            has_command("nvim")
         fi
     else
         echo -e "${GREEN}[DONE]: ${YELLOW}find existing neovim"
     fi
+
+
+    if [ `sudo whoami` = "root" ] ; then
+        echo -e "${GREEN}[DONE]: ${YELLOW}has sudo access to install npm and unzip"
+ 
+        sudo apt-get -qq install -y npm unzip > /dev/null 2>&1
+        has_command("npm")
+        has_command("unzip")
+    fi
+
 }
 
 
@@ -124,11 +136,7 @@ function setup_tmux(){
         echo -e "${RED}[FAILED]: ${YELLOW}tmux not available"
         if [ $INSTALLMISSING == 1 ]; then
             sh ${SCRIPT_DIR}/terminal/install_tmux.sh > /dev/null 2>&1
-            if  command -v tmux &> /dev/null ; then
-               echo -e "${GREEN}[DONE]: ${YELLOW}install tmux"
-            else
-               echo -e "${RED}[FAILED]: ${YELLOW}cannot install tmux"
-            fi
+            has_command("tmux")
         fi
     else
         echo -e "${GREEN}[DONE]: ${YELLOW}find existing tmux"
