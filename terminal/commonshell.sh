@@ -71,10 +71,10 @@ alias uber='cd ~/Library/Application\ Support/Übersicht/widgets'
 alias jsonshow='python -m json.tool'
 alias tt="vi ~/todo"
 alias tmuxls='tmux ls'
-alias tmuxj='tmux attach-session -t'
-alias tmm="env TERM=xterm-256color tmux new-session -A -s main"
-alias tm="env TERM=xterm-256color tmux new-session"
-alias t0='tmux attach-session -t 0'
+alias tm='env TERM=xterm-256color; SESSION_NAME="main"; tmux has-session -t $SESSION_NAME 2>/dev/null; if [ $? != 0 ]; then tmux new-session -d -s $SESSION_NAME; fi; tmux attach -t $SESSION_NAME'
+#alias tmuxj='tmux attach-session -t'
+#alias tmm="env TERM=xterm-256color tmux new-session -A -s main"
+#alias t0='tmux attach-session -t 0'
 alias testgit='ssh -T git@github.com'
 alias sshk='ssh -o StrictHostKeychecking=no'
 alias myip='MYIP=`curl -s ifconfig.me` ; echo $MYIP '
