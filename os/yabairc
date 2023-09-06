@@ -29,7 +29,12 @@ yabai -m rule --add app="^Microsoft Teams$" space=5
 
 yabai -m rule --add title='^Share' manage=off
 yabai -m rule --add title='^End' manage=off
-yabai -m rule --add app="Spotify"  space=6
+yabai -m rule --add app="Spotify"  space=7
+
+yabai -m rule --add app='^Microsoft Outlook$'   space=6
+# yabai -m rule --add app="^Microsoft Outlook$" title="^Inbox"    manage=on
+# yabai -m rule --add app="^Microsoft Outlook$" title="^Calendar" manage=on
+# yabai -m rule --add app="^Microsoft Outlook$" title="^$"        manage=off
 
 yabai -m config active_window_border_color      0xFF888888
 # yabai -m config active_window_border_color      0x88888888
