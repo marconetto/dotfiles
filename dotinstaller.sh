@@ -35,6 +35,8 @@ DOTFILESDOTTMUX=$DOTFILESDIR/terminal/dottmux.conf
 DOTTMUX=$HOME/.tmux.conf
 
 
+export PATH=$HOME/.local/bin:/$HOME/.local/nvim/bin:$PATH
+
 function has_command(){
 
     testcommand=$1
