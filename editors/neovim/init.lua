@@ -333,13 +333,6 @@ require("lazy").setup(
 
             -- 'dominikduda/vim_current_word'
             'RRethy/vim-illuminate',
-            cond = function()
-                if vim.fn.has("mac") == 1 then
-                    return True
-                else
-                    return False
-                end
-            end,
             event = "BufReadPost",
             opts = { delay = 500 },
             config = function(_, opts)
@@ -712,12 +705,10 @@ fu! ToggleCurline ()
   if &cursorline && &cursorcolumn
     set nocursorline
     set nocursorcolumn
-    IlluminatePause
 
   else
     set cursorline
     set cursorcolumn
-    IlluminateResume
   endif
 endfunction
 
