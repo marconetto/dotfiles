@@ -85,6 +85,41 @@ function setup_shells(){
 
 }
 
+function get_os(){
+
+    if [ -f /etc/os-release ]; then
+         os_release=$(cat /etc/os-release | grep "^ID\=" | cut -d'=' -f 2 | xargs)
+         echo $os_release
+    else
+        echo "nd"
+    fi
+}
+
+
+
+function install_misc_packages(){
+
+
+    if [ ! -f ~/.miniconda/bin/conda ] ; then
+        current_dir=$(pwd)
+        pushd /tmp
+        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        sh Miniconda3-latest-Linux-x86_64.sh -b -p ~/.miniconda
+    fi
+    eval "$($HOME/.miniconda/bin/conda shell.bash hook)"
+    conda install -y -q nodejs
+    conda install -y -q unzip
+
+    if [ -f ~/.miniconda/bin/unzip ]; then
+        ln -s ~/.miniconda/bin/unzip ~/.local/bin/unzip
+    fi
+
+    if [ -f ~/.miniconda/bin/npm ]; then
+       ln -s ~/.miniconda/bin/npm ~/.local/bin/npm
+    fi
+
+    rm -f /tmp/Miniconda3-latest-Linux-x86_64.sh
+}
 
 function setup_nvim(){
 
@@ -110,17 +145,18 @@ function setup_nvim(){
     fi
 
 
-    # TODO: move to miniconda
-    if [ `sudo whoami` = "root" ] ; then
-        echo -e "${GREEN}[DONE]: ${YELLOW}has sudo access to install npm and unzip"
-        if [ `lsb_release -is` = "Ubuntu" ] ; then
-            sudo apt-get -qq install -y npm unzip > /dev/null 2>&1
-        else
-            echo -e "${RED}[FAILED]: ${YELLOW}cannot handle this distro for install npm and unzip"
-        fi
-        has_command "npm"
-        has_command "unzip"
-    fi
+    install_misc_packages 
+    has_command "npm"
+    has_command "unzip"
+    # # TODO: move to miniconda
+    # if [ `sudo whoami` = "root" ] ; then
+    #     echo -e "${GREEN}[DONE]: ${YELLOW}has sudo access to install npm and unzip"
+    #     if [ `lsb_release -is` = "Ubuntu" ] ; then
+    #         sudo apt-get -qq install -y npm unzip > /dev/null 2>&1
+    #     else
+    #         echo -e "${RED}[FAILED]: ${YELLOW}cannot handle this distro for install npm and unzip"
+    #     fi
+    # fi
 
 }
 
