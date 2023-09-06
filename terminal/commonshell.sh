@@ -4,7 +4,14 @@ $HOME/dotfiles/os/dry/dry 0.0166666666667 2> /dev/null >/dev/null
 
 # VARIABLES ------------------------------------------------------
 # http://meefirst.blogspot.com/2012/04/changing-colour-of-directory-listings.html
-export LC_ALL=en_US.UTF-8
+
+testlocale=$(export LC_ALL=en_US.UTF-8 2>&1)
+if [ ! -z "$testlocale" ]; then
+  export LC_ALL=""
+else
+  export LC_ALL=en_US.UTF-8
+fi
+
 unset LSCOLORS
 export CLICOLOR=1
 export CLICOLOR_FORCE=1
