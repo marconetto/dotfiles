@@ -104,18 +104,23 @@ function install_misc_packages(){
         current_dir=$(pwd)
         pushd /tmp
         wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        sh Miniconda3-latest-Linux-x86_64.sh -b -p ~/.miniconda
-    fi
-    eval "$($HOME/.miniconda/bin/conda shell.bash hook)"
-    conda install -y -q nodejs > /dev/null  2>&1
-    conda install -y -q unzip > /dev/null  2>&1
-
-    if [ -f ~/.miniconda/bin/unzip ]; then
-        ln -s ~/.miniconda/bin/unzip ~/.local/bin/unzip
+        sh Miniconda3-latest-Linux-x86_64.sh -b -p ~/.miniconda > /dev/null 2>&1
+        popd
     fi
 
-    if [ -f ~/.miniconda/bin/npm ]; then
-       ln -s ~/.miniconda/bin/npm ~/.local/bin/npm
+    if command -v conda &> /dev/null; then
+        echo -e "${GREEN}[DONE]: ${YELLOW}find conda to install packages"
+        eval "$($HOME/.miniconda/bin/conda shell.bash hook)"
+        conda install -y -q nodejs > /dev/null  2>&1
+        conda install -y -q unzip > /dev/null  2>&1
+        if [ -f ~/.miniconda/bin/unzip ]; then
+            ln -s ~/.miniconda/bin/unzip ~/.local/bin/unzip
+        fi
+        if [ -f ~/.miniconda/bin/npm ]; then
+           ln -s ~/.miniconda/bin/npm ~/.local/bin/npm
+        fi
+    else
+        echo -e "${RED}[FAILED]: ${YELLOW}find conda to install packages"
     fi
 
     rm -f /tmp/Miniconda3-latest-Linux-x86_64.sh
