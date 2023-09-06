@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if ! command -v zsh &> /dev/null ; then
+if ! command -v nvim &> /dev/null ; then
     cd /tmp > /dev/null
     if [ `uname` = "Linux" ]; then
         # problem with GLIBC
