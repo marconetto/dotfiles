@@ -108,9 +108,10 @@ function install_misc_packages(){
         popd
     fi
 
+    eval "$($HOME/.miniconda/bin/conda shell.bash hook)"
+
     if command -v conda &> /dev/null; then
         echo -e "${GREEN}[DONE]: ${YELLOW}find conda to install packages"
-        eval "$($HOME/.miniconda/bin/conda shell.bash hook)"
         conda install -y -q nodejs > /dev/null  2>&1
         conda install -y -q unzip > /dev/null  2>&1
         if [ -f ~/.miniconda/bin/unzip ]; then
