@@ -137,15 +137,15 @@ function setup_tmux(){
     ln -s $DOTFILESDOTTMUX $DOTTMUX
 
     INSTALLMISSING=1
-    if ! command -v tmux &> /dev/null ; then
-        echo -e "${RED}[FAILED]: ${YELLOW}tmux not available"
+    #if ! command -v tmux &> /dev/null ; then
+    #    echo -e "${RED}[FAILED]: ${YELLOW}tmux not available"
         if [ $INSTALLMISSING == 1 ]; then
             sh ${SCRIPT_DIR}/terminal/install_tmux.sh > /dev/null 2>&1
             has_command "tmux"
         fi
-    else
-        echo -e "${GREEN}[DONE]: ${YELLOW}find existing tmux"
-    fi
+    #else
+    #    echo -e "${GREEN}[DONE]: ${YELLOW}find existing tmux"
+    #fi
 }
 
 mkdir -p $HOME/.config
@@ -157,6 +157,8 @@ setup_nvim
 
 setup_tmux
 
+# clear bash shell as software in locations such as /usr/bin could already exist
+hash -r
 source $BASHRCFILE > /dev/null  2>&1
 echo -e "new bashrc has been sourced"
 
