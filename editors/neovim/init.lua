@@ -156,8 +156,8 @@ require("lazy").setup(
                                     update_in_insert = false, -- Update diagnostics in insert mode.
                                     always_visible = false    -- Show diagnostics even if there are none.
                                 },
-                                lualine_y = { "filetype" }
                             },
+                            lualine_y = { "filetype" }
                         },
                         inactive_sections = {
                             lualine_b = {
