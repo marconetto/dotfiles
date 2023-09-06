@@ -110,6 +110,7 @@ function setup_nvim(){
     fi
 
 
+    # TODO: move to miniconda
     if [ `sudo whoami` = "root" ] ; then
         echo -e "${GREEN}[DONE]: ${YELLOW}has sudo access to install npm and unzip"
         if [ `lsb_release -is` = "Ubuntu" ] ; then
