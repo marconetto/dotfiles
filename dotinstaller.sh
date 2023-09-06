@@ -102,10 +102,10 @@ function install_misc_packages(){
 
     if [ ! -f ~/.miniconda/bin/conda ] ; then
         current_dir=$(pwd)
-        pushd /tmp
-        wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        pushd /tmp > /dev/null
+        curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh > /dev/null 2>&1
         sh Miniconda3-latest-Linux-x86_64.sh -b -p ~/.miniconda > /dev/null 2>&1
-        popd
+        popd > /dev/null
     fi
 
     eval "$($HOME/.miniconda/bin/conda shell.bash hook)"
