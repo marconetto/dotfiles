@@ -107,8 +107,8 @@ function install_misc_packages(){
         sh Miniconda3-latest-Linux-x86_64.sh -b -p ~/.miniconda
     fi
     eval "$($HOME/.miniconda/bin/conda shell.bash hook)"
-    conda install -y -q nodejs
-    conda install -y -q unzip
+    conda install -y -q nodejs > /dev/null  2>&1
+    conda install -y -q unzip > /dev/null  2>&1
 
     if [ -f ~/.miniconda/bin/unzip ]; then
         ln -s ~/.miniconda/bin/unzip ~/.local/bin/unzip
@@ -145,7 +145,7 @@ function setup_nvim(){
     fi
 
 
-    install_misc_packages 
+    install_misc_packages
     has_command "npm"
     has_command "unzip"
     # # TODO: move to miniconda
@@ -199,5 +199,5 @@ setup_tmux
 # clear bash shell as software in locations such as /usr/bin could already exist
 hash -r
 source $BASHRCFILE > /dev/null  2>&1
-echo -e "new bashrc has been sourced"
+echo -e "New bashrc has been sourced. Enjoy!"
 
