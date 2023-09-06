@@ -2,7 +2,7 @@
 
 if [ ! -n "$BASH_VERSION" ]; then
     echo "installer script was not invoked using bash"
-    exit 1
+    return 1
 fi
 
 if [ "${BASH_SOURCE[0]}" -ef "$0" ]
