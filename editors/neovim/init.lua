@@ -333,7 +333,8 @@ require("lazy").setup(
 
             -- 'dominikduda/vim_current_word'
             'RRethy/vim-illuminate',
-            event = "BufReadPost",
+            -- event = "BufReadPost",
+            event = { "BufReadPost", "BufWinEnter" },
             opts = { delay = 500 },
             config = function(_, opts)
                 require("illuminate").configure(opts)
