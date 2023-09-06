@@ -65,8 +65,8 @@ alias jsonshow='python -m json.tool'
 alias tt="vi ~/todo"
 alias tmuxls='tmux ls'
 alias tmuxj='tmux attach-session -t'
-alias tmm="env TERM=screen-256color tmux new-session -A -s main"
-alias tm="env TERM=screen-256color tmux new-session"
+alias tmm="env TERM=xterm-256color tmux new-session -A -s main"
+alias tm="env TERM=xterm-256color tmux new-session"
 alias t0='tmux attach-session -t 0'
 alias testgit='ssh -T git@github.com'
 alias sshk='ssh -o StrictHostKeychecking=no'
