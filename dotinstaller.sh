@@ -68,10 +68,10 @@ function setup_shells(){
              echo -e "${GREEN}[DONE]: ${YELLOW}installed zsh"
           fi
        else
-          echo "run: ${SCRIPT_DIR}/terminal/install_zsh.sh"
+           echo -e "${RED}[FAILED]: ${YELLOW}cannot install zsh"
        fi
     else
-       echo -e "${GREEN}[DONE]: ${YELLOW}found existing zsh"
+       echo -e "${GREEN}[DONE]: ${YELLOW}find existing zsh"
     fi
 
 }
@@ -96,12 +96,13 @@ function setup_nvim(){
             sh ${SCRIPT_DIR}/terminal/install_nvim.sh > /dev/null  2>&1
 
             if  command -v nvim &> /dev/null ; then
-                 echo -e "${GREEN}[DONE]: ${YELLOW}installed nvim"
+                echo -e "${GREEN}[DONE]: ${YELLOW}installed nvim"
+            else
+                echo -e "${RED}[FAILED]: ${YELLOW}cannot install neovim"
             fi
         fi
     else
-        echo -e "${GREEN}[DONE]: ${YELLOW}found existing neovim"
-
+        echo -e "${GREEN}[DONE]: ${YELLOW}find existing neovim"
     fi
 }
 
@@ -128,7 +129,7 @@ function setup_tmux(){
             fi
         fi
     else
-        echo -e "${GREEN}[DONE]: ${YELLOW}found existing tmux"
+        echo -e "${GREEN}[DONE]: ${YELLOW}find existing tmux"
     fi
 }
 
