@@ -139,7 +139,7 @@ require("lazy").setup(
                                     --     hint =
                                     --     "LspDiagnosticsDefaultHint"                -- Changes diagnostics' hint color.
                                     -- },
-                                    -- " ", Warn = " ", Hint = " ", Info = " " }
+                                    -- " ", Warn = " ", Hint = " ", Info = " "
                                     symbols = {
                                         error = " ",
                                         warn = " ",
@@ -155,9 +155,9 @@ require("lazy").setup(
                                     colored = true,           -- Displays diagnostics status in color if set to true.
                                     update_in_insert = false, -- Update diagnostics in insert mode.
                                     always_visible = false    -- Show diagnostics even if there are none.
-                                }
+                                },
+                                lualine_y = { "filetype" }
                             },
-                            lualine_y = { "filetype" }
                         },
                         inactive_sections = {
                             lualine_b = {
@@ -452,7 +452,9 @@ cmp.setup({
     window = {
         completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
-    }
+    },
+
+
 })
 
 
@@ -799,10 +801,19 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
 vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
 
 
-if vim.fn.has("mac") == 0 then
-    vim.cmd [[
 
-set nocursorline
-set nocursorcolumn
-]]
-end
+
+
+
+
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+    callback = function()
+        if vim.fn.has("mac") == 0 then
+            vim.cmd "IlluminatePauseBuf"
+            vim.cmd [[
+               set nocursorline
+               set nocursorcolumn
+            ]]
+        end
+    end,
+})
