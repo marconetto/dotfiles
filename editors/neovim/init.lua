@@ -453,8 +453,6 @@ cmp.setup({
         completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
     },
-
-
 })
 
 
@@ -693,7 +691,7 @@ set scrolloff=8                    " start scrolling n lines before horizontal
 exe "hi! link FloatBorder Normal"
 exe "hi! link NormalFloat Normal"
 exe "hi! WildMenu guifg=#226622"
-exe "hi! PMenu guifg=Normal guibg=None"
+exe "hi! PMenu guifg=Normal guibg=NONE"
 
 
 
@@ -738,7 +736,16 @@ nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 
 nnoremap <leader>gd <cmd> lua vim.lsp.buf.definition()<cr>
 
-nmap <silent> <leader>l *
+"nmap <silent> <leader>l :set nohlsearch<CR>*:set hlsearch<CR>
+nmap <silent> <leader>l :set nohlsearch<CR>*:let @/ = ''<CR>:set hlsearch<CR>
+
+
+"exe "hi! Search         gui=NONE   guifg=#303030   guibg=#ad7b57"
+"exe "hi! IncSearch      gui=BOLD   guifg=#303030   guibg=#cd8b60"
+exe "hi! IncSearch guibg=#b16286 guifg=#dddddd gui=NONE"
+exe "hi! Search guibg=#444444 guifg=#cccccc gui=NONE"
+"exe "hi! Search guibg=#b16286 guifg=#ababa2 gui=NONE"
+set autochdir
 ]]
 
 
@@ -832,6 +839,12 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
         end
     end,
 })
+
+
+-- vim.cmd("highlight! link CmpPmenu         Pmenu")
+-- vim.cmd("highlight! link CmpPmenuBorder   Pmenu")
+-- vim.cmd("highlight! CmpPmenu         guibg=#282828")
+-- vim.cmd("highlight! CmpPmenuBorder   guifg=#615750")
 
 --
 --
