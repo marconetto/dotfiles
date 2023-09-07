@@ -515,6 +515,7 @@ vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
 
 
+vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
 
 
 vim.cmd [[
@@ -624,8 +625,9 @@ noremap  <silent> <leader>a :AutoformatLine<CR>
 
 nnoremap U <C-R> " redo
 
-nmap ++ gcc
-vmap ++ gc
+nmap <silent> ++ gcc
+vmap <silent> ++ gc
+nmap <silent> +p gcip
 
 if has('persistent_undo')
     set undodir=~/.undodir
@@ -733,6 +735,10 @@ nnoremap c# /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 
+
+nnoremap <leader>gd <cmd> lua vim.lsp.buf.definition()<cr>
+
+nmap <silent> <leader>l *
 ]]
 
 
