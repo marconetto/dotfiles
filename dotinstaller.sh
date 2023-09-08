@@ -120,6 +120,9 @@ function install_misc_packages(){
         if [ -f ~/.miniconda/bin/npm ]; then
            ln -s ~/.miniconda/bin/npm ~/.local/bin/npm
         fi
+        if [ -f ~/.miniconda/bin/node ]; then
+            ln -s ~/.miniconda/bin/node ~/.local/bin/node
+        fi
     else
         echo -e "${RED}[FAILED]: ${YELLOW}find conda to install packages"
     fi
@@ -153,6 +156,7 @@ function setup_nvim(){
 
     install_misc_packages
     has_command "npm"
+    has_command "node"
     has_command "unzip"
     # # TODO: move to miniconda
     # if [ `sudo whoami` = "root" ] ; then
