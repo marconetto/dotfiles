@@ -158,15 +158,8 @@ function setup_nvim(){
     has_command "npm"
     has_command "node"
     has_command "unzip"
-    # # TODO: move to miniconda
-    # if [ `sudo whoami` = "root" ] ; then
-    #     echo -e "${GREEN}[DONE]: ${YELLOW}has sudo access to install npm and unzip"
-    #     if [ `lsb_release -is` = "Ubuntu" ] ; then
-    #         sudo apt-get -qq install -y npm unzip > /dev/null 2>&1
-    #     else
-    #         echo -e "${RED}[FAILED]: ${YELLOW}cannot handle this distro for install npm and unzip"
-    #     fi
-    # fi
+    # TODO: add git here because some machines have really old git
+
 
 }
 
