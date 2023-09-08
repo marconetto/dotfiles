@@ -101,7 +101,7 @@ function require_greater_version(){
     currentver=$1
     requiredver="2.0.0"
 
-    if [ "$(printf '%s\n' "$requiredver" "$currentver" | sort -V | head -n1)" = "$requiredver" ]; then 
+    if [ "$(printf '%s\n' "$requiredver" "$currentver" | sort -V | head -n1)" = "$requiredver" ]; then
         echo 1
     else
         echo 0
@@ -125,11 +125,17 @@ function install_misc_packages(){
 
     if ! command -v git &> /dev/null; then
         installgit=1
-        gitversion=$(git --version | awk '{print $3}')
     else
+        gitversion=$(git --version |  sed s/v//g | awk '{print $3}')
+        if [ -z $gitversion ]; then
+            gitversion=$(git --version |  sed s/v//g)
+        fi
+        git --version
+        echo "current = $gitversion"
         installgit=$(require_greater_version $gitversion)
+        echo "install git = $installgit"
         if [ $installgit == 1 ]; then
-               echo -e "${RED}[FAIL]: ${YELLOW}find suitable git version"
+            echo -e "${RED}[FAIL]: ${YELLOW}find suitable git version"
         fi
     fi
 
@@ -142,7 +148,7 @@ function install_misc_packages(){
         if [ $installgit == 1 ]; then
            conda install -y -q git > /dev/null  2>&1
            if [ -f ~/.miniconda/bin/git ]; then
-               ln -sf ~/.miniconda/bin/node ~/.local/bin/git
+               ln -sf ~/.miniconda/bin/git ~/.local/bin/git
                echo -e "${GREEN}[DONE]: ${YELLOW}install/update git"
            fi
         fi
@@ -164,6 +170,13 @@ function install_misc_packages(){
 }
 
 function setup_nvim(){
+
+
+    install_misc_packages
+    has_command "npm"
+    has_command "node"
+    has_command "unzip"
+
 
     if [ -d $NVIMRCDIR ]; then
         mv $NVIMRCDIR "$NVIMRCDIR"_"$DOTPREFIX"
@@ -187,10 +200,6 @@ function setup_nvim(){
     fi
 
 
-    install_misc_packages
-    has_command "npm"
-    has_command "node"
-    has_command "unzip"
 
 
 }
