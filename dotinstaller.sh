@@ -131,9 +131,7 @@ function install_misc_packages(){
             gitversion=$(git --version |  sed s/v//g)
         fi
         git --version
-        echo "current = $gitversion"
         installgit=$(require_greater_version $gitversion)
-        echo "install git = $installgit"
         if [ $installgit == 1 ]; then
             echo -e "${RED}[FAIL]: ${YELLOW}find suitable git version"
         fi
