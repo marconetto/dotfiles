@@ -115,13 +115,13 @@ function install_misc_packages(){
         conda install -y -q nodejs > /dev/null  2>&1
         conda install -y -q unzip > /dev/null  2>&1
         if [ -f ~/.miniconda/bin/unzip ]; then
-            ln -s ~/.miniconda/bin/unzip ~/.local/bin/unzip
+            ln -sf ~/.miniconda/bin/unzip ~/.local/bin/unzip
         fi
         if [ -f ~/.miniconda/bin/npm ]; then
-           ln -s ~/.miniconda/bin/npm ~/.local/bin/npm
+           ln -sf ~/.miniconda/bin/npm ~/.local/bin/npm
         fi
         if [ -f ~/.miniconda/bin/node ]; then
-            ln -s ~/.miniconda/bin/node ~/.local/bin/node
+            ln -sf ~/.miniconda/bin/node ~/.local/bin/node
         fi
     else
         echo -e "${RED}[FAILED]: ${YELLOW}find conda to install packages"
