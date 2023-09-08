@@ -96,6 +96,17 @@ function get_os(){
 }
 
 
+function require_greater_version(){
+
+    currentver=$1
+    requiredver="2.0.0"
+
+    if [ "$(printf '%s\n' "$requiredver" "$currentver" | sort -V | head -n1)" = "$requiredver" ]; then 
+        echo 1
+    else
+        echo 0
+    fi
+}
 
 function install_misc_packages(){
 
@@ -110,10 +121,32 @@ function install_misc_packages(){
 
     eval "$($HOME/.miniconda/bin/conda shell.bash hook)"
 
+    installgit=0
+
+    if ! command -v git &> /dev/null; then
+        installgit=1
+        gitversion=$(git --version | awk '{print $3}')
+    else
+        installgit=$(require_greater_version $gitversion)
+        if [ $installgit == 1 ]; then
+               echo -e "${RED}[FAIL]: ${YELLOW}find suitable git version"
+        fi
+    fi
+
+
+
     if command -v conda &> /dev/null; then
         echo -e "${GREEN}[DONE]: ${YELLOW}find conda to install packages"
         conda install -y -q nodejs > /dev/null  2>&1
         conda install -y -q unzip > /dev/null  2>&1
+        if [ $installgit == 1 ]; then
+           conda install -y -q git > /dev/null  2>&1
+           if [ -f ~/.miniconda/bin/git ]; then
+               ln -sf ~/.miniconda/bin/node ~/.local/bin/git
+               echo -e "${GREEN}[DONE]: ${YELLOW}install/update git"
+           fi
+        fi
+
         if [ -f ~/.miniconda/bin/unzip ]; then
             ln -sf ~/.miniconda/bin/unzip ~/.local/bin/unzip
         fi
@@ -158,7 +191,6 @@ function setup_nvim(){
     has_command "npm"
     has_command "node"
     has_command "unzip"
-    # TODO: add git here because some machines have really old git
 
 
 }
