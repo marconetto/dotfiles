@@ -79,4 +79,7 @@ alias testgit='ssh -T git@github.com'
 alias sshk='ssh -o StrictHostKeychecking=no'
 alias myip='MYIP=`curl -s ifconfig.me` ; echo $MYIP '
 
+alias s='pushd . > /dev/null'
+alias b='popd > /dev/null'
+
 [ -f ~/misc/aliases.sh ] && source ~/misc/aliases.sh

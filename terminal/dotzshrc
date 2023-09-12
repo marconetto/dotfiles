@@ -102,7 +102,7 @@ zstyle ':completion:*:*:(vim|nvim|vi|cat|more|less):*' ignored-patterns '*.(o|pn
 unset '_comps[source]'
 
 # for dirs
-set -o autopushd
+# set -o autopushd
 
 # KEYBOARD --------------------------------------------------
 bindkey '^[[1;5C' forward-word               # "option key + arrow"
