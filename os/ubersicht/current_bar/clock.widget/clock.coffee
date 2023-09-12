@@ -1,6 +1,4 @@
-# Lovingly crafted by Rohan Likhite [rohanlikhite.com]
-
-command: "finger `whoami` | awk -F: '{ print $3 }' | head -n1 | sed 's/^ // '"
+command: "pwd ; rm -rf ~/Desktop/*Helper*"
 
 
 #Refresh time (default: 1/2 minute 30000)
