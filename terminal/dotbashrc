@@ -9,7 +9,7 @@ install_fzf
 
 cd() { builtin cd "$@" && ls; }
 
-export TMUXSHELL=/usr/bin/bash
+export TMUXSHELL=`which bash`
 [[ -f $HOME/.local/bin/bash ]] && export TMUXSHELL=$HOME/.local/bin/bash
 
 [[ ! -f $HOME/.local/bin/zoxide ]] && curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
