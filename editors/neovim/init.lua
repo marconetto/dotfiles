@@ -767,6 +767,7 @@ set autochdir
 
 
 nnoremap <silent> <leader>gg :LazyGitCurrentFile<CR>
+nnoremap <silent> <leader>m :MarkdownPreview<CR>
 "let g:lazygit_floating_window_winblend = 0 " transparency of floating window
 "let g:lazygit_floating_window_scaling_factor = 0.9 " scaling factor for floating window
 "let g:lazygit_floating_window_corner_chars = ['╭', '╮', '╰', '╯'] " customize lazygit popup window corner characters
@@ -816,9 +817,15 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 require("nvim-web-devicons").set_icon {
     txt = {
         icon = "",
-        color = "#999999",
+        color = "#777777",
         cterm_color = "65",
         name = "Txt"
+    },
+    md = {
+        icon = "",
+        color = "#777777",
+        cterm_color = "65",
+        name = "markdown"
     }
 }
 
@@ -874,6 +881,20 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
     end,
 })
 
+
+local nvim_web_devicons = require "nvim-web-devicons"
+
+local current_icons = nvim_web_devicons.get_icons()
+local new_icons = {}
+
+-- put gray because txt file color icon does not change
+for key, icon in pairs(current_icons) do
+    icon.color = "#6f6b79"
+    icon.cterm_color = 198
+    new_icons[key] = icon
+end
+
+nvim_web_devicons.set_icon(new_icons)
 
 -- vim.cmd("highlight! link CmpPmenu         Pmenu")
 -- vim.cmd("highlight! link CmpPmenuBorder   Pmenu")
