@@ -24,8 +24,10 @@ yabai -m config window_border off
 yabai -m rule --add app="^System Preferences$" manage=off
 yabai -m rule --add app="^Share content$" manage=off
 yabai -m rule --add app="^New Folder$" manage=off
+yabai -m rule --add app="^Azure VPN Client$" manage=off
 yabai -m rule --add app="^Find$" manage=off
 yabai -m rule --add app="^Microsoft Teams$" space=5
+yabai -m rule --add app="^Microsoft Teams$" manage=off
 
 yabai -m rule --add title='^Share' manage=off
 yabai -m rule --add title='^End' manage=off
