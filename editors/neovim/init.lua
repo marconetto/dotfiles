@@ -773,6 +773,10 @@ nnoremap <silent> <leader>m :MarkdownPreview<CR>
 "let g:lazygit_floating_window_corner_chars = ['╭', '╮', '╰', '╯'] " customize lazygit popup window corner characters
 "let g:lazygit_floating_window_use_plenary = 0 " use plenary.nvim to manage floating window if available
 "let g:lazygit_use_neovim_remote = 1 " fallback to 0 if neovim-remote is not installed
+
+
+nmap <silent> <leader>x :silent exec "! chmod +x % "<CR>:echo "made it executable"<CR>:sleep 700m<CR>:echo ""<CR>
+" nmap <silent> <leader>x :!chmod +x % echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
 ]]
 
 
