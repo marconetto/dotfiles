@@ -1,10 +1,12 @@
 #!/bin/sh
 
 if [ $1 == "restart" ]; then
-    /usr/local/bin/brew services restart yabai
-    /usr/local/bin/brew services restart skhd
+    # https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
+    yabai --start-service
+    # https://github.com/koekeishiya/skhd
+    skhd --restart-service
 else
-    VAR=`ps aux | grep yabai | grep opt | wc -l`
+    VAR=$(ps aux | grep yabai | grep "[/]usr/local/bin/yabai")
 
     if [ $VAR == "0" ]; then
         echo "off"
