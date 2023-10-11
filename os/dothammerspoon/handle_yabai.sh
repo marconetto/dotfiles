@@ -2,9 +2,9 @@
 
 if [ $1 == "restart" ]; then
     # https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
-    yabai --start-service
+    /usr/local/bin/yabai --restart-service
     # https://github.com/koekeishiya/skhd
-    skhd --restart-service
+    /usr/local/bin/skhd --restart-service
 else
     VAR=$(ps aux | grep yabai | grep "[/]usr/local/bin/yabai")
 
