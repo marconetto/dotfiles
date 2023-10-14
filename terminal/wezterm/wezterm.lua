@@ -339,6 +339,7 @@ config.keys = {
         mods = 'CTRL|SHIFT',
         action = act.EmitEvent 'multipowerpaneclean',
     },
+    { key = 'q', mods = 'CMD', action = wezterm.action.QuitApplication },
 }
 
 config.disable_default_key_bindings = true
