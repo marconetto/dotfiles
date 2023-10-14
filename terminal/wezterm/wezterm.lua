@@ -340,6 +340,13 @@ config.keys = {
         action = act.EmitEvent 'multipowerpaneclean',
     },
     { key = 'q', mods = 'CMD', action = wezterm.action.QuitApplication },
+    {
+        key = "s",
+        mods = "CMD",
+        action = act.PaneSelect({
+            mode = "SwapWithActive",
+        }),
+    },
 }
 
 config.disable_default_key_bindings = true
