@@ -111,18 +111,18 @@ config.window_padding = {
 }
 
 config.window_decorations = "NONE | RESIZE"
+-- config.window_decorations = "NONE | MACOS_FORCE_DISABLE_SHADOW | RESIZE"
 config.adjust_window_size_when_changing_font_size = false
 config.bold_brightens_ansi_colors = "No"
-config.line_height = 1.00
-config.font_size = 12
+config.line_height = 0.90
+config.font_size = 16
 
 -- show cursor only on focused pane, with 0 it still shows the cursor
 config.cursor_thickness = "-1.0"
 
 config.font = wezterm.font_with_fallback {
     -- { family = 'Menlo',                  weight = 'Bold' },
-    -- { family = 'Fira Code',              weight = 800 },
-    { family = 'Monaco',                 weight = 800 },    --- best font ever
+    -- { family = 'Fira Code',              weight = 400 },
     { family = 'Monaco',                 weight = 'Bold' }, --- best font ever
     { family = 'Zapf Dingbats',          weight = 'Bold' }, --- arrow prompt
     { family = 'Monaco Nerd Font',       weight = 'Bold' },
@@ -258,6 +258,7 @@ config.keys = {
     { key = '-',          mods = 'CMD',       action = wezterm.action.DecreaseFontSize },
     -- toggle comment
     { key = '/',          mods = 'CMD',       action = act.SendString '++' },
+    { key = 'p',          mods = 'CMD',       action = act.SendString '+p' },
     -- zsh autocomplete
     { key = 'Enter',      mods = 'CMD|SHIFT', action = act.SendString '\x1bxxy' },
     { key = 'Enter',      mods = 'CMD',       action = act.SendString '\x1bxxx' },
@@ -486,6 +487,7 @@ return config
 -- config.max_fps = 144
 -- config.animation_fps = 144
 -- config.front_end = "WebGpu"
+-- config.front_end = "OpenGL"
 -- config.webgpu_power_preference = "HighPerformance"
 --
 -- config.animation_fps = 144
