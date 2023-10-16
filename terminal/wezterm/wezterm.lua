@@ -10,7 +10,6 @@ if wezterm.config_builder then
     config = wezterm.config_builder()
 end
 
--- hide new tab button
 config.show_new_tab_button_in_tab_bar = false
 -- config.tab_bar_appearance = "Fancy"
 
@@ -72,33 +71,7 @@ wezterm.on(
         }
     end)
 
-
 config.tab_max_width = 20
-
--- function tab_title(tab_info)
---     local title = tab_info.tab_title
---     -- if the tab title is explicitly set, take that
---     if title and #title > 0 then
---         return title
---     end
---     -- Otherwise, use the title from the active pane
---     -- in that tab
---     return tab_info.active_pane.title
--- end
---
--- wezterm.on(
---     'format-tab-title',
---     function(tab, tabs, panes, config, hover, max_width)
---         local title = tab_title(tab)
---         if tab.is_active then
---             return {
---                 { Background = { Color = 'blue' } },
---                 { Text = ' ' .. title .. ' ' },
---             }
---         end
---         return title
---     end
--- )
 
 config.color_scheme = 'SpaceGray Eighties'
 config.colors = {
@@ -119,75 +92,16 @@ config.colors = {
         active_tab = {
             bg_color = "#2C323B",
             fg_color = "#C8C093",
-            -- underline = "Single",
         },
         inactive_tab = {
             bg_color = "#2C323B",
             fg_color = "#727169",
             italic = false,
         },
-        -- inactive_tab_hover = {
-        --     bg_color = "#2A2A37",
-        --     fg_color = "#DCD7BA",
-        -- },
-        -- new_tab = {
-        --     bg_color = "#ff0000",
-        --     fg_color = "#727169",
-        -- },
-        -- new_tab_hover = {
-        --     bg_color = "#2A2A37",
-        --     fg_color = "#DCD7BA",
-        -- },
     },
-
 
     compose_cursor = 'orange',
 }
-
-
--- wezterm.on(
---     'format-tab-title',
---     function(tab, tabs, panes, config, hover, max_width)
---         local title = #tab.tab_title > 0 and tab.tab_title or tab.active_pane.title
---
---         return {
---             { Text = title },
---         }
---     end
--- )
-
--- wezterm.on(
---     'format-tab-title',
---     function(tab, tabs, panes, config, hover, max_width)
---         local zoomed = ''
---         if tab.active_pane.is_zoomed then
---             zoomed = ' [Z]'
---         end
---
---         if tab.is_active then
---             return {
---                 { Attribute = { Intensity = "Bold" } },
---                 { Text = ' ' .. tab.tab_index + 1 .. ' ' .. tab.active_pane.title .. zoomed .. ' ' },
---             }
---         end
---         return ' ' .. tab.tab_index + 1 .. ' ' .. tab.active_pane.title .. zoomed .. ' '
---     end
--- )
-
--- wezterm.on("format-tab-title", function(tab)
---     local tab_index = tab.tab_index + 1
---     local tab_title = tab.active_pane.title
---     local user_title = tab.active_pane.user_vars.panetitle
---
---     if user_title ~= nil and #user_title > 0 then
---         tab_title = user_title
---     end
---
---     return {
---         { Text = "    " .. tab_title .. "    " },
---         -- { Text = " " .. tab_index .. ": " .. tab_title .. "" },
---     }
--- end)
 
 config.window_padding = {
     left = '0.2cell',
@@ -202,36 +116,7 @@ config.bold_brightens_ansi_colors = "No"
 config.line_height = 1.00
 config.font_size = 12
 
--- https://wezfurlong.org/wezterm/config/lua/wezterm/nerdfonts.html
--- test font: wezterm ls-fonts --text "❯    "
---            fc-list ':charset=f659'
---            fc-list ':charset=f529'
--- config.font = wezterm.font("Monaco", { weight = 900 })
-
--- https://en.wikipedia.org/wiki/Zapf_Dingbats
-
--- fc-list | grep "<fontname>"
-
--- config.max_fps = 144
--- config.animation_fps = 144
--- config.front_end = "WebGpu"
--- config.webgpu_power_preference = "HighPerformance"
---
--- config.animation_fps = 144
--- config.max_fps = 144
--- config.front_end = 'WebGpu'
--- config.front_end = 'OpenGL'
--- config.webgpu_power_preference = 'HighPerformance'
-
-
-
--- config.enable_kitty_keyboard = false
--- config.scrollback_lines = 9999
--- config.hide_tab_bar_if_only_one_tab = true
--- config.tab_bar_at_bottom = true
---
-
--- show cursor only on focused pane
+-- show cursor only on focused pane, with 0 it still shows the cursor
 config.cursor_thickness = "-1.0"
 
 config.font = wezterm.font_with_fallback {
@@ -265,8 +150,6 @@ config.force_reverse_video_cursor = true
 -- config.cursor_blink_ease_in = 'Constant'
 -- config.cursor_blink_ease_out = 'Constant'
 
-
-
 wezterm.on('multipaneclean', function(window, pane)
     current_tab = pane:tab()
     panes = current_tab:panes()
@@ -286,7 +169,6 @@ wezterm.on('multipowerpaneclean', function(window, pane)
         end
     end
 end)
-
 
 local function is_vim(pane)
     -- local prog = pane:get_user_vars()["WEZTERM_PROG"]
@@ -538,17 +420,9 @@ config.keys = {
     },
     --------------------------------------------------
 
-
-    -- 		act.SendKey({ key = "LeftArrow" }), -- 2nd to move into auto-added backslash
-    -- 	} },
-    -- { key = "RightArrow", mods = "LEADER", action = act.SendKey({ key = "UpArrow" }) },
-
 }
--- { mods = 'CTRL|SHIFT', key = 'c', action = wezterm.action.CopyTo('Clipboard') },
--- { mods = 'CTRL|SHIFT', key = 'v', action = wezterm.action.PasteFrom('Clipboard') },
 
-config.leader = { key = "f", mods = "CMD", timeout_milliseconds = 1000 }
--- { key = "a",         mods = "ALT",          action = wezterm.action({ SendString = "\x1ba" }) },
+config.leader = { key = "a", mods = "CMD", timeout_milliseconds = 1000 }
 
 config.disable_default_key_bindings = true
 
@@ -576,74 +450,6 @@ config.key_tables = {
     },
 }
 
-
-------------------- tab bar -----------------------------
--- config.tab_bar_style = {
---     window_hide = wezterm.format({
---         { Background = { Color = "#ff161D" } },
---         { Foreground = { Color = "#727169" } },
---         { Text = " _ " },
---     }),
---     window_hide_hover = wezterm.format({
---         { Background = { Color = "#2A2A37" } },
---         { Foreground = { Color = "#DCD7BA" } },
---         { Text = " _ " },
---     }),
---     window_maximize = wezterm.format({
---         { Background = { Color = "#16161D" } },
---         { Foreground = { Color = "#727169" } },
---         { Text = " [] " },
---     }),
---     window_maximize_hover = wezterm.format({
---         { Background = { Color = "#2A2A37" } },
---         { Foreground = { Color = "#DCD7BA" } },
---         { Text = " [] " },
---     }),
---     window_close = wezterm.format({
---         { Background = { Color = "#16161D" } },
---         { Foreground = { Color = "#727169" } },
---         { Text = " X " },
---     }),
---     window_close_hover = wezterm.format({
---         { Background = { Color = "#2A2A37" } },
---         { Foreground = { Color = "#DCD7BA" } },
---         { Text = " X " },
---     }),
--- }
-
--- config.window_frame = {
---     font = config.font,
---     font_size = config.font_size,
---     inactive_titlebar_bg = "#ff161D",
---     active_titlebar_bg = "#ff0000",
---     inactive_titlebar_fg = "#727169",
---     active_titlebar_fg = "#aaffaa",
---     inactive_titlebar_border_bottom = "#54546D",
---     active_titlebar_border_bottom = "#54546D",
---     button_fg = "#727169",
---     button_bg = "#16161D",
---     button_hover_fg = "#DCD7BA",
---     button_hover_bg = "#2A2A37",
---
---     border_left_width = "0.25cell",
---     border_right_width = "0.25cell",
---     border_bottom_height = "0.1cell",
---     border_top_height = "0.1cell",
---     border_left_color = "#16161D",
---     border_right_color = "#16161D",
---     border_bottom_color = "#1616ff",
---     border_top_color = "#16161D",
--- }
-------------------- tab bar -----------------------------
-
--- wezterm.on('update-right-status', function(window, pane)
---     local compose = window:composition_status()
---     if compose then
---         compose = 'COMPOSING: ' .. compose
---     end
---     window:set_right_status(compose or '')
--- end)
-
 wezterm.on('update-right-status', function(window, pane)
     local leader = ''
     if window:leader_is_active() then
@@ -662,7 +468,36 @@ end)
 
 return config
 -- ----------------------------------------------------------------------------
---  may be useful
+--  may be useful ... work in progress
 -- ----------------------------------------------------------------------------
 
 -- config.window_decorations = "NONE | MACOS_FORCE_DISABLE_SHADOW | RESIZE"
+--
+-- https://wezfurlong.org/wezterm/config/lua/wezterm/nerdfonts.html
+-- test font: wezterm ls-fonts --text "❯    "
+--            fc-list ':charset=f659'
+--            fc-list ':charset=f529'
+-- config.font = wezterm.font("Monaco", { weight = 900 })
+
+-- https://en.wikipedia.org/wiki/Zapf_Dingbats
+
+-- fc-list | grep "<fontname>"
+
+-- config.max_fps = 144
+-- config.animation_fps = 144
+-- config.front_end = "WebGpu"
+-- config.webgpu_power_preference = "HighPerformance"
+--
+-- config.animation_fps = 144
+-- config.max_fps = 144
+-- config.front_end = 'WebGpu'
+-- config.front_end = 'OpenGL'
+-- config.webgpu_power_preference = 'HighPerformance'
+
+
+
+-- config.enable_kitty_keyboard = false
+-- config.scrollback_lines = 9999
+-- config.hide_tab_bar_if_only_one_tab = true
+-- config.tab_bar_at_bottom = true
+--
