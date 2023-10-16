@@ -200,7 +200,7 @@ config.window_decorations = "NONE | RESIZE"
 config.adjust_window_size_when_changing_font_size = false
 config.bold_brightens_ansi_colors = "No"
 config.line_height = 1.00
-config.font_size = 13
+config.font_size = 12
 
 -- https://wezfurlong.org/wezterm/config/lua/wezterm/nerdfonts.html
 -- test font: wezterm ls-fonts --text "❯    "
@@ -236,8 +236,8 @@ config.cursor_thickness = "-1.0"
 
 config.font = wezterm.font_with_fallback {
     -- { family = 'Menlo',                  weight = 'Bold' },
-    -- { family = 'Fira Code',              weight = 400 },
-    { family = 'Monaco',                 weight = 'Bold' }, --- best font ever
+    -- { family = 'Fira Code',              weight = 800 },
+    { family = 'Monaco',                 weight = 800 },    --- best font ever
     { family = 'Monaco',                 weight = 'Bold' }, --- best font ever
     { family = 'Zapf Dingbats',          weight = 'Bold' }, --- arrow prompt
     { family = 'Monaco Nerd Font',       weight = 'Bold' },
