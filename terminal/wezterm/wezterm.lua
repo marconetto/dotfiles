@@ -139,6 +139,9 @@ config.colors = {
         --     fg_color = "#DCD7BA",
         -- },
     },
+
+
+    compose_cursor = 'orange',
 }
 
 
@@ -474,14 +477,14 @@ config.keys = {
     },
     {
         key = "LeftArrow",
-        mods = "LEADER|SHIFT",
+        mods = "LEADER|SHIFT|CMD",
         action = act.Multiple({
             act.SendKey({ key = "LeftArrow", mods = "CTRL|ALT|SHIFT" })
         })
     },
     {
         key = "RightArrow",
-        mods = "LEADER|SHIFT",
+        mods = "LEADER|SHIFT|CMD",
         action = act.Multiple({
             act.SendKey({ key = "RightArrow", mods = "CTRL|ALT|SHIFT" })
         })
@@ -594,6 +597,29 @@ config.key_tables = {
 -- }
 ------------------- tab bar -----------------------------
 
+-- wezterm.on('update-right-status', function(window, pane)
+--     local compose = window:composition_status()
+--     if compose then
+--         compose = 'COMPOSING: ' .. compose
+--     end
+--     window:set_right_status(compose or '')
+-- end)
+
+wezterm.on('update-right-status', function(window, pane)
+    local leader = ''
+    if window:leader_is_active() then
+        leader = 'LEADER'
+    end
+    window:set_right_status(leader)
+
+    window:set_right_status(wezterm.format({
+        { Attribute = { Underline = "None" } },
+        { Attribute = { Italic = true } },
+        { Foreground = { Color = "#ffffff" } },
+        { Background = { Color = '#4466aa' } },
+        { Text = leader }
+    }));
+end)
 
 return config
 -- ----------------------------------------------------------------------------
