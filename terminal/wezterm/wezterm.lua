@@ -4,6 +4,8 @@ local os = require 'os'
 local act = wezterm.action
 local config = {}
 
+-- https://wezfurlong.org/wezterm/config/default-keys.html
+
 if wezterm.config_builder then
     config = wezterm.config_builder()
 end
@@ -53,7 +55,7 @@ wezterm.on(
             { Text = SOLID_LEFT_ARROW },
             { Foreground = { Color = edge_foreground } },
             { Background = { Color = edge_background } },
-            { Text = '███' },
+            { Text = '██' },
             { Attribute = { Underline = "None" } },
             { Background = { Color = background } },
             { Foreground = { Color = foreground } },
@@ -63,7 +65,7 @@ wezterm.on(
             { Attribute = { Underline = "None" } },
             { Foreground = { Color = edge_foreground } },
             { Background = { Color = edge_background } },
-            { Text = '█' },
+            { Text = '' },
             { Background = { Color = edge_background } },
             { Foreground = { Color = edge_foreground } },
             { Text = SOLID_RIGHT_ARROW },
@@ -106,6 +108,11 @@ config.colors = {
     selection_bg = '#4466aa',
     split = "#444444",
     -- split = "#4E96E2"
+
+    quick_select_label_bg = { Color = '#4466aa' },
+    quick_select_label_fg = { Color = '#ffffff' },
+    quick_select_match_bg = { Color = '#2C323B' },
+    quick_select_match_fg = { Color = '#888888' },
 
     tab_bar = {
         background = "#2C323B",
@@ -202,15 +209,16 @@ config.font_size = 13
 
 -- fc-list | grep "<fontname>"
 
-config.max_fps = 144
+-- config.max_fps = 144
+-- config.animation_fps = 144
+-- config.front_end = "WebGpu"
+-- config.webgpu_power_preference = "HighPerformance"
+--
 config.animation_fps = 144
-config.front_end = "WebGpu"
-config.webgpu_power_preference = "HighPerformance"
-
--- animation_fps = 60,
---    max_fps = 60,
---    front_end = 'WebGpu',
---    webgpu_power_preference = 'HighPerformance',
+config.max_fps = 144
+-- config.front_end = 'WebGpu'
+config.front_end = 'OpenGL'
+config.webgpu_power_preference = 'HighPerformance'
 
 
 
@@ -278,6 +286,8 @@ end)
 
 --config.leader = { key = 'CTRL', mods = 'SHIFT' }
 config.keys = {
+    -- { key = 'UpArrow',    mods = 'CTRL',                      action = act.ScrollByPage(-1) },
+    { key = 'PageUp',     mods = 'ALT',                       action = act.ScrollByPage(-1) },
     --Menus
     { key = 'F1',         action = act.ActivateCommandPalette },
     { key = 'F2',         action = act.ShowLauncher },
@@ -347,11 +357,182 @@ config.keys = {
             mode = "SwapWithActive",
         }),
     },
+    {
+        key = 'l',
+        mods = "CMD",
+        action = wezterm.action.QuickSelectArgs {
+            label = 'open url',
+            patterns = { 'https?://\\S+' },
+            action = wezterm.action_callback(function(window, pane)
+                local url = window:get_selection_text_for_pane(pane)
+                wezterm.open_with(url)
+            end)
+        },
+    },
+    { key = 'x', mods = 'CMD', action = wezterm.action.ActivateCopyMode },
+    ---- tmux ---------------------------------------
+    {
+        key = "UpArrow",
+        mods = "LEADER|CMD",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "UpArrow" }),
+        })
+    },
+    {
+        key = "DownArrow",
+        mods = "LEADER|CMD",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "DownArrow" }),
+        })
+    },
+    {
+        key = "LeftArrow",
+        mods = "LEADER|CMD",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "LeftArrow" }),
+        })
+    },
+    {
+        key = "RightArrow",
+        mods = "LEADER|CMD",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "RightArrow" }),
+        })
+    },
+    {
+        key = "z",
+        mods = "LEADER|CMD",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "z" }),
+        })
+    },
+    {
+        key = "d",
+        mods = "LEADER",
+        action = act.Multiple({
+            act.SendKey({ key = "v", mods = "CTRL|ALT" })
+        })
+    },
+    {
+        key = "D",
+        mods = "LEADER",
+        action = act.Multiple({
+            act.SendKey({ key = "h", mods = "CTRL|ALT" })
+        })
+    },
+    {
+        key = "w",
+        mods = "LEADER|CMD",
+        action = act.Multiple({
+            act.SendKey({ key = "w", mods = "CTRL|ALT" })
+        })
+    },
+    --- tmux resize pane
+    {
+        key = "UpArrow",
+        mods = "LEADER|ALT",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "UpArrow", mods = "ALT" })
+        })
+    },
+    {
+        key = "DownArrow",
+        mods = "LEADER|ALT",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "DownArrow", mods = "ALT" })
+        })
+    },
+    {
+        key = "LeftArrow",
+        mods = "LEADER|ALT",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "LeftArrow", mods = "ALT" })
+        })
+    },
+    {
+        key = "RightArrow",
+        mods = "LEADER|ALT",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "RightArrow", mods = "ALT" })
+        })
+    },
+    {
+        key = "t",
+        mods = "LEADER",
+        action = act.Multiple({
+            act.SendKey({ key = "n", mods = "CTRL|ALT" })
+        })
+    },
+    {
+        key = "LeftArrow",
+        mods = "LEADER|SHIFT",
+        action = act.Multiple({
+            act.SendKey({ key = "LeftArrow", mods = "CTRL|ALT|SHIFT" })
+        })
+    },
+    {
+        key = "RightArrow",
+        mods = "LEADER|SHIFT",
+        action = act.Multiple({
+            act.SendKey({ key = "RightArrow", mods = "CTRL|ALT|SHIFT" })
+        })
+    },
+    {
+        key = "m",
+        mods = "LEADER",
+        action = act.Multiple({
+            act.SendKey({ key = "f", mods = "CTRL" }),
+            act.SendKey({ key = "m", mods = "CTRL" })
+        })
+    },
+    --------------------------------------------------
+
+
+    -- 		act.SendKey({ key = "LeftArrow" }), -- 2nd to move into auto-added backslash
+    -- 	} },
+    -- { key = "RightArrow", mods = "LEADER", action = act.SendKey({ key = "UpArrow" }) },
+
 }
+-- { mods = 'CTRL|SHIFT', key = 'c', action = wezterm.action.CopyTo('Clipboard') },
+-- { mods = 'CTRL|SHIFT', key = 'v', action = wezterm.action.PasteFrom('Clipboard') },
+
+config.leader = { key = "e", mods = "CMD", timeout_milliseconds = 1000 }
+-- { key = "a",         mods = "ALT",          action = wezterm.action({ SendString = "\x1ba" }) },
 
 config.disable_default_key_bindings = true
 
 config.audible_bell = 'Disabled'
+
+config.key_tables = {
+    copy_mode = {
+        -- { key = "UpArrow",   mods = "CTRL",  action = wezterm.action { CopyMode = "PageUp" } },
+        -- { key = "DownArrow", mods = "CTRL",  action = wezterm.action { CopyMode = "PageDown" } },
+        { key = "Escape", mods = "NONE",  action = wezterm.action { CopyMode = "Close" } },
+        -- Enter search mode to edit the pattern.
+        { key = "/",      mods = "NONE",  action = wezterm.action { Search = { CaseInSensitiveString = "" } } },
+        -- navigate any search mode results
+        { key = "n",      mods = "NONE",  action = wezterm.action { CopyMode = "NextMatch" } },
+        { key = "N",      mods = "SHIFT", action = wezterm.action { CopyMode = "PriorMatch" } },
+        { key = "q",      mods = "NONE",  action = wezterm.action { CopyMode = "Close" } },
+        { key = "Escape", mods = "NONE",  action = wezterm.action { CopyMode = "Close" } },
+    },
+    search_mode = {
+        { key = "Escape", mods = "NONE", action = wezterm.action { CopyMode = "Close" } },
+        { key = "Enter",  mods = "NONE", action = "ActivateCopyMode" },
+        -- Go back to copy mode when pressing enter, so that we can use unmodified keys like "n"
+        -- to navigate search results without conflicting with typing into the search area.
+        -- { key = "Enter",  mods = "NONE", action = "ActivateCopyMode" },
+    },
+}
 
 
 ------------------- tab bar -----------------------------

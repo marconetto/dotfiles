@@ -181,8 +181,10 @@ cmd + shift - 4 : yabai -m window --space 4
 cmd + shift - 5 : yabai -m window --space 5
 cmd + shift - 6 : yabai -m window --space 6
 cmd + shift - 7 : yabai -m window --space 7
-# skhd -o  to get 0x32
+# skhd -o  to get 0x32  (depending on the keyboard)
+# skhd -o  to get 0x35  (depending on the keyboard)
 cmd + shift - 0x32 : yabai -m window --space 8
+cmd + shift - 0x35 : yabai -m window --space 8
 cmd + shift - 9 : yabai -m window --space 9
 
 #hyper - m : yabai -m window --toggle zoom-fullscreen
