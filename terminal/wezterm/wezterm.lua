@@ -429,7 +429,7 @@ config.keys = {
         })
     },
     {
-        key = "w",
+        key = "f",
         mods = "LEADER|CMD",
         action = act.Multiple({
             act.SendKey({ key = "w", mods = "CTRL|ALT" })
@@ -508,7 +508,7 @@ config.keys = {
 -- { mods = 'CTRL|SHIFT', key = 'c', action = wezterm.action.CopyTo('Clipboard') },
 -- { mods = 'CTRL|SHIFT', key = 'v', action = wezterm.action.PasteFrom('Clipboard') },
 
-config.leader = { key = "e", mods = "CMD", timeout_milliseconds = 1000 }
+config.leader = { key = "f", mods = "CMD", timeout_milliseconds = 1000 }
 -- { key = "a",         mods = "ALT",          action = wezterm.action({ SendString = "\x1ba" }) },
 
 config.disable_default_key_bindings = true
