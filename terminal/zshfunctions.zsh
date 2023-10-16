@@ -48,6 +48,13 @@ function set-title-preexec() {
       currentcommand="nvim"
   fi
 
+  # ugly: my tmux alias tm starts with env
+  # rename it to tmux, to simplify some shortcut
+  # handling in wezterm
+  if [[ "$currentcommand" == "env" ]] ; then
+    currentcommand="tmux"
+  fi
+
   printf "\e]2;%s\a" $currentcommand
 }
 

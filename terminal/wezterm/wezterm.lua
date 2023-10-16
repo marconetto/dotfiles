@@ -217,11 +217,11 @@ config.font_size = 13
 -- config.front_end = "WebGpu"
 -- config.webgpu_power_preference = "HighPerformance"
 --
-config.animation_fps = 144
-config.max_fps = 144
+-- config.animation_fps = 144
+-- config.max_fps = 144
 -- config.front_end = 'WebGpu'
-config.front_end = 'OpenGL'
-config.webgpu_power_preference = 'HighPerformance'
+-- config.front_end = 'OpenGL'
+-- config.webgpu_power_preference = 'HighPerformance'
 
 
 
@@ -287,10 +287,49 @@ wezterm.on('multipowerpaneclean', function(window, pane)
     end
 end)
 
+
+local function is_vim(pane)
+    -- local prog = pane:get_user_vars()["WEZTERM_PROG"]
+    local prog = pane:get_title()
+    return prog:match("^nvim") or prog:match("^lima") or prog:match("^tmux")
+end
+
+-- local function is_vim(pane)
+--     -- this is set by the plugin, and unset on ExitPre in Neovim
+--     return pane:get_user_vars().IS_NVIM == 'true'
+-- end
+
+myscrollup = wezterm.action_callback(function(window, pane)
+    if is_vim(pane) then
+        window:perform_action({
+            SendKey = { key = "PageUp" },
+        }, pane)
+    else
+        window:perform_action(act.ScrollByPage(-1), pane)
+    end
+end)
+
+myscrolldown = wezterm.action_callback(function(window, pane)
+    if is_vim(pane) then
+        window:perform_action({
+            SendKey = { key = "PageDown" },
+        }, pane)
+    else
+        window:perform_action(act.ScrollByPage(1), pane)
+    end
+end)
+
 --config.leader = { key = 'CTRL', mods = 'SHIFT' }
 config.keys = {
+    { key = 'PageUp',     action = myscrollup },
+    { key = 'PageDown',   action = myscrolldown },
     -- { key = 'UpArrow',    mods = 'CTRL',                      action = act.ScrollByPage(-1) },
-    { key = 'PageUp',     mods = 'ALT',                       action = act.ScrollByPage(-1) },
+    -- { key = 'PageUp',     action = act.ScrollByPage(-1) },
+    { key = 'PageUp',     mods = 'SHIFT',                     action = act.ScrollByPage(-1) },
+    -- { key = 'PageUp',     action = act.ScrollByPage(-1) },
+    { key = 'UpArrow',    mods = 'CTRL|SHIFT',                action = act.ScrollByPage(-1) },
+    { key = 'PageDown',   mods = 'SHIFT',                     action = act.ScrollByPage(1) },
+    { key = 'DownArrow',  mods = 'CTRL|SHIFT',                action = act.ScrollByPage(1) },
     --Menus
     { key = 'F1',         action = act.ActivateCommandPalette },
     { key = 'F2',         action = act.ShowLauncher },
@@ -408,7 +447,7 @@ config.keys = {
     },
     {
         key = "z",
-        mods = "LEADER|CMD",
+        mods = "LEADER",
         action = act.Multiple({
             act.SendKey({ key = "f", mods = "CTRL" }),
             act.SendKey({ key = "z" }),
