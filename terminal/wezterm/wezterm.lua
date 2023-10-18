@@ -101,6 +101,9 @@ config.colors = {
     },
 
     compose_cursor = 'orange',
+    -- show cursor only on focused pane,
+    -- make border (which is shown in inactive pane), transparent
+    cursor_border = '#2C323B'
 }
 
 config.window_padding = {
@@ -116,9 +119,9 @@ config.adjust_window_size_when_changing_font_size = false
 config.bold_brightens_ansi_colors = "No"
 config.line_height = 0.90
 config.font_size = 16
+config.default_cursor_style = 'SteadyBlock'
 
--- show cursor only on focused pane, with 0 it still shows the cursor
-config.cursor_thickness = "-1.0"
+config.cursor_thickness = "3.0"
 
 config.font = wezterm.font_with_fallback {
     -- { family = 'Menlo',                  weight = 'Bold' },
