@@ -54,8 +54,9 @@ SAVEHIST=10000
 
 # setup window title (zsh / nvim / lima)
 autoload -Uz add-zsh-hook
-add-zsh-hook precmd set-title-precmd
+
 add-zsh-hook preexec set-title-preexec
+add-zsh-hook precmd set-title-precmd
 
 # remove underline while typing commands
 (( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
@@ -102,7 +103,7 @@ zstyle ':completion:*:*:(vim|nvim|vi|cat|more|less):*' ignored-patterns '*.(o|pn
 unset '_comps[source]'
 
 # for dirs
-# set -o autopushd
+#set -o autopushd
 
 # KEYBOARD --------------------------------------------------
 bindkey '^[[1;5C' forward-word               # "option key + arrow"
@@ -196,6 +197,7 @@ bindkey '^i' expand-or-complete-prefix
 source $HOME/dotfiles/terminal/commonshell.sh
 # -----------------------------------------------------------
 
+
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # after LS_COLOR definition
 
 export TMUXSHELL=/bin/zsh
@@ -208,3 +210,24 @@ eval "$(zoxide init zsh)"
 
 # interactive cd using history of visited directories
 bindkey -s '^o' 'zi^J'
+
+#################################################### OSC 7
+# https://github.com/wez/wezterm/discussions/3718
+_urlencode() {
+    local length="${#1}"
+    for (( i = 0; i < length; i++ )); do
+        local c="${1:$i:1}"
+      case $c in
+           %) printf '%%%02X' "'$c" ;;
+           *) printf "%s" "$c" ;;
+      esac
+    done
+}
+
+osc7_cwd() {
+    printf '\033]7;file://%s%s\e\\' "$HOSTNAME" "$(_urlencode "$PWD")"
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook -Uz chpwd osc7_cwd
+####################################################
