@@ -82,5 +82,6 @@ alias myip='MYIP=`curl -s ifconfig.me` ; echo $MYIP '
 alias s='pushd . > /dev/null'
 alias b='popd > /dev/null'
 alias icat='wezterm imgcat'
+alias python=python3
 
 [ -f ~/misc/aliases.sh ] && source ~/misc/aliases.sh
