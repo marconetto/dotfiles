@@ -141,10 +141,13 @@ require("lazy").setup(
                                     -- },
                                     -- " ", Warn = " ", Hint = " ", Info = " "
                                     symbols = {
-                                        error = " ",
-                                        warn = " ",
+                                        error = " ",
+                                        -- error = " ",
+                                        warn = " ",
+                                        -- warn = " ",
                                         info = " ",
-                                        hint = " "
+                                        hint = "󰌶 "
+                                        -- hint = " "
                                     },
                                     -- symbols = {
                                     --     error = "E",
