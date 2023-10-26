@@ -225,6 +225,8 @@ _urlencode() {
 }
 
 osc7_cwd() {
+
+    [[ ! -z "$HOSTNAME" ]] && return
     printf '\033]7;file://%s%s\e\\' "$HOSTNAME" "$(_urlencode "$PWD")"
 }
 
