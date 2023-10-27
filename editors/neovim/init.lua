@@ -191,7 +191,7 @@ require("lazy").setup(
                 require('osc52').setup {
                     max_length = 0, -- Maximum length of selection (0 for no limit)
                     silent = true,  -- Disable message on successful copy
-                    trim = true,    -- Trim text before copy
+                    trim = false,   -- Trim text before copy
                 }
             end
         },
@@ -272,8 +272,8 @@ require("lazy").setup(
                         disable = {},
                     },
                     indent = {
-                        enable = false,
-                        disable = {},
+                        enable = true
+                        -- disable = { "python" }
                     },
                     ensure_installed = {
                         "html",
@@ -495,6 +495,7 @@ vim.opt.shiftwidth = 4    -- number of spaces to use for each step of indent.
 vim.opt.tabstop = 4       -- number of spaces a TAB counts for
 vim.opt.autoindent = true -- copy indent from current line when starting a new line
 vim.opt.wrap = true
+vim.opt.smartindent = true
 
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
@@ -565,7 +566,9 @@ set nomodeline
 
 nnoremap <silent> <c-p> :KittyNavigateRight<cr>
 nnoremap <silent> <c-h> :KittyNavigateLeft<cr>
-nmap <silent> Y 0vg_<leader>y:echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
+" as removed trim from osc52, to yank line go to first non-whitespace char
+nmap <silent> Y ^vg_<leader>y:echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
+" nmap <silent> Y 0vg_<leader>y:echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
 
 
 " open file in the same position closed (line and screen positions)
@@ -780,6 +783,11 @@ nnoremap <silent> <leader>m :MarkdownPreview<CR>
 
 nmap <silent> <leader>x :silent exec "! chmod +x % "<CR>:echo "made it executable"<CR>:sleep 700m<CR>:echo ""<CR>
 " nmap <silent> <leader>x :!chmod +x % echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
+
+set formatoptions=qrn1          " automatic formating.
+set formatoptions-=o            " don't start new lines w/ comment leader on
+""-- set clipboard=unnamedplus
+" "--- cw need to be "_cw to avoid cw yank text
 ]]
 
 
@@ -902,6 +910,33 @@ for key, icon in pairs(current_icons) do
 end
 
 nvim_web_devicons.set_icon(new_icons)
+
+-- vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
+-- vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
+-- vim.keymap.set({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
+-- vim.keymap.set({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
+
+-- "n", "<leader>p", ':set paste<cr>o<esc>"*]p:set nopaste<cr>'
+-- vim.keymap.set("n", "<Leader>p", ':set paste<cr>o<esc>"*]p:set nopaste<cr>')
+vim.keymap.set("n", "<Leader>p", '"+p')
+vim.keymap.set("n", "<Leader>P", '"+]p')
+-- vim.keymap.set("n", "<Leader>p", ':set paste<CR>"+]p:set nopaste<cr>')
+
+-- vim.keymap.set("x", "<leader>p", [["_dP]])
+-- vim.keymap.set('n', '<leader>p', '"*]p')
+
+-- vim.keymap.set('n', '<Leader>v', 'i<C-r><C-o>+<ESC>l=`[`]$', { desc = 'Paste block and indent' })
+-- -- Indenting
+-- vim.opt.expandtab = true
+-- vim.opt.shiftwidth = 2
+-- vim.opt.smartindent = true
+-- vim.opt.tabstop = 2
+-- vim.opt.softtabstop = 2
+--
+-- vim.opt.fillchars = { eob = " " }
+-- vim.opt.ignorecase = true
+-- vim.opt.smartcase = true
+-- vim.opt.mouse = "a"
 
 -- vim.cmd("highlight! link CmpPmenu         Pmenu")
 -- vim.cmd("highlight! link CmpPmenuBorder   Pmenu")

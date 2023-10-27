@@ -176,6 +176,8 @@ end)
 local function is_vim(pane)
     -- local prog = pane:get_user_vars()["WEZTERM_PROG"]
     local prog = pane:get_title()
+    local process = pane:get_foreground_process_name()
+    -- print("is_vim process=" .. process)
     return prog:match("^nvim") or prog:match("^lima") or prog:match("^tmux")
 end
 
@@ -204,6 +206,37 @@ myscrolldown = wezterm.action_callback(function(window, pane)
     end
 end)
 
+mypaste = wezterm.action_callback(function(window, pane)
+    if is_vim(pane) then
+        window:perform_action(act.SendKey({ key = "Escape" }), pane)
+        -- pane:perform_action(act.PasteFrom 'Clipboard', pane)
+        pane:send_text(" p")
+    else
+        window:perform_action(act.PasteFrom 'Clipboard', pane)
+    end
+end)
+
+
+mycopy = wezterm.action_callback(function(window, pane)
+    if is_vim(pane) then
+        -- window:perform_action(act.SendKey({ key = "Escape" }), pane)
+        -- pane:perform_action(act.PasteFrom 'Clipboard', pane)
+        pane:send_text(" y")
+    else
+        window:perform_action(act.CopyTo 'Clipboard', pane)
+    end
+end)
+
+
+
+
+
+
+
+
+
+
+
 --config.leader = { key = 'CTRL', mods = 'SHIFT' }
 config.keys = {
     { key = 'PageUp',     action = myscrollup },
@@ -223,7 +256,9 @@ config.keys = {
     --    { key = 'UpArrow',    mods = 'SHIFT',                     action = act.ScrollToPrompt(-1) },
     --    { key = 'DownArrow',  mods = 'SHIFT',                     action = act.ScrollToPrompt(1) },
     --Copy Paste operation
-    { key = 'v',          mods = 'CMD',                       action = act.PasteFrom 'Clipboard' },
+    { key = 'v',          mods = 'CMD',                       action = mypaste },
+    { key = 'c',          mods = 'CMD',                       action = mycopy },
+    -- { key = 'v',          mods = 'CMD',                       action = act.PasteFrom 'Clipboard' },
     --    { key = 'v',          mods = 'CTRL',                      action = act.PasteFrom 'PrimarySelection' },
     --Pane navigation
     { key = 'LeftArrow',  mods = 'CMD',                       action = act.ActivatePaneDirection 'Left', },
@@ -354,45 +389,45 @@ config.keys = {
         })
     },
     {
-        key = "f",
+        key = "a",
         mods = "LEADER|CMD",
         action = act.Multiple({
             act.SendKey({ key = "w", mods = "CTRL|ALT" })
         })
     },
-    --- tmux resize pane
-    {
-        key = "UpArrow",
-        mods = "LEADER|ALT",
-        action = act.Multiple({
-            act.SendKey({ key = "f", mods = "CTRL" }),
-            act.SendKey({ key = "UpArrow", mods = "ALT" })
-        })
-    },
-    {
-        key = "DownArrow",
-        mods = "LEADER|ALT",
-        action = act.Multiple({
-            act.SendKey({ key = "f", mods = "CTRL" }),
-            act.SendKey({ key = "DownArrow", mods = "ALT" })
-        })
-    },
-    {
-        key = "LeftArrow",
-        mods = "LEADER|ALT",
-        action = act.Multiple({
-            act.SendKey({ key = "f", mods = "CTRL" }),
-            act.SendKey({ key = "LeftArrow", mods = "ALT" })
-        })
-    },
-    {
-        key = "RightArrow",
-        mods = "LEADER|ALT",
-        action = act.Multiple({
-            act.SendKey({ key = "f", mods = "CTRL" }),
-            act.SendKey({ key = "RightArrow", mods = "ALT" })
-        })
-    },
+    --- tmux resize pane (use mouse to resize)
+    -- {
+    --     key = "UpArrow",
+    --     mods = "LEADER|ALT",
+    --     action = act.Multiple({
+    --         act.SendKey({ key = "f", mods = "CTRL" }),
+    --         act.SendKey({ key = "UpArrow", mods = "ALT" })
+    --     })
+    -- },
+    -- {
+    --     key = "DownArrow",
+    --     mods = "LEADER|ALT",
+    --     action = act.Multiple({
+    --         act.SendKey({ key = "f", mods = "CTRL" }),
+    --         act.SendKey({ key = "DownArrow", mods = "ALT" })
+    --     })
+    -- },
+    -- {
+    --     key = "LeftArrow",
+    --     mods = "LEADER|ALT",
+    --     action = act.Multiple({
+    --         act.SendKey({ key = "f", mods = "CTRL" }),
+    --         act.SendKey({ key = "LeftArrow", mods = "ALT" })
+    --     })
+    -- },
+    -- {
+    --     key = "RightArrow",
+    --     mods = "LEADER|ALT",
+    --     action = act.Multiple({
+    --         act.SendKey({ key = "f", mods = "CTRL" }),
+    --         act.SendKey({ key = "RightArrow", mods = "ALT" })
+    --     })
+    -- },
     {
         key = "t",
         mods = "LEADER",
