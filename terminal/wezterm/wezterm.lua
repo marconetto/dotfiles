@@ -216,6 +216,15 @@ mypaste = wezterm.action_callback(function(window, pane)
     end
 end)
 
+mypasteindent = wezterm.action_callback(function(window, pane)
+    if is_vim(pane) then
+        window:perform_action(act.SendKey({ key = "Escape" }), pane)
+        -- pane:perform_action(act.PasteFrom 'Clipboard', pane)
+        pane:send_text(" P")
+    else
+        window:perform_action(act.PasteFrom 'Clipboard', pane)
+    end
+end)
 
 mycopy = wezterm.action_callback(function(window, pane)
     if is_vim(pane) then
@@ -257,6 +266,7 @@ config.keys = {
     --    { key = 'DownArrow',  mods = 'SHIFT',                     action = act.ScrollToPrompt(1) },
     --Copy Paste operation
     { key = 'v',          mods = 'CMD',                       action = mypaste },
+    { key = 'i',          mods = 'CMD',                       action = mypasteindent },
     { key = 'c',          mods = 'CMD',                       action = mycopy },
     -- { key = 'v',          mods = 'CMD',                       action = act.PasteFrom 'Clipboard' },
     --    { key = 'v',          mods = 'CTRL',                      action = act.PasteFrom 'PrimarySelection' },
