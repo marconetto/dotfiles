@@ -350,6 +350,10 @@ require("lazy").setup(
             event = "InsertEnter",
             opts = {} -- this is equalent to setup({}) function
         },
+        {
+            'mg979/vim-visual-multi'
+
+        },
         -- buffer names on top of screen -----------------------------------------------------
         {
             'akinsho/bufferline.nvim',
@@ -697,7 +701,6 @@ nnoremap <silent> <c-k> :call JumpWithinFile("\<c-i>", "\<c-o>")<cr>
 nnoremap <silent> <c-j> :call JumpWithinFile("\<c-o>", "\<c-i>")<cr>
 
 " autocmd CursorHold * silent lua vim.diagnostic.open_float()
-nnoremap cd ciw
 
 function! SetLSPHighlights()
     highlight LspDiagnosticsUnderlineError guifg=#aa4917 gui=none
@@ -788,6 +791,16 @@ set formatoptions=qrn1          " automatic formating.
 set formatoptions-=o            " don't start new lines w/ comment leader on
 ""-- set clipboard=unnamedplus
 " "--- cw need to be "_cw to avoid cw yank text
+set iskeyword+=-
+
+
+nnoremap cd ciw
+" do something (cut or delete) then press dot to replace down or up
+nnoremap c* /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
+nnoremap c# /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
+nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+
 ]]
 
 
