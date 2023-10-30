@@ -350,6 +350,7 @@ require("lazy").setup(
             event = "InsertEnter",
             opts = {} -- this is equalent to setup({}) function
         },
+        -- multi cursor ----------------------------------------------------------------------
         {
             'mg979/vim-visual-multi'
 
@@ -454,6 +455,22 @@ require("lazy").setup(
             end,
 
         },
+        {
+            "chentoast/marks.nvim",
+            event = "VeryLazy",
+
+            config = function()
+                require('marks').setup {
+                    mappings = {
+                        set_next = "m,",
+                        next = "<leader>]",
+                        preview = "m:",
+                        --set_bookmark0 = "m0",
+                        prev = "<leader>["
+                    }
+                }
+            end
+        }
         -- {
         --
         --     "elentok/format-on-save.nvim"
@@ -795,13 +812,32 @@ set iskeyword+=-
 
 
 nnoremap cd ciw
-" do something (cut or delete) then press dot to replace down or up
+" cut (c) or delete (d) then press dot to replace down(*) or up(#) and 'n' to skip
 nnoremap c* /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
 nnoremap c# /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 
+let g:VM_highlight_matches = 'hi Search guifg=#ffffff'
+
+
+" -- but when deleting marks -- temporary solution"
+""-- nnoremap dm<space> :delm!<CR>:wshada!<CR>
+
+""-- nnoremap km :execute 'delm '.nr2char(getchar())<cr>:wshada!<CR>
+
+nnoremap <leader>d :<C-u>call DelmFunction(input("Enter mark letter: ",""))<CR>
+
+
+""-- endfunction
+ function! DelmFunction(letter)
+   execute "delm ".a:letter
+  execute "wshada!"
+ endfunction
 ]]
+
+
+
 
 
 require('bufferline').setup {
@@ -933,6 +969,27 @@ nvim_web_devicons.set_icon(new_icons)
 -- vim.keymap.set("n", "<Leader>p", ':set paste<cr>o<esc>"*]p:set nopaste<cr>')
 vim.keymap.set("n", "<Leader>p", '"+p')
 vim.keymap.set("n", "<Leader>P", '"+]p')
+-- vim.keymap.set("n", "<leader>]", 'm]')
+-- vim.keymap.set("n", "<leader>[", 'm[')
+
+
+
+
+vim.api.nvim_set_keymap('n', '<leader>v', '<cmd>lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>',
+    { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<leader>gr', '<cmd> Telescope lsp_references<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
+
+-- if vim.o.filetype == 'python' then
+vim.api.nvim_set_keymap('n', '<leader>fm', '<cmd> Telescope lsp_document_symbols  symbols={"function","method"}<CR>',
+    { noremap = true })
+-- else
+-- vim.api.nvim_set_keymap('n', '<leader>fm',
+-- '<cmd> Telescope lsp_document_symbols theme=dropdown symbols={"interface","class","constructor","method"}<CR>',
+-- { noremap = true })
+-- end
+
 -- vim.keymap.set("n", "<Leader>p", ':set paste<CR>"+]p:set nopaste<cr>')
 
 -- vim.keymap.set("x", "<leader>p", [["_dP]])
