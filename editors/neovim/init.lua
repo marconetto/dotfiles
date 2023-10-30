@@ -470,6 +470,9 @@ require("lazy").setup(
                     }
                 }
             end
+        },
+        {
+            "github/copilot.vim"
         }
         -- {
         --
@@ -838,8 +841,6 @@ nnoremap <leader>d :<C-u>call DelmFunction(input("Enter mark letter: ",""))<CR>
 
 
 
-
-
 require('bufferline').setup {
     options = {
         show_close_icon = false,
@@ -973,6 +974,23 @@ vim.keymap.set("n", "<Leader>P", '"+]p')
 -- vim.keymap.set("n", "<leader>[", 'm[')
 
 
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true
+vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+vim.g.copilot_filetypes = {
+    ["*"] = false,
+    ["javascript"] = false,
+    ["typescript"] = false,
+    ["lua"] = true,
+    ["sh"] = true,
+    ["zsh"] = true,
+    ["bash"] = true,
+    ["rust"] = true,
+    ["c"] = true,
+    ["c#"] = true,
+    ["c++"] = true,
+    ["python"] = true,
+}
 
 
 vim.api.nvim_set_keymap('n', '<leader>v', '<cmd>lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>',
