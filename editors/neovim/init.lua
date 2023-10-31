@@ -923,7 +923,7 @@ nmap <silent> <leader>l :set nohlsearch<CR>*:let @/ = ''<CR>:set hlsearch<CR>
 
 "exe "hi! Search         gui=NONE   guifg=#303030   guibg=#ad7b57"
 "exe "hi! IncSearch      gui=BOLD   guifg=#303030   guibg=#cd8b60"
-exe "hi! IncSearch guibg=#b16286 guifg=#dddddd gui=NONE"
+exe "hi! IncSearch guibg=#a9b1d6 guifg=#444444 gui=NONE"
 exe "hi! Search guibg=#444444 guifg=#cccccc gui=NONE"
 "exe "hi! Search guibg=#b16286 guifg=#ababa2 gui=NONE"
 set autochdir
@@ -1154,6 +1154,7 @@ vim.api.nvim_set_keymap('n', '<leader>v', '<cmd>lua require"telescope.builtin".l
 
 vim.api.nvim_set_keymap('n', '<leader>gr', '<cmd> Telescope lsp_references<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>c', '<cmd> Telescope spell_suggest<CR>', { noremap = true })
 
 
 -- function quit_buffer()
