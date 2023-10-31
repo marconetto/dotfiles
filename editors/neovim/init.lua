@@ -463,31 +463,142 @@ require("lazy").setup(
                 require('marks').setup {
                     mappings = {
                         set_next = "m,",
-                        next = "<leader>]",
-                        preview = "m:",
+                        next = "<c-]>",
+                        -- next = "<leader>]",
+                        prev = "<c-[>",
+                        -- prev = "<leader>["
+                        preview = "m:"
                         --set_bookmark0 = "m0",
-                        prev = "<leader>["
                     }
                 }
+                -- vim.keymap.set("n", "<leader>s", ":MarksListBuf<CR>", { silent = true })
             end
+
         },
+
+        -- {
+        --     "zbirenbaum/copilot.lua",
+
+        --     cmd = "Copilot",
+
+        --     build = ":Copilot auth",
+
+        --     event = "InsertEnter",
+
+        --     opts = {
+
+        --         suggestion = {
+
+        --             enabled = true,
+
+        --             auto_trigger = true,
+
+        --             keymap = {
+
+        --                 accept = "<C-J>",
+
+        --                 close = "<Esc>",
+
+        --                 next = "<C-;>",
+
+        --                 -- prev = "<C-K>",
+
+        --                 select = "<CR>",
+
+        --                 dismiss = "<C-X>",
+
+        --             },
+
+        --         },
+
+        --         panel = {
+
+        --             enabled = false,
+
+        --         },
+
+        --     },
+
+        -- },
+        -- {
+        --     "zbirenbaum/copilot-cmp",
+
+        --     dependencies = {
+
+        --         "hrsh7th/nvim-cmp",
+
+        --     },
+
+        --     config = true,
+
+        -- },
+
         {
-            "github/copilot.vim"
+            "github/copilot.vim",
+
+            config = function()
+                vim.g.copilot_no_tab_map = true
+
+                vim.g.copilot_assume_mapped = true
+
+                vim.api.nvim_set_keymap("i", "<C-Enter>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+
+                vim.api.nvim_set_keymap('i', '<C-;>', "<Plug>(copilot-next)", {})
+
+                vim.g.copilot_filetypes = {
+
+                    ["*"] = false,
+
+                    ["javascript"] = false,
+
+                    ["typescript"] = false,
+
+                    ["lua"] = true,
+
+                    ["sh"] = true,
+
+                    ["zsh"] = true,
+
+                    ["bash"] = true,
+
+                    ["rust"] = true,
+
+                    ["c"] = true,
+
+                    ["c#"] = true,
+
+                    ["c++"] = true,
+
+                    ["python"] = true,
+
+                }
+            end,
+
         },
         {
             "kevinhwang91/nvim-bqf",
+
             ft = "qf",
+
 
             config = function()
                 require("bqf").setup({
+
                     func_map = {
+
                         openc = "<cr>"
+
                     },
+
                     preview = {
+
                         winblend = 0,
+
                     }
+
                 })
             end,
+
 
 
 
@@ -495,14 +606,18 @@ require("lazy").setup(
         -- {
         --
         --     "elentok/format-on-save.nvim"
+
         -- }
     }
 )
 -- f3
 
 -------------------------------------------------------------------------------
+
 -- more plugin reelated config
+
 -------------------------------------------------------------------------------
+
 
 -- have decent autocompletion with ENTER + TAB ---------------
 local cmp = require('cmp')
@@ -885,7 +1000,7 @@ augroup END
 " f3
 ]]
 
-
+vim.keymap.set("n", "<leader>s", ":MarksListBuf<CR>", { silent = true })
 -- local mark_list = vim.fn.getmarklist(1)
 -- for i in mark_list:iter() do
 --     print(i)
@@ -1026,26 +1141,8 @@ vim.keymap.set("n", "<Leader>P", '"+]p')
 -- vim.keymap.set("n", "<leader>[", 'm[')
 
 
-vim.keymap.set("n", "<leader>s", ":MarksListBuf<CR>", { silent = true })
 -- vim.api.nvim_set_keymap('n', '<C-e>', ':cclose<CR>', { noremap = true, silent = true })
 
-vim.g.copilot_no_tab_map = true
-vim.g.copilot_assume_mapped = true
-vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-vim.g.copilot_filetypes = {
-    ["*"] = false,
-    ["javascript"] = false,
-    ["typescript"] = false,
-    ["lua"] = true,
-    ["sh"] = true,
-    ["zsh"] = true,
-    ["bash"] = true,
-    ["rust"] = true,
-    ["c"] = true,
-    ["c#"] = true,
-    ["c++"] = true,
-    ["python"] = true,
-}
 
 
 -- vim.api.nvim_set_keymap('n', '<leader>b',
