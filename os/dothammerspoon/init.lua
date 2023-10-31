@@ -393,20 +393,45 @@ hs.hotkey.bind(threekeys, '0', cycleColour())
 -------------------------------------------------------------------------------
 -- change window of the same application... for now powerpoint
 -------------------------------------------------------------------------------
-function cmdLeft()
-    return function()
-        win = hs.window.focusedWindow()
-        app = win:application()
-        if app:name() == "Microsoft PowerPoint" then
-            a = hs.eventtap.event.newKeyEvent({ "cmd", 'shift' }, "`", true):post()
-            -- hs.eventtap.keyStroke({'cmd','shift'},'`')
-            -- else
-            -- hs.eventtap.keyStroke({'cmd'},'left')
-        end
-    end
+-- function cmdLeft()
+--     return function()
+--         win = hs.window.focusedWindow()
+--         app = win:application()
+--         print("-----", app:name())
+--         if app:name() == "Microsoft PowerPoint" then
+--             a = hs.eventtap.event.newKeyEvent({ "cmd", 'shift' }, "`", true):post()
+--             -- hs.eventtap.keyStroke({'cmd','shift'},'`')
+--             -- else
+--             -- hs.eventtap.keyStroke({'cmd'},'left')
+--         elseif app:name() == "Microsoft Outlook" then
+--             a = hs.eventtap.event.newKeyEvent({ "cmd" }, "1", true):post()
+--             print("goo")
+--             -- hs.eventtap.keyStroke({'cmd','shift'},'`')
+--             -- else
+--             -- hs.eventtap.keyStroke({'cmd'},'left')
+--         end
+--     end
+-- end
+--
+-- hs.hotkey.bind(hyperkeys, '3', cmdLeft(), nil, cmdLeft())
+
+
+-------------------------------------------------------------------------------
+-- Outlook see calendar and email
+-------------------------------------------------------------------------------
+function seeCalendar()
+    local app = hs.application.find("Microsoft Outlook")
+    app:selectMenuItem({ "View", "Go To", "Calendar" })
 end
 
-hs.hotkey.bind(hyperkeys, ';', cmdLeft(), nil, cmdLeft())
+hs.hotkey.bind({ 'alt' }, '2', seeCalendar)
+
+function seeMail()
+    local app = hs.application.find("Microsoft Outlook")
+    app:selectMenuItem({ "View", "Go To", "Mail" })
+end
+
+hs.hotkey.bind({ 'alt' }, '1', seeMail)
 
 -------------------------------------------------------------------------------
 -- refresh ubersicht battery menubar item
