@@ -481,7 +481,7 @@ require("lazy").setup(
             config = function()
                 require("bqf").setup({
                     func_map = {
-                        openc = " "
+                        openc = "<cr>"
                     },
                     preview = {
                         winblend = 0,
@@ -873,6 +873,12 @@ nnoremap <A-Down> }
 " endfunction
 " nnoremap <silent> Q :call ToggleQuickFix()<cr>
 autocmd FileType qf nnoremap <buffer><silent> q :quit<cr>
+
+
+augroup qf
+    autocmd!
+    autocmd FileType qf set nobuflisted
+augroup END
 
 "noremap('n', '<Leader>l', ':cclose|lclose<CR>')
 
