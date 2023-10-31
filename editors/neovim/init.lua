@@ -473,13 +473,32 @@ require("lazy").setup(
         },
         {
             "github/copilot.vim"
-        }
+        },
+        {
+            "kevinhwang91/nvim-bqf",
+            ft = "qf",
+
+            config = function()
+                require("bqf").setup({
+                    func_map = {
+                        openc = " "
+                    },
+                    preview = {
+                        winblend = 0,
+                    }
+                })
+            end,
+
+
+
+        },
         -- {
         --
         --     "elentok/format-on-save.nvim"
         -- }
     }
 )
+-- f3
 
 -------------------------------------------------------------------------------
 -- more plugin reelated config
@@ -837,10 +856,37 @@ nnoremap <leader>d :<C-u>call DelmFunction(input("Enter mark letter: ",""))<CR>
    execute "delm ".a:letter
   execute "wshada!"
  endfunction
+
+
+nnoremap <A-Up> {
+nnoremap <A-Down> }
+
+
+"autocmd FileType qf nnoremap <buffer><silent> q :cclose<cr>
+
+" function! ToggleQuickFix()
+"     if empty(filter(getwininfo(), 'v:val.quickfix'))
+"         copen
+"     else
+"         cclose
+"     endif
+" endfunction
+" nnoremap <silent> Q :call ToggleQuickFix()<cr>
+autocmd FileType qf nnoremap <buffer><silent> q :quit<cr>
+
+"noremap('n', '<Leader>l', ':cclose|lclose<CR>')
+
+" f3
 ]]
 
 
+-- local mark_list = vim.fn.getmarklist(1)
+-- for i in mark_list:iter() do
+--     print(i)
+-- end
+-- print(mark_list)
 
+-- vim.api.nvim_set_keymap('n', '<leader>qc', ':cclose<CR>', {})
 require('bufferline').setup {
     options = {
         show_close_icon = false,
@@ -974,6 +1020,9 @@ vim.keymap.set("n", "<Leader>P", '"+]p')
 -- vim.keymap.set("n", "<leader>[", 'm[')
 
 
+vim.keymap.set("n", "<leader>s", ":MarksListBuf<CR>", { silent = true })
+-- vim.api.nvim_set_keymap('n', '<C-e>', ':cclose<CR>', { noremap = true, silent = true })
+
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
 vim.api.nvim_set_keymap("i", "<C-J>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
@@ -993,20 +1042,42 @@ vim.g.copilot_filetypes = {
 }
 
 
+-- vim.api.nvim_set_keymap('n', '<leader>b',
+--     '<cmd>lua require"telescope.builtin".marks({bufnr= vim.api.nvim_get_current_buf()})<CR>',
+--     { noremap = true })
+
 vim.api.nvim_set_keymap('n', '<leader>v', '<cmd>lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>',
     { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('n', '<leader>gr', '<cmd> Telescope lsp_references<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
 
+
+-- function quit_buffer()
+-- vim.cmd('q')
+-- end
+
+-- vim.api.nvim_buf_set_keymap(0, 'n', 'q', ':lua quit_buffer()<CR>', { noremap = true, silent = true })
+-- if vim.bo.filetype == 'qf' then
+-- vim.api.nvim_set_keymap("n", "q", ":q<CR>", { noremap = true, silent = true })
+-- end
 -- if vim.o.filetype == 'python' then
 vim.api.nvim_set_keymap('n', '<leader>fm', '<cmd> Telescope lsp_document_symbols  symbols={"function","method"}<CR>',
     { noremap = true })
+
+
+
 -- else
 -- vim.api.nvim_set_keymap('n', '<leader>fm',
 -- '<cmd> Telescope lsp_document_symbols theme=dropdown symbols={"interface","class","constructor","method"}<CR>',
 -- { noremap = true })
 -- end
+
+
+-- vim.api.nvim_set_keymap("n", "<C-t>", function()
+--     require("telescope.builtin").quickfix()
+--     vim.cmd(":cclose")
+-- end, { desc = "Open Quickfix (Telescope)" })
 
 -- vim.keymap.set("n", "<Leader>p", ':set paste<CR>"+]p:set nopaste<cr>')
 
