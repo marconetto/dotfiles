@@ -997,6 +997,9 @@ augroup END
 
 "noremap('n', '<Leader>l', ':cclose|lclose<CR>')
 
+nnoremap <leader>1 :set invspell<CR>
+nnoremap <leader>3 ]s
+nnoremap <leader>4 [s
 " f3
 ]]
 
@@ -1154,7 +1157,7 @@ vim.api.nvim_set_keymap('n', '<leader>v', '<cmd>lua require"telescope.builtin".l
 
 vim.api.nvim_set_keymap('n', '<leader>gr', '<cmd> Telescope lsp_references<CR>', { noremap = true })
 vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>c', '<cmd> Telescope spell_suggest<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>2', '<cmd> Telescope spell_suggest<CR>', { noremap = true })
 
 
 -- function quit_buffer()
