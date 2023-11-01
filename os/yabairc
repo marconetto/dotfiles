@@ -22,6 +22,7 @@ yabai -m config window_border off
 # yabai -m config window_border_radius   20
 
 yabai -m rule --add app="^WezTerm$" space=1
+yabai -m rule --add app="^Google Chrome$" space=2
 yabai -m rule --add app="^System Settings$" manage=off
 yabai -m rule --add title="^Hammerspoon Console$" manage=off
 yabai -m rule --add app="^Share content$" manage=off
