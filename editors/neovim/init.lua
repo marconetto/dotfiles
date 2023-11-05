@@ -461,9 +461,10 @@ require('lazy').setup {
       require('marks').setup {
         mappings = {
           set_next = 'm,',
-          next = '<c-m>',
+          toggle = '<c-6>',
+          next = '<c-n>',
           -- next = "<leader>]",
-          prev = '<c-n>',
+          prev = '<c-j>',
           -- prev = "<leader>["
           preview = 'm:',
           --set_bookmark0 = "m0",
@@ -544,6 +545,7 @@ require('lazy').setup {
       -- })
     end,
   },
+  -- { 'akinsho/toggleterm.nvim', version = '*', config = true },
   -- {
   --     "elentok/format-on-save.nvim",
   -- },
@@ -620,6 +622,7 @@ end
 
 vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
 
+vim.keymap.set({ 'n' }, '<C-b>', '<Plug>(Marks-toggle):wshada!<CR>')
 vim.cmd [[
 
 " nnoremap <leader>= :let original_cursor = getpos(".")<CR>:%normal =<CR>:call setpos('.', original_cursor)<CR>
@@ -891,6 +894,8 @@ let g:VM_highlight_matches = 'hi Search guifg=#ffffff'
 ""-- nnoremap km :execute 'delm '.nr2char(getchar())<cr>:wshada!<CR>
 
 nnoremap <leader>d :<C-u>call DelmFunction(input("Enter mark letter: ",""))<CR>
+" nnoremap <C-b> :<Plug>(Marks-toggle)<CR>
+
 
 
 ""-- endfunction
