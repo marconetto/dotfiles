@@ -111,6 +111,12 @@ require('lazy').setup {
               'filename',
               symbols = { modified = '[+]', readonly = ' ' },
             },
+            {
+              require('nvim-possession').status,
+              cond = function()
+                return require('nvim-possession').status() ~= nil
+              end,
+            },
           },
           lualine_c = {
             { 'branch', separator = '' },
@@ -124,7 +130,9 @@ require('lazy').setup {
               },
             },
           },
-          lualine_z = { file_location },
+          lualine_z = {
+            { file_location },
+          },
           lualine_x = {
             {
               'diagnostics',
@@ -453,26 +461,26 @@ require('lazy').setup {
       vim.g.kitty_navigator_no_mappings = 1
     end,
   },
-  {
-    'chentoast/marks.nvim',
-    event = 'VeryLazy',
-
-    config = function()
-      require('marks').setup {
-        mappings = {
-          set_next = 'm,',
-          toggle = '<c-6>',
-          next = '<c-n>',
-          -- next = "<leader>]",
-          prev = '<c-j>',
-          -- prev = "<leader>["
-          preview = 'm:',
-          --set_bookmark0 = "m0",
-        },
-      }
-      -- vim.keymap.set("n", "<leader>s", ":MarksListBuf<CR>", { silent = true })
-    end,
-  },
+  -- {
+  --   'chentoast/marks.nvim',
+  --   event = 'VeryLazy',
+  --
+  --   config = function()
+  --     require('marks').setup {
+  --       mappings = {
+  --         set_next = 'm,',
+  --         toggle = '<c-6>',
+  --         next = '<c-n>',
+  --         -- next = "<leader>]",
+  --         prev = '<c-j>',
+  --         -- prev = "<leader>["
+  --         preview = 'm:',
+  --         --set_bookmark0 = "m0",
+  --       },
+  --     }
+  --     -- vim.keymap.set("n", "<leader>s", ":MarksListBuf<CR>", { silent = true })
+  --   end,
+  -- },
   {
     'github/copilot.vim',
 
@@ -530,6 +538,9 @@ require('lazy').setup {
         shfmt = {
           prepend_args = { '-i', '2' },
         },
+        stylua = {
+          prepend_args = { '--indent-width', '2', '--indent-type', 'Spaces' },
+        },
       },
     },
     init = function()
@@ -545,11 +556,62 @@ require('lazy').setup {
       -- })
     end,
   },
-  -- { 'akinsho/toggleterm.nvim', version = '*', config = true },
+  {
+    'MattesGroeger/vim-bookmarks',
+  },
+  {
+    'tom-anders/telescope-vim-bookmarks.nvim',
+  },
   -- {
-  --     "elentok/format-on-save.nvim",
+  --
+  --   'jedrzejboczar/possession.nvim',
+  --
+  --   config = function()
+  --     require('possession').setup {}
+  --   end
   -- },
+  {
+    'gennaro-tedesco/nvim-possession',
+    dependencies = {
+      'ibhagwan/fzf-lua',
+    },
+
+    config = function()
+      require('nvim-possession').setup {
+        autoload = true,
+        autoswitch = {
+          enable = true, -- default false
+        },
+        sessions = {
+          sessions_icon = ' ',
+        },
+        fzf_winopts = {
+          -- any valid fzf-lua winopts options, for instance
+          width = 0.5,
+          preview = {
+            vertical = 'right:30%',
+          },
+        },
+      }
+    end,
+    init = function()
+      local possession = require 'nvim-possession'
+      vim.keymap.set('n', '\\s', function()
+        possession.list()
+      end)
+      vim.keymap.set('n', '\\n', function()
+        possession.new()
+      end)
+      vim.keymap.set('n', '\\u', function()
+        possession.update()
+      end)
+      vim.keymap.set('n', '\\d', function()
+        possession.delete()
+      end)
+    end,
+  },
 }
+
 -- f3
 
 -------------------------------------------------------------------------------
@@ -605,6 +667,8 @@ vim.keymap.set('x', '<leader>y', require('osc52').copy_visual) --- not working??
 -- vim.keymap.set('x', '<leader>y', require('osc52').copy_visual)
 
 require('telescope').load_extension 'file_browser'
+-- require('telescope').load_extension 'possession'
+-- vim.keymap.set('n', '\\S', require('telescope').extensions.possession.list, { desc = '[S]essionManager: load session' })
 
 vim.api.nvim_set_keymap('n', '<space>fw', ':Telescope file_browser<CR>', { noremap = true })
 
@@ -622,8 +686,14 @@ end
 
 vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
 
-vim.keymap.set({ 'n' }, '<C-b>', '<Plug>(Marks-toggle):wshada!<CR>')
+-- vim.keymap.set({ 'n' }, '<C-b>', '<cmd>rshada<cr><Plug>(Marks-toggle)<cmd>wshada!<CR>')
+-- vim.keymap.set({ 'n' }, '<C-b>', '<cmd>rshada<cr><Plug>(Marks-toggle)')
 vim.cmd [[
+
+nnoremap <C-b> <Plug>BookmarkToggle
+nnoremap <silent> <C-n> <Plug>BookmarkNext
+nnoremap <C-S-n> <Plug>BookmarkPrev
+autocmd VimEnter * delmarks 0-9
 
 " nnoremap <leader>= :let original_cursor = getpos(".")<CR>:%normal =<CR>:call setpos('.', original_cursor)<CR>
 "autocmd FileType &filetype != 'lua' autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
@@ -901,7 +971,7 @@ nnoremap <leader>d :<C-u>call DelmFunction(input("Enter mark letter: ",""))<CR>
 ""-- endfunction
  function! DelmFunction(letter)
    execute "delm ".a:letter
-  execute "wshada!"
+"  execute "wshada!"
  endfunction
 
 
