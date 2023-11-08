@@ -282,7 +282,7 @@ end
 for key, val in pairs(fkeys) do
   print("Configuring " .. val .. "  " .. key)
   hs.hotkey.bind(hyperkeys, key, function()
-    hs.eventtap.keyStroke({}, val)
+    hs.eventtap.keyStroke({ "fn" }, val)
   end)
   -- hs.eventtap.keyStroke(hyperkeys, key)
   -- end)
