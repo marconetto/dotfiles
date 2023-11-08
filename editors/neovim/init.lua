@@ -558,6 +558,10 @@ require('lazy').setup {
   },
   {
     'MattesGroeger/vim-bookmarks',
+    init = function()
+      -- vim.g.bookmark_sign = ''
+      vim.g.bookmark_sign = '➜'
+    end,
   },
   {
     'tom-anders/telescope-vim-bookmarks.nvim',
@@ -688,6 +692,9 @@ vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>'
 
 -- vim.keymap.set({ 'n' }, '<C-b>', '<cmd>rshada<cr><Plug>(Marks-toggle)<cmd>wshada!<CR>')
 -- vim.keymap.set({ 'n' }, '<C-b>', '<cmd>rshada<cr><Plug>(Marks-toggle)')
+
+vim.keymap.set('n', 'ml', ':Telescope vim_bookmarks current_file<CR>', { silent = true })
+vim.keymap.set('n', 'mL', ':Telescope vim_bookmarks all<CR>', { silent = true })
 vim.cmd [[
 
 nnoremap <C-b> <Plug>BookmarkToggle:echo""<cr>
@@ -1008,7 +1015,6 @@ nnoremap <leader>4 [s
 " f3
 ]]
 
-vim.keymap.set('n', '<leader>s', ':Telescope vim_bookmarks current_file<CR>', { silent = true })
 -- vim.keymap.set('n', '<leader>s', ':MarksListBuf<CR>', { silent = true })
 -- local mark_list = vim.fn.getmarklist(1)
 -- for i in mark_list:iter() do
