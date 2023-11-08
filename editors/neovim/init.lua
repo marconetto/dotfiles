@@ -690,9 +690,12 @@ vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>'
 -- vim.keymap.set({ 'n' }, '<C-b>', '<cmd>rshada<cr><Plug>(Marks-toggle)')
 vim.cmd [[
 
-nnoremap <C-b> <Plug>BookmarkToggle
-nnoremap <silent> <C-n> <Plug>BookmarkNext
-nnoremap <C-S-n> <Plug>BookmarkPrev
+nnoremap <C-b> <Plug>BookmarkToggle:echo""<cr>
+nnoremap mm <Plug>BookmarkToggle:echo""<cr>
+nnoremap <silent> <C-n> <Plug>BookmarkNext:echo""<cr>
+nnoremap <silent> <tab><tab> <Plug>BookmarkNext:echo ""<cr>
+nnoremap <C-S-n> <Plug>BookmarkPrev:echo""<cr>
+nnoremap <S-tab><S-tab> <Plug>BookmarkPrev:echo""<cr>
 autocmd VimEnter * delmarks 0-9
 
 " nnoremap <leader>= :let original_cursor = getpos(".")<CR>:%normal =<CR>:call setpos('.', original_cursor)<CR>
@@ -1005,7 +1008,8 @@ nnoremap <leader>4 [s
 " f3
 ]]
 
-vim.keymap.set('n', '<leader>s', ':MarksListBuf<CR>', { silent = true })
+vim.keymap.set('n', '<leader>s', ':Telescope vim_bookmarks current_file<CR>', { silent = true })
+-- vim.keymap.set('n', '<leader>s', ':MarksListBuf<CR>', { silent = true })
 -- local mark_list = vim.fn.getmarklist(1)
 -- for i in mark_list:iter() do
 --     print(i)
