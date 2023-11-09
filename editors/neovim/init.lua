@@ -111,12 +111,12 @@ require('lazy').setup {
               'filename',
               symbols = { modified = '[+]', readonly = ' ' },
             },
-            {
-              require('nvim-possession').status,
-              cond = function()
-                return require('nvim-possession').status() ~= nil
-              end,
-            },
+            -- {
+            --   require('nvim-possession').status,
+            --   cond = function()
+            --     return require('nvim-possession').status() ~= nil
+            --   end,
+            -- },
           },
           lualine_c = {
             { 'branch', separator = '' },
@@ -303,8 +303,35 @@ require('lazy').setup {
   -- telescope -----------------------------------------------------------------------
   {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.2',
+    -- tag = '0.1.2',
     dependencies = { 'nvim-lua/plenary.nvim' },
+    -- dependencies = {
+    --     {
+    --         "nvim-telescope/telescope-live-grep-args.nvim" ,
+    --         -- This will not install any breaking changes.
+    --         -- For major updates, this must be adjusted manually.
+    --         version = "^1.0.0",
+    --     },
+    --   },
+    -- config = function()
+    --   require('telescope').load_extension 'live_grep_args'
+    -- end,
+    -- config = function()
+    --   require('telescope').setup {
+    --     pickers = {
+    --       find_files = {
+    --         mappings = {
+    --           i = {
+    --             ['<CR>'] = telescope_custom_actions.multi_selection_open,
+    --             ['<C-v>'] = telescope_custom_actions.multi_selection_open_vsplit,
+    --             ['<C-s>'] = telescope_custom_actions.multi_selection_open_split,
+    --             ['<C-t>'] = telescope_custom_actions.multi_selection_open_tab,
+    --           },
+    --         },
+    --       },
+    --     },
+    --   }
+    -- end,
   },
   {
     'nvim-telescope/telescope-file-browser.nvim',
@@ -567,6 +594,103 @@ require('lazy').setup {
     'tom-anders/telescope-vim-bookmarks.nvim',
   },
   -- {
+  --   'olimorris/persisted.nvim',
+  --   config = function()
+  --     require('persisted').setup {
+  --       save_dir = vim.fn.expand(vim.fn.stdpath 'data' .. '/sessions/'), -- directory where session files are saved
+  --       silent = false, -- silent nvim message when sourcing session file
+  --       use_git_branch = false, -- create session files based on the branch of the git enabled repository
+  --       autosave = true, -- automatically save session files when exiting Neovim
+  --       should_autosave = nil, -- function to determine if a session should be autosaved
+  --       autoload = true, -- automatically load the session for the cwd on Neovim startup
+  --       on_autoload_no_session = nil, -- function to run when `autoload = true` but there is no session to load
+  --       follow_cwd = true, -- change session file name to match current working directory if it changes
+  --       allowed_dirs = nil, -- table of dirs that the plugin will auto-save and auto-load from
+  --       ignored_dirs = nil, -- table of dirs that are ignored when auto-saving and auto-loading
+  --       telescope = { -- options for the telescope extension
+  --         reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
+  --       },
+  --     }
+  --     require('telescope').load_extension 'persisted'
+  --   end,
+  -- },
+  -- {
+  --   'folke/persistence.nvim',
+  --   event = 'BufReadPre', -- this will only start session saving when an actual file was opened
+  --   opts = {
+  --     -- add any custom options here
+  --   },
+  -- },
+  -- {
+  --
+  --   'echasnovski/mini.sessions',
+  --   -- dir = D.plugin .. "mini.sessions",
+  --   event = 'VeryLazy',
+  --   config = function()
+  --     require('mini.sessions').setup {
+  --       autowrite = true,
+  --     }
+  --   end,
+  -- },
+  -- {
+  --
+  --   'jedrzejboczar/possession.nvim',
+  --   lazy = false,
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
+  --   config = function()
+  --     require('possession').setup {
+  --       silent = false,
+  --       autosave = {
+  --         current = true, -- or fun(name): boolean
+  --         tmp = false, -- or fun(): boolean
+  --         tmp_name = 'tmp', -- or fun(): string
+  --         on_load = true,
+  --         on_quit = true,
+  --       },
+  --       plugins = {
+  --         close_windows = {
+  --           preserve_layout = true, -- or fun(win): boolean
+  --           match = {
+  --             floating = true,
+  --             buftype = {
+  --               'terminal',
+  --             },
+  --             filetype = {},
+  --             custom = false, -- or fun(win): boolean
+  --           },
+  --         },
+  --         delete_hidden_buffers = true,
+  --         nvim_tree = true,
+  --         -- tabby = true,
+  --         delete_buffers = false,
+  --       },
+  --     }
+  --     require('telescope').load_extension 'possession'
+  --   end,
+  -- },
+  {
+
+    'rmagatti/auto-session',
+    config = function()
+      require('auto-session').setup {
+        log_level = 'error',
+        auto_session_enable_last_session = true,
+        auto_session_root_dir = vim.fn.stdpath 'data' .. '/sessions/',
+        auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
+        auto_session_enabled = true,
+        auto_save_enabled = true,
+        auto_restore_enabled = true,
+        session_lens = {
+          -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
+          buftypes_to_ignore = {}, -- list of buffer types what should not be deleted from current session
+          load_on_setup = true,
+          theme_conf = { border = true },
+          previewer = false,
+        },
+      }
+    end,
+  },
+  -- {
   --
   --   'jedrzejboczar/possession.nvim',
   --
@@ -574,46 +698,60 @@ require('lazy').setup {
   --     require('possession').setup {}
   --   end
   -- },
-  {
-    'gennaro-tedesco/nvim-possession',
-    dependencies = {
-      'ibhagwan/fzf-lua',
-    },
-
-    config = function()
-      require('nvim-possession').setup {
-        autoload = true,
-        autoswitch = {
-          enable = true, -- default false
-        },
-        sessions = {
-          sessions_icon = ' ',
-        },
-        fzf_winopts = {
-          -- any valid fzf-lua winopts options, for instance
-          width = 0.5,
-          preview = {
-            vertical = 'right:30%',
-          },
-        },
-      }
-    end,
-    init = function()
-      local possession = require 'nvim-possession'
-      vim.keymap.set('n', '\\s', function()
-        possession.list()
-      end)
-      vim.keymap.set('n', '\\n', function()
-        possession.new()
-      end)
-      vim.keymap.set('n', '\\u', function()
-        possession.update()
-      end)
-      vim.keymap.set('n', '\\d', function()
-        possession.delete()
-      end)
-    end,
-  },
+  -- {
+  --   'gennaro-tedesco/nvim-possession',
+  --   dependencies = {
+  --     'ibhagwan/fzf-lua',
+  --   },
+  --
+  --   config = function()
+  --     require('nvim-possession').setup {
+  --       save_hook = function()
+  --         -- Get visible buffers
+  --         local visible_buffers = {}
+  --         for _, win in ipairs(vim.api.nvim_list_wins()) do
+  --           visible_buffers[vim.api.nvim_win_get_buf(win)] = true
+  --         end
+  --
+  --         local buflist = vim.api.nvim_list_bufs()
+  --         for _, bufnr in ipairs(buflist) do
+  --           if visible_buffers[bufnr] == nil then -- Delete buffer if not visible
+  --             vim.cmd('bd ' .. bufnr)
+  --           end
+  --         end
+  --       end,
+  --       autoload = true,
+  --       autoswitch = {
+  --         enable = true, -- default false
+  --       },
+  --       sessions = {
+  --         sessions_icon = ' ',
+  --       },
+  --       fzf_winopts = {
+  --         -- any valid fzf-lua winopts options, for instance
+  --         width = 0.5,
+  --         preview = {
+  --           vertical = 'right:30%',
+  --         },
+  --       },
+  --     }
+  --   end,
+  --   init = function()
+  --     local possession = require 'nvim-possession'
+  --     vim.keymap.set('n', '\\s', function()
+  --       possession.list()
+  --     end)
+  --     vim.keymap.set('n', '\\n', function()
+  --       possession.new()
+  --     end)
+  --     vim.keymap.set('n', '\\u', function()
+  --       possession.update()
+  --     end)
+  --     vim.keymap.set('n', '\\d', function()
+  --       possession.delete()
+  --     end)
+  --   end,
+  -- },
 }
 
 -- f3
@@ -639,6 +777,9 @@ cmp.setup {
   },
 }
 
+vim.keymap.set('n', '<C-s>', require('auto-session.session-lens').search_session, {
+  noremap = true,
+})
 -------------------------------------------------------------------------------
 --- settings ------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -666,6 +807,8 @@ vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true }
 vim.keymap.set('x', '<c-y>', require('osc52').copy_visual)
 vim.keymap.set('x', '<leader>y', require('osc52').copy_visual) --- not working???
 
+vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+
 -- vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true })
 -- vim.keymap.set('n', 'Y', '<leader>c_', {remap = true})
 -- vim.keymap.set('x', '<leader>y', require('osc52').copy_visual)
@@ -674,7 +817,7 @@ require('telescope').load_extension 'file_browser'
 -- require('telescope').load_extension 'possession'
 -- vim.keymap.set('n', '\\S', require('telescope').extensions.possession.list, { desc = '[S]essionManager: load session' })
 
-vim.api.nvim_set_keymap('n', '<space>fw', ':Telescope file_browser<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<space>fw', ':Telescope file_browser<CR>', { noremap = true, silent = true })
 
 -- vim.keymap.set('n', '++', 'gcc')
 -- vim.keymap.set('v', '++', 'gcc')
@@ -697,6 +840,7 @@ vim.keymap.set('n', 'ml', ':Telescope vim_bookmarks current_file<CR>', { silent 
 vim.keymap.set('n', 'mL', ':Telescope vim_bookmarks all<CR>', { silent = true })
 vim.cmd [[
 
+" nnoremap <silent> <leader>fc :Telescope find_files cwd=%:h<CR>
 nnoremap <C-b> <Plug>BookmarkToggle:echo""<cr>
 nnoremap mm <Plug>BookmarkToggle:echo""<cr>
 nnoremap <silent> <C-n> <Plug>BookmarkNext:echo""<cr>
@@ -1015,6 +1159,7 @@ nnoremap <leader>4 [s
 " f3
 ]]
 
+-- vim.keymap.set('n', '<c-s>', ':Telescope possession list<CR>', { silent = true })
 -- vim.keymap.set('n', '<leader>s', ':MarksListBuf<CR>', { silent = true })
 -- local mark_list = vim.fn.getmarklist(1)
 -- for i in mark_list:iter() do
@@ -1224,6 +1369,55 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   end,
 })
 
+-- https://github.com/nvim-telescope/telescope.nvim/issues/1048
+local opts_ff = {
+  attach_mappings = function(prompt_bufnr, map)
+    local actions = require 'telescope.actions'
+    actions.select_default:replace(function(prompt_bufnr)
+      local actions = require 'telescope.actions'
+      local state = require 'telescope.actions.state'
+      local picker = state.get_current_picker(prompt_bufnr)
+      local multi = picker:get_multi_selection()
+      local single = picker:get_selection()
+      local str = ''
+      if #multi > 0 then
+        for i, j in pairs(multi) do
+          str = str .. 'edit ' .. j[1] .. ' | '
+        end
+      end
+      str = str .. 'edit ' .. single[1]
+      -- To avoid populating qf or doing ":edit! file", close the prompt first
+      actions.close(prompt_bufnr)
+      vim.api.nvim_command(str)
+    end)
+    return true
+  end,
+}
+-- And then to call find_files with a mapping or whatever:
+vim.keymap.set('n', '<C-f>', function()
+  return require('telescope.builtin').find_files(opts_ff)
+end, s)
+
+------------------------------------------------
+-- local events = {
+--   --   --'CursorHold',
+--   'BufDelete',
+--   -- 'BufWipeout',
+--   --   'BufWinLeave',
+--   --   -- 'WinNew',
+--   --   -- 'WinClosed',
+--   --   -- 'TabNew',
+-- }
+--
+-- vim.api.nvim_create_autocmd(events, {
+--   group = vim.api.nvim_create_augroup('PossessionAutosave', { clear = true }),
+--   callback = function()
+--     local session = require 'possession.session'
+--     if session.session_name then
+--       session.autosave()
+--     end
+--   end,
+-- })
 -- else
 -- vim.api.nvim_set_keymap('n', '<leader>fm',
 -- '<cmd> Telescope lsp_document_symbols theme=dropdown symbols={"interface","class","constructor","method"}<CR>',
