@@ -344,7 +344,7 @@ require('lazy').setup {
       require('telescope').load_extension 'recent_files'
       vim.keymap.set(
         'n',
-        '<space>ff',
+        '<leader>rr',
         "<cmd>lua require('telescope').extensions.recent_files.pick()<CR>",
         { noremap = true, silent = true }
       )
@@ -979,6 +979,7 @@ set nomodeline
 
 
 nnoremap <silent> <leader>fc :Telescope find_files cwd=%:h<CR>
+nnoremap <silent> <C-g> :Telescope live_grep<CR>
 
 let g:vim_current_word#highlight_delay = 300
 
@@ -1394,7 +1395,7 @@ local opts_ff = {
   end,
 }
 -- And then to call find_files with a mapping or whatever:
-vim.keymap.set('n', '<C-f>', function()
+vim.keymap.set('n', '<leader>ff', function()
   return require('telescope.builtin').find_files(opts_ff)
 end, s)
 
