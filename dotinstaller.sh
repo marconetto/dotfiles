@@ -135,6 +135,7 @@ function install_misc_packages() {
     echo -e "${GREEN}[DONE]: ${YELLOW}find conda to install packages"
     conda install -y -q nodejs >/dev/null 2>&1
     conda install -y -q unzip >/dev/null 2>&1
+    conda install -y -q ripgrep >/dev/null 2>&1
     if [ "$installgit" == 1 ]; then
       conda install -y -q git >/dev/null 2>&1
       if [ -f ~/.miniconda/bin/git ]; then
