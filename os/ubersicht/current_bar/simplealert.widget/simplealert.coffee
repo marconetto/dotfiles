@@ -6,7 +6,7 @@ refreshFrequency: false
 style: """
 
 
-  left:24px
+  left:08px
   top:04px
   color: #fff
 font-family: Droid Sans Mono
@@ -14,7 +14,7 @@ font-family: Droid Sans Mono
   .container
    right:10px
    height:100px
-   width:400px
+   width:200px
    text-align:center
 
   .myspace
@@ -24,7 +24,7 @@ font-family: Droid Sans Mono
    font-size: 11px
    margin-top:00%
    font-weight:400
-   background: rgba(005, 005, 005, 0.45);
+   background: rgba(005, 005, 005, 0.30);
    border: 0.0px solid #666666;
    border-radius: 3px;
    border-top-left-radius: 3px;
