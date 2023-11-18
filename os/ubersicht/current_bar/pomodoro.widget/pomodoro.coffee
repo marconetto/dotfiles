@@ -10,7 +10,7 @@ style: """
   right:50%
   top:04px
   color: #fff
-  font-family: Fira Code
+font-family: Droid Sans Mono
   justify-content: center
   align-items: center
   transform: translate(-50%,0%)

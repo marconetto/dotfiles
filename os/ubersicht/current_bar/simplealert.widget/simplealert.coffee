@@ -9,8 +9,7 @@ style: """
   left:24px
   top:04px
   color: #fff
-  font-family: Fira Code
-
+font-family: Droid Sans Mono
 
   .container
    right:10px

@@ -14,11 +14,10 @@ style: """
   left: 50%
   top:04px
   color: #fff
-  font-family: Fira Code
+  font-family: Droid Sans Mono
   justify-content: center
   align-items: center
   transform: translate(-50%,0%)
-
 
 
   .container
@@ -31,11 +30,10 @@ style: """
    color:#dfbf8e
    height: 14px
    line-height: 15px
-   font-weight:100
    text-align:center
    font-size: 11px
    margin-top:00%
-   font-weight:400
+   font-weight:500
 
    background: rgba(005, 005, 005, 0.30);
    border: 0.0px solid #666666;
@@ -68,8 +66,7 @@ update: (output, domEl) ->
   fourTwenty = false; #Smoke Responsibly
   militaryTime = true; #Military Time = 24 hour time
 
-  #Time Segmends for the day
-  segments = ["morning", "afternoon", "evening", "night"]
+  days = ['su','mo','tu','we','th','fr','sa'];
 
   #Grab the name of the current user.
   #If you would like to edit this, replace "output.split(' ')" with your name
@@ -82,17 +79,13 @@ update: (output, domEl) ->
   month = date.getMonth() + 1
   hour = date.getHours()
   minutes = date.getMinutes()
+  weekday =  days[date.getDay()]
 
   #Quick and dirty fix for single digit minutes
   minutes = "0"+ minutes if minutes < 10
   hour = "0"+ hour if hour < 10
 
   day = "0"+ day if day < 10
-  #timeSegment logic
-  timeSegment = segments[0] if 4 < hour <= 11
-  timeSegment = segments[1] if 11 < hour <= 17
-  timeSegment = segments[2] if 17 < hour <= 24
-  timeSegment = segments[3] if  hour <= 4
 
   #AM/PM String logic
   if hour < 12
@@ -116,14 +109,16 @@ update: (output, domEl) ->
   # if fourTwenty && blazeIt
     # $(domEl).find('.salutation').text("Blaze It")
   # else
-    # $(domEl).find('.salutation').text("Good #{timeSegment}")
   # $(domEl).find('.name').text(" , #{name[0]}.") if showName
   # $(domEl).find('.hour').text("#{hour}:#{minutes}<#{day}")
    # $(domEl).find('.hour').text("#{hour}:#{minutes}")
   # $(domEl).find('.hour').text("#{hour}:#{minutes} #{day}")
   # $(domEl).find('.hour').text("#{hour}:#{minutes}<#{day}")
 
-  $(domEl).find('.hour').text("#{hour}:#{minutes}")
+
+  $(domEl).find('.hour').text("#{hour}:#{minutes} ❘ #{day}")
+  # $(domEl).find('.hour').text("#{hour}:#{minutes} ❘ #{day}#{weekday}")
+  #
   # $(domEl).find('.hour').text("#{hour}:#{minutes}·#{day}")
   # $(domEl).find('.hour').text("#{hour}:#{minutes}·#{day}")
   # $(domEl).find('.hour').text("#{hour}:#{minutes}≡#{day}")
