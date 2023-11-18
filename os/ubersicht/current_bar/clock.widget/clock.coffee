@@ -116,7 +116,7 @@ update: (output, domEl) ->
   # $(domEl).find('.hour').text("#{hour}:#{minutes}<#{day}")
 
 
-  $(domEl).find('.hour').text("#{hour}:#{minutes} ❘ #{day}")
+  # $(domEl).find('.hour').text("#{hour}:#{minutes} ❘ #{day}")
   # $(domEl).find('.hour').text("#{hour}:#{minutes} ❘ #{day}#{weekday}")
   #
   # $(domEl).find('.hour').text("#{hour}:#{minutes}·#{day}")
@@ -125,7 +125,8 @@ update: (output, domEl) ->
   # $(domEl).find('.hour').text("#{hour}:#{minutes}︲#{day}")
   # $(domEl).find('.hour').text("#{hour}:#{minutes}〡#{day}")
 
-  # $(domEl).find('.hour').text("#{hour}:#{minutes}·#{day}")
+  # $(domEl).find('.hour').text("#{hour}:#{minutes} · #{day}")
+  $(domEl).find('.hour').html("#{hour}:#{minutes} &nbsp; #{day}")
   # $(domEl).find('.hour').text("#{hour}:#{minutes}┃#{day}")
   # $(domEl).find('.hour').text("#{day} #{hour}:#{minutes}")
   # $(domEl).find('.hour').text("#{day}·#{hour}:#{minutes}")
