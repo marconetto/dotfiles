@@ -100,7 +100,7 @@ function reloadConfig(files)
 end
 
 myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
-show_alert("config reloaded", 1)
+show_alert("config reloaded", 1.0)
 
 local hyperkeys = { "ctrl", "alt", "cmd", "shift" }
 local threekeys = { "ctrl", "alt", "cmd" }
@@ -167,12 +167,17 @@ function borderFullScreen()
         h = screen:currentMode().h
         w = screen:currentMode().w
         local f = win:frame()
-        border = WINDOW_BORDER
-        f.x = border
-        f.y = border + 00
-        f.w = w - border * 2
-        f.h = h - border * 2 - 00
+        -- border = WINDOW_BORDER
+        -- f.x = border
+        -- f.y = border + 00
+        -- f.w = w - border * 2
+        -- f.h = h - border * 2 - 00
 
+        -- TODO: fix hardcoded values
+        f.x = 08
+        f.y = 24 + 00
+        f.w = w - 08 * 2
+        f.h = h - 24 - 08 - 00
         -- border = 30
         -- f.x = border
         -- f.y = border + border
