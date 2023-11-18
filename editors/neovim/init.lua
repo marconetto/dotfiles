@@ -344,7 +344,7 @@ require('lazy').setup {
       require('telescope').load_extension 'recent_files'
       vim.keymap.set(
         'n',
-        '<leader>rr',
+        '<leader>fr',
         "<cmd>lua require('telescope').extensions.recent_files.pick()<CR>",
         { noremap = true, silent = true }
       )
@@ -838,11 +838,15 @@ vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>'
 
 vim.keymap.set('n', 'ml', ':Telescope vim_bookmarks current_file<CR>', { silent = true })
 vim.keymap.set('n', 'mL', ':Telescope vim_bookmarks all<CR>', { silent = true })
+
+vim.cmd [[autocmd FileType markdown set tw=80 wrap]]
+
 vim.cmd [[
+
 
 " nnoremap <silent> <leader>fc :Telescope find_files cwd=%:h<CR>
 nnoremap <C-b> <Plug>BookmarkToggle:echo""<cr>
-nnoremap mm <Plug>BookmarkToggle:echo""<cr>
+nnoremap <leader><leader> <Plug>BookmarkToggle:echo""<cr>
 nnoremap <silent> <C-n> <Plug>BookmarkNext:echo""<cr>
 nnoremap <silent> <tab><tab> <Plug>BookmarkNext:echo ""<cr>
 nnoremap <C-S-n> <Plug>BookmarkPrev:echo""<cr>
@@ -864,13 +868,13 @@ function! StripTrailingWhitespaces()
 endfun
 
 
-nnoremap <silent> <Leader><leader>w :call StripTrailingWhitespaces()<cr>:silent w<cr>:echo ""<CR>
+"nnoremap <silent> <leader>w :silent w<CR>:echo ""<CR>
+nnoremap <silent> <leader>w :call StripTrailingWhitespaces()<cr>:silent w<cr>:echo ""<CR>
 
 
 nnoremap <leader>z :x<CR>
 nnoremap <leader>q :q!<CR>
 
-nnoremap <silent> <leader>w :silent w<CR>:echo ""<CR>
 
 set noswapfile
 set nobackup
@@ -979,7 +983,7 @@ set nomodeline
 
 
 nnoremap <silent> <leader>fc :Telescope find_files cwd=%:h<CR>
-nnoremap <silent> <C-g> :Telescope live_grep<CR>
+nnoremap <silent> <leader>fg :Telescope live_grep<CR>
 
 let g:vim_current_word#highlight_delay = 300
 
@@ -1055,7 +1059,7 @@ fu! ToggleCurline ()
   endif
 endfunction
 
-map <silent><leader><leader>c :call ToggleCurline()<CR>
+map <silent><leader>tc :call ToggleCurline()<CR>
 
 set lazyredraw
 let g:loaded_matchparen=0
