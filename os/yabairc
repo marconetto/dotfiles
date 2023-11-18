@@ -11,9 +11,9 @@ yabai -m config layout bsp
 yabai -m config auto_balance                    on
 
 yabai -m config top_padding 24
-yabai -m config bottom_padding 24
-yabai -m config left_padding 24
-yabai -m config right_padding 24
+yabai -m config bottom_padding 08
+yabai -m config left_padding 08
+yabai -m config right_padding 08
 
 yabai -m config window_gap 10
 
@@ -69,11 +69,11 @@ yabai -m signal --add event=application_front_switched action="osascript -e 'tel
 
 # yabai -m config window_animation_duration    1.00
 # yabai -m config window_animation_frame_rate  100
-yabai -m config window_animation_duration    0.2
-yabai -m config window_animation_frame_rate  60
-yabai -m config window_border_radius         8
+# yabai -m config window_animation_duration    0.2
+# yabai -m config window_animation_frame_rate  60
+# yabai -m config window_border_radius         8
 
-yabai -m config window_shadow off
+# yabai -m config window_shadow off
 
 yabai -m signal --add event=dock_did_restart action="yabai -m config window_shadow off"
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa && sleep 1 && yabai -m config window_shadow off"
