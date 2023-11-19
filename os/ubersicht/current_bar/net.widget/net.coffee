@@ -15,14 +15,14 @@ refreshFrequency: 30000
 #Body Style
 style: """
 
-  left:50%
-  top:04px
+  left:260px
+  top:03px
   color: #fff
 font-family: Droid Sans Mono
   justify-content: center
   align-items: center
   transform: translate(50%,0%)
-  margin-left: 140px
+  margin-left: 000px
 
 
 
@@ -40,11 +40,11 @@ font-family: Droid Sans Mono
    height: 14px
    line-height: 15px
    background: rgba(005, 005, 005, 0.30);
-   border: 0.0px solid #666666;
-   border-radius: 3px;
-   border-top-left-radius: 3px;
-   border-top-right-radius: 3px;
-   box-shadow: -02px 02px 2px 0px rgba(0,0,0,0.25);
+   border: 1.0px solid #33333355;
+   border-radius: 05px;
+   border-top-left-radius: 5px;
+   border-top-right-radius: 5px;
+   box-shadow: 02px 02px 2px 0px rgba(0,0,0,0.70);
 
 """
 

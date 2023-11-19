@@ -6,8 +6,8 @@ refreshFrequency: false
 style: """
 
 
-  left:08px
-  top:04px
+  left:70px
+  top:03px
   color: #fff
 font-family: Droid Sans Mono
 
@@ -22,14 +22,16 @@ font-family: Droid Sans Mono
    font-weight:100
    text-align:center
    font-size: 11px
+   line-height:15px
+   height: 14px
    margin-top:00%
    font-weight:400
    background: rgba(005, 005, 005, 0.30);
-   border: 0.0px solid #666666;
-   border-radius: 3px;
-   border-top-left-radius: 3px;
-   border-top-right-radius: 3px;
-   box-shadow: 02px 02px 2px 0px rgba(0,0,0,0.25);
+   border: 1.0px solid #33333355;
+   border-radius: 05px;
+   border-top-left-radius: 5px;
+   border-top-right-radius: 5px;
+   box-shadow: 02px 02px 2px 0px rgba(0,0,0,0.70);
 
 
   .text
@@ -37,7 +39,8 @@ font-family: Droid Sans Mono
    color:#fff
    font-weight:100
    margin-top:-0%
-   height: 13px
+   line-height: 15px
+   height: 14px
 
   .myalert
    margin-right:0%

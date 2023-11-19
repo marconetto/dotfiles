@@ -11,7 +11,7 @@ refreshFrequency: 30000
 #Body Style
 style: """
 
-  right: 80px
+  right: 10px
   top:03px
   color: #fff
   font-family: Droid Sans Mono
@@ -23,7 +23,6 @@ style: """
   .container
    right:00px
    width:060px
-   height:100px
    text-align:center
 
 
@@ -67,7 +66,7 @@ update: (output, domEl) ->
   fourTwenty = false; #Smoke Responsibly
   militaryTime = true; #Military Time = 24 hour time
 
-  days = ['su','mo','tu','we','th','fr','sa'];
+  days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
   #Grab the name of the current user.
   #If you would like to edit this, replace "output.split(' ')" with your name
@@ -127,12 +126,13 @@ update: (output, domEl) ->
   # $(domEl).find('.hour').text("#{hour}:#{minutes}〡#{day}")
 
   # $(domEl).find('.hour').text("#{hour}:#{minutes} · #{day}")
-  $(domEl).find('.hour').html("#{hour}:#{minutes}")
-  # $(domEl).find('.hour').html("⏲ #{hour}:#{minutes}")
-  # $(domEl).find('.hour').html("⏲ #{hour}:#{minutes}")
-  # $(domEl).find('.hour').html("#{hour}:#{minutes} &nbsp; #{day}-#{weekday}")
-
-
+  # $(domEl).find('.hour').html("#{day}·#{weekday}")
+  # $(domEl).find('.hour').html("#{day} #{weekday}")
+  $(domEl).find('.hour').html("#{weekday} #{day}")
+  # $(domEl).find('.hour').html("#{day} Sat")
+  # $(domEl).find('.hour').html("#{day} Sat")
+  # $(domEl).find('.hour').html("Sat #{day}")
+  # $(domEl).find('.hour').html("#{day}·#{weekday}")
   # $(domEl).find('.hour').text("#{hour}:#{minutes}┃#{day}")
   # $(domEl).find('.hour').text("#{day} #{hour}:#{minutes}")
   # $(domEl).find('.hour').text("#{day}·#{hour}:#{minutes}")

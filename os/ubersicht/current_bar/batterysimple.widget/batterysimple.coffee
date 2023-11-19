@@ -14,20 +14,20 @@ refreshFrequency: 60000
 #Body Style
 style: """
 
-  left:50%
-  top:04px
+  right:150px
+  top:03px
   color: #fff
 font-family: Droid Sans Mono
   justify-content: center
   align-items: center
-  transform: translate(50%,0%)
-  margin-left: 40px
+  transform: translate(00%,0%)
+  margin-left: 60px
 
 
   .container
    right:10px
    height:100px
-   width:040px
+   width:050px
    text-align:center
 
    .text
@@ -38,11 +38,11 @@ font-family: Droid Sans Mono
        margin-top:00%
        font-weight:400
        background: rgba(005, 005, 005, 0.30);
-       border: 0.0px solid #666666;
-       border-radius: 3px;
-       border-top-left-radius: 3px;
-       border-top-right-radius: 3px;
-       box-shadow: -02px 02px 2px 0px rgba(0,0,0,0.25);
+       border: 1.0px solid #33333355;
+       border-radius: 05px;
+       border-top-left-radius: 5px;
+       border-top-right-radius: 5px;
+       box-shadow: -02px 02px 2px 0px rgba(0,0,0,0.70);
 
 
 
@@ -67,7 +67,14 @@ update: (output, domEl) ->
 
   name = output.split(' ')
 
+  numericPart = output.replace(/[^0-9]/g, '')
+  numericNumber = parseInt(numericPart, 10)
   #DOM manipulation
   $(domEl).find('.myspace').text("#{name[0]}")
+
+  if (numericPart < 30)
+      $(domEl).find('.myspace').css('color', '#ff5555')
+
+
   # $(domEl).find('.space').text("#{name[0]}·#{name[1]}")
 #  $(domEl).find('.app').text("#{name[1]}")
