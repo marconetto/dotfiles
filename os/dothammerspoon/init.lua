@@ -20,7 +20,7 @@ hs.alert.defaultStyle.strokeColor = { red = 0.1, green = 0.1, blue = 0.3, alpha 
 hs.alert.defaultStyle.fadeOutDuration = 0.70
 hs.alert.defaultStyle.atScreenEdge = 1
 hs.alert.defaultStyle.textSize = 14
-hs.alert.defaultStyle.textFont = "MonacoB"
+hs.alert.defaultStyle.textFont = "Monaco"
 
 local frameMaxCache = {}
 
@@ -35,6 +35,7 @@ uber_last_clean_timer = nil
 DIR_SIMPLE_ALERT = "/Library/Application\\ Support/Übersicht/widgets/simplealert.widget/"
 USE_UBER_ALERT = true
 
+POMODORO_LEN = 60
 uber_pomodoro_last_clean_timer = nil
 DIR_POMODORO_ALERT = "/Library/Application\\ Support/Übersicht/widgets/pomodoro.widget/"
 USE_UBER_POMODORO_ALERT = true
@@ -49,6 +50,9 @@ function cleanuberalert()
     command = 'echo "' .. message .. '" > ' .. messagefile
     hs.execute(command, false)
 
+    command =
+      'tell application "Übersicht" to set hidden of widget id "simplealert-widget-simplealert-coffee" to true'
+    hs.osascript.applescript(command)
     command = 'tell application "Übersicht" to refresh widget id "simplealert-widget-simplealert-coffee"'
     hs.osascript.applescript(command)
 
@@ -63,6 +67,8 @@ function uberalert(message, duration)
   command = 'echo "' .. message .. '" > ' .. messagefile
   hs.execute(command, false)
 
+  command = 'tell application "Übersicht" to set hidden of widget id "simplealert-widget-simplealert-coffee" to false'
+  hs.osascript.applescript(command)
   command = 'tell application "Übersicht" to refresh widget id "simplealert-widget-simplealert-coffee"'
   hs.osascript.applescript(command)
 
@@ -360,7 +366,7 @@ function funcCycleColour()
   end
 
   print("New Background File = " .. newbackground)
-  msg = "bg> " .. newbackground .. "=(" .. index .. "/" .. maxfiles .. ")"
+  msg = "bg: " .. newbackground .. "(" .. index .. "/" .. maxfiles .. ")"
   show_alert(msg, 3)
 
   command = 'tell application "System Events" to tell every desktop to set picture to "'
@@ -455,11 +461,11 @@ function battery_changed()
   elseif not charged and charging then
     print("battery is NOT charged and is charging")
     battery_set_on()
-  elseif not charged and (percentage > 98 or percentage < 15) then
-    print("battery is NOT charged and NOT between 98--15")
+  elseif not charged and (percentage > 98 or percentage < 30) then
+    print("battery is NOT charged and NOT between 98--30")
     battery_set_on()
   else
-    print("battery is NOT charged and between 98--15")
+    print("battery is NOT charged and between 98--30")
     battery_set_off()
   end
 end
@@ -574,28 +580,29 @@ hs.hotkey.bind(threekeys, "3", toggle_network(), nil, nil)
 
 -------------------------------------------------------------------------------
 -- toggle appworkspace menubar
+-- TODO: there is slow refresh with yabai when changing workspace
 -------------------------------------------------------------------------------
-function toggle_space_func()
-  command = 'tell application "Übersicht" to get hidden of widget id "appspace-widget-appspace-coffee"'
-  error, space_on, output = hs.osascript.applescript(command)
-  print(space_on)
-
-  if space_on then
-    command = 'tell application "Übersicht" to set hidden of widget id "appspace-widget-appspace-coffee" to false'
-  else
-    command = 'tell application "Übersicht" to set hidden of widget id "appspace-widget-appspace-coffee" to true'
-  end
-
-  hs.osascript.applescript(command)
-end
-
-function toggle_space()
-  return function()
-    toggle_space_func()
-  end
-end
-
-hs.hotkey.bind(threekeys, "2", toggle_space(), nil, nil)
+-- function toggle_space_func()
+--   command = 'tell application "Übersicht" to get hidden of widget id "appspace-widget-appspace-coffee"'
+--   error, space_on, output = hs.osascript.applescript(command)
+--   print(space_on)
+--
+--   if space_on then
+--     command = 'tell application "Übersicht" to set hidden of widget id "appspace-widget-appspace-coffee" to false'
+--   else
+--     command = 'tell application "Übersicht" to set hidden of widget id "appspace-widget-appspace-coffee" to true'
+--   end
+--
+--   hs.osascript.applescript(command)
+-- end
+--
+-- function toggle_space()
+--   return function()
+--     toggle_space_func()
+--   end
+-- end
+--
+-- hs.hotkey.bind(threekeys, "2", toggle_space(), nil, nil)
 
 -------------------------------------------------------------------------------
 -- change keyboard layout
@@ -663,7 +670,7 @@ function function_fixkeyboard()
   command = (os.getenv("HOME")) .. "/dotfiles/os/dry/dry 0.0166666666667"
   output, status, termType, rc = hs.execute(command, false)
   if rc == 1 then
-    show_alert("keyboard: fixed", 3)
+    show_alert("keyboard speed", 3)
   end
 end
 
@@ -673,7 +680,7 @@ function fixkeyboard()
   end
 end
 
-hs.hotkey.bind(threekeys, "8", fixkeyboard(), nil, nil)
+hs.hotkey.bind(threekeys, "2", fixkeyboard(), nil, nil)
 hs.timer.doEvery(60, fixkeyboard())
 
 -------------------------------------------------------------------------------
@@ -991,7 +998,9 @@ function cleanuberpomdoro()
     command = 'echo "' .. message .. '" > ' .. messagefile
     output, status, termType, rc = hs.execute(command, false)
 
-    command = 'tell application "Übersicht" to refresh widget id "pomodoro-widget-pomodoro-coffee"'
+    -- command = 'tell application "Übersicht" to refresh widget id "pomodoro-widget-pomodoro-coffee"'
+
+    command = 'tell application "Übersicht" to set hidden of widget id "pomodoro-widget-pomodoro-coffee" to true'
     hs.osascript.applescript(command)
 
     if uber_pomodoro_last_clean_timer ~= nil then
@@ -1009,6 +1018,9 @@ function uberpomodoro_func(duration)
   output, status, termType, rc = hs.execute(command, false)
 
   print(command)
+
+  command = 'tell application "Übersicht" to set hidden of widget id "pomodoro-widget-pomodoro-coffee" to false'
+  hs.osascript.applescript(command)
   command = 'tell application "Übersicht" to refresh widget id "pomodoro-widget-pomodoro-coffee"'
   hs.osascript.applescript(command)
   print(command)
@@ -1028,5 +1040,5 @@ function uberpomodoro(duration)
   end
 end
 
-hs.hotkey.bind(threekeys, "s", uberpomodoro(30), nil, nil)
+hs.hotkey.bind(threekeys, "s", uberpomodoro(POMODORO_LEN), nil, nil)
 hs.hotkey.bind(threekeys, "x", cleanuberpomdoro(), nil, nil)
