@@ -1,7 +1,7 @@
 
 # FUNCTIONS -------------------------------------------------
-source $HOME/dotfiles/terminal/zshfunctions.zsh
-source $HOME/dotfiles/terminal/commonfunctions.sh
+source "$HOME"/dotfiles/terminal/zshfunctions.zsh
+source "$HOME"/dotfiles/terminal/commonfunctions.sh
 install_fzf
 # -----------------------------------------------------------
 
@@ -10,7 +10,7 @@ autoload -U colors && colors
 setopt auto_cd
 setopt multios
 setopt prompt_subst
-source $HOME/dotfiles/terminal/zshprompt.zsh
+source "$HOME"/dotfiles/terminal/zshprompt.zsh
 # -----------------------------------------------------------
 
 
@@ -194,11 +194,11 @@ fi
 bindkey '^i' expand-or-complete-prefix
 
 # -----------------------------------------------------------
-source $HOME/dotfiles/terminal/commonshell.sh
+source "$HOME"/dotfiles/terminal/commonshell.sh
 # -----------------------------------------------------------
 
 
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} # after LS_COLOR definition
+zstyle  ':completion:*' list-colors "${(s.:.)LS_COLORS}" # after LS_COLOR definition
 
 export TMUXSHELL=/bin/zsh
 [[ -f $HOME/.local/bin/zsh ]] && export TMUXSHELL=$HOME/.local/bin/zsh
@@ -210,6 +210,11 @@ eval "$(zoxide init zsh)"
 
 # interactive cd using history of visited directories
 bindkey -s '^o' 'zi^J'
+
+
+# delete char forward
+bindkey "^[[3~" delete-char
+
 
 #################################################### OSC 7
 # https://github.com/wez/wezterm/discussions/3718
