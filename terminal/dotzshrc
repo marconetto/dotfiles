@@ -215,6 +215,9 @@ bindkey -s '^o' 'zi^J'
 # delete char forward
 bindkey "^[[3~" delete-char
 
+#fix backspace after vim mode is used
+bindkey -v '^?' backward-delete-char
+
 
 #################################################### OSC 7
 # https://github.com/wez/wezterm/discussions/3718
