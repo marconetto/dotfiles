@@ -52,17 +52,18 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     { Text = SOLID_LEFT_ARROW },
     { Foreground = { Color = edge_foreground } },
     { Background = { Color = edge_background } },
-    { Text = "██" },
+    -- { Text = "█" },
     { Attribute = { Underline = "None" } },
     { Background = { Color = background } },
     { Foreground = { Color = foreground } },
     { Attribute = { Underline = "None" } },
-    { Text = title },
     { Text = zoomed },
+    { Text = " " },
+    { Text = title },
     { Attribute = { Underline = "None" } },
     { Foreground = { Color = edge_foreground } },
     { Background = { Color = edge_background } },
-    { Text = "" },
+    { Text = "███" },
     { Background = { Color = edge_background } },
     { Foreground = { Color = edge_foreground } },
     { Text = SOLID_RIGHT_ARROW },
@@ -120,6 +121,8 @@ config.font_size = 16
 config.default_cursor_style = "SteadyBlock"
 
 config.cursor_thickness = "3.0"
+-- issue when pressing keys (sticky + delay)
+config.use_ime = false
 
 config.font = wezterm.font_with_fallback({
   -- { family = 'Menlo',                  weight = 'Bold' },
