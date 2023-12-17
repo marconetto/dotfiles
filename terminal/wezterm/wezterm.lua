@@ -179,7 +179,7 @@ local function is_vim(pane)
   local prog = pane:get_title()
   local process = pane:get_foreground_process_name()
   -- print("is_vim process=" .. process)
-  return prog:match("^nvim") or prog:match("^lima") or prog:match("^tmux")
+  return prog:match("^nvim") or prog:match("^lima") or prog:match("^tmux") or prog:match("^ssh")
 end
 
 -- local function is_vim(pane)
@@ -189,6 +189,8 @@ end
 
 myscrollup = wezterm.action_callback(function(window, pane)
   if is_vim(pane) then
+    -- window:perform_action(act.SendKey({ key = "u", mods = "CTRL" }), pane)
+
     window:perform_action({
       SendKey = { key = "PageUp" },
     }, pane)
@@ -208,13 +210,13 @@ myscrolldown = wezterm.action_callback(function(window, pane)
 end)
 
 mypaste = wezterm.action_callback(function(window, pane)
-  if is_vim(pane) then
-    window:perform_action(act.SendKey({ key = "Escape" }), pane)
-    -- pane:perform_action(act.PasteFrom 'Clipboard', pane)
-    pane:send_text(" p")
-  else
-    window:perform_action(act.PasteFrom("Clipboard"), pane)
-  end
+  -- if is_vim(pane) then
+  --   window:perform_action(act.SendKey({ key = "Escape" }), pane)
+  --   pane:perform_action(act.PasteFrom("Clipboard"), pane)
+  --   pane:send_text(" p")
+  -- else
+  window:perform_action(act.PasteFrom("Clipboard"), pane)
+  -- end
 end)
 
 mypasteindent = wezterm.action_callback(function(window, pane)
