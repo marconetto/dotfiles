@@ -19,7 +19,7 @@ font-family: Droid Sans Mono
   justify-content: center
   align-items: center
   transform: translate(50%,0%)
-  margin-left: 90px
+  margin-left: 110px
 
 
 

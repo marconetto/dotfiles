@@ -130,8 +130,11 @@ update: (output, domEl) ->
   $(domEl).find('.hour').html("#{hour}:#{minutes}")
 
 
-  if (minutes >= 55)
+  if (minutes >= 58 || minutes <= 2)
       $(domEl).find('.hour').css('color', '#ff5555')
+  else
+      $(domEl).find('.hour').css('color', '#dfbf8e')
+
   # $(domEl).find('.hour').html("⏲ #{hour}:#{minutes}")
   # $(domEl).find('.hour').html("⏲ #{hour}:#{minutes}")
   # $(domEl).find('.hour').html("#{hour}:#{minutes} &nbsp; #{day}-#{weekday}")

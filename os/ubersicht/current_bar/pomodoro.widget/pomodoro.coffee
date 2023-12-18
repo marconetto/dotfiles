@@ -67,12 +67,12 @@ update: (output, domEl) ->
 
 
    output = output.trim()
+   $(domEl).find('.myalert').text("#{output}")
    if ( output == "DONE" )
-      $(domEl).find('.myalert').text("#{output}")
       $(domEl).find('.myalert').css('color', '#ff5555')
       # $(domEl).find('.myalert').css('font-weight', 'regular')
    else
-     $(domEl).find('.myalert').text("#{output}")
+      $(domEl).find('.myalert').css('color', '#dfbf8e')
 
   # name = output.split(' ')
 

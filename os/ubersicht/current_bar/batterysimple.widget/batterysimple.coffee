@@ -74,6 +74,9 @@ update: (output, domEl) ->
 
   if (numericPart < 30)
       $(domEl).find('.myspace').css('color', '#ff5555')
+  else
+      $(domEl).find('.myspace').css('color', '#dfbf8e')
+
 
 
   # $(domEl).find('.space').text("#{name[0]}·#{name[1]}")

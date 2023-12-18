@@ -54,7 +54,8 @@ chrlen=${#netname}
 # so putting this before adding the utf-8
 # TODO?  use wc -m to count chars..
 if [[ "$vpnconnected" == "yes" ]]; then
-    netname="🔸"$netname
+    netname="⚡"$netname
+    # netname="🔸"$netname
 fi
 
 
