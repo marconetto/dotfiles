@@ -474,18 +474,34 @@ require('lazy').setup {
     end,
   },
   -- kitty -----------------------------------------------------------------------------
+  -- {
+  --   'knubie/vim-kitty-navigator',
+  --   cond = function()
+  --     if vim.fn.has 'mac' == 1 then
+  --       return true
+  --     else
+  --       return false
+  --     end
+  --   end,
+  --   build = 'cp ./*.py ~/.config/kitty/',
+  --   init = function()
+  --     vim.g.kitty_navigator_no_mappings = 1
+  --   end,
+  -- },
+  -- wezterm navigator ----------------------------------------------------------------
   {
-    'knubie/vim-kitty-navigator',
-    cond = function()
-      if vim.fn.has 'mac' == 1 then
-        return true
-      else
-        return false
-      end
-    end,
-    build = 'cp ./*.py ~/.config/kitty/',
-    init = function()
-      vim.g.kitty_navigator_no_mappings = 1
+    'numToStr/Navigator.nvim',
+    keys = {
+      { '<A-h>', '<CMD>NavigatorLeft<CR>', mode = { 'n', 't' } },
+      { '<A-l>', '<CMD>NavigatorRight<CR>', mode = { 'n', 't' } },
+      { '<A-k>', '<CMD>NavigatorUp<CR>', mode = { 'n', 't' } },
+      { '<A-j>', '<CMD>NavigatorDown<CR>', mode = { 'n', 't' } },
+    },
+    config = function()
+      local ok, wezterm = pcall(function()
+        return require('Navigator.mux.wezterm'):new()
+      end)
+      require('Navigator').setup { mux = ok and wezterm or 'auto' }
     end,
   },
   -- {
@@ -875,13 +891,15 @@ nnoremap <silent> <leader>w :call StripTrailingWhitespaces()<cr>:silent w<cr>:ec
 nnoremap <leader>z :x<CR>
 nnoremap <leader>q :q!<CR>
 
+nnoremap <C-p> gwap
+
 
 set noswapfile
 set nobackup
 set nomodeline
 
-nnoremap <silent> <c-p> :KittyNavigateRight<cr>
-nnoremap <silent> <c-h> :KittyNavigateLeft<cr>
+" nnoremap <silent> <c-p> :KittyNavigateRight<cr>
+" nnoremap <silent> <c-h> :KittyNavigateLeft<cr>
 " as removed trim from osc52, to yank line go to first non-whitespace char
 nmap <silent> Y ^vg_<leader>y:echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
 " nmap <silent> Y 0vg_<leader>y:echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
