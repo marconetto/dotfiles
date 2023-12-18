@@ -4,8 +4,8 @@ function install_zsh_plugin(){
     plugname=$1
     PLUGDIR=$HOME/.zsh/$1
     [[ ! -d "$PLUGDIR" ]] && \
-       git clone "$GITHUBZSH/$plugname" $PLUGDIR
-    source $PLUGDIR/$plugname.zsh
+       git clone "$GITHUBZSH/$plugname" "$PLUGDIR"
+    source "$PLUGDIR"/"$plugname".zsh
 }
 
 
@@ -15,7 +15,7 @@ function hg() {
 
 function mcd () {
   mkdir "$1"
-  cd "$1"
+  cd "$1" || exit
 }
 
 # executes ls when changing directory
@@ -55,7 +55,7 @@ function set-title-preexec() {
     currentcommand="tmux"
   fi
 
-  printf "\e]2;%s\a" $currentcommand
+  printf "\e]2;%s\a" "$currentcommand"
 }
 
 
@@ -77,7 +77,7 @@ vr() {
     local line ok make_dir i arr
     local get_styles styles style
     while : ${make_dir:=0}; ok=("${ok[@]:-dummy_$RANDOM}"); cmd="$(
-        cat <$f \
+        cat <"$f" \
             | while read line; do [ -e "$line" ] && echo "$line"; done \
             | while read line; do [ "$make_dir" -eq 1 ] && echo "${line:h}/" || echo "$line"; done \
             | awk '!a[$0]++' \
@@ -139,19 +139,19 @@ HELP
                 ;;
             ctrl-y)
                 nvim -p "${(@f)res}" < /dev/tty > /dev/tty
-                return $status
+                return "$status"
                 ;;
             ctrl-p)
                 echo "$res" < /dev/tty > /dev/tty
-                return $status
+                return "$status"
                 ;;
             *)
                 nvim "${(@f)res}"
-                echo "vi "${(@f)res}""
-                print -s "vi "${(@f)res}""
+                echo "vi ""${(@f)res}"""
+                print -s "vi ""${(@f)res}"""
                 openedfile="${(@f)res}"
-                dir=$(dirname $openedfile)
-                cd $dir > /dev/null
+                dir=$(dirname "$openedfile")
+                cd "$dir" > /dev/null || exit
                 break
                 ;;
         esac
