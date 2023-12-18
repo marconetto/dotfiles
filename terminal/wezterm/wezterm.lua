@@ -189,31 +189,41 @@ local function is_vim(pane)
   return prog:match("^nvim") or prog:match("^lima") or prog:match("^tmux") or prog:match("^ssh")
 end
 
+local function is_shell(pane)
+  -- local prog = pane:get_user_vars()["WEZTERM_PROG"]
+  local prog = pane:get_title()
+  local process = pane:get_foreground_process_name()
+  -- print("is_vim process=" .. process)
+  return prog:match("^zsh")
+end
+
 -- local function is_vim(pane)
 --     -- this is set by the plugin, and unset on ExitPre in Neovim
 --     return pane:get_user_vars().IS_NVIM == 'true'
 -- end
 
 myscrollup = wezterm.action_callback(function(window, pane)
-  --  if is_vim(pane) then
+  -- if is_shell(pane) then
   -- window:perform_action(act.SendKey({ key = "u", mods = "CTRL" }), pane)
-
+  -- window:perform_action(act.ScrollByPage(-1), pane)
+  -- else
   window:perform_action({
     SendKey = { key = "PageUp" },
   }, pane)
+  -- end
   -- else
   --    window:perform_action(act.ScrollByPage(-1), pane)
   --  end
 end)
 
 myscrolldown = wezterm.action_callback(function(window, pane)
-  --  if is_vim(pane) then
+  -- if is_shell(pane) then
+  -- window:perform_action(act.ScrollByPage(1), pane)
+  -- else
   window:perform_action({
     SendKey = { key = "PageDown" },
   }, pane)
-  --  else
-  --   window:perform_action(act.ScrollByPage(1), pane)
-  --  end
+  -- end
 end)
 
 mypaste = wezterm.action_callback(function(window, pane)
@@ -346,7 +356,7 @@ config.keys = {
   { key = "/", mods = "CMD", action = act.SendString("++") },
   { key = "p", mods = "CMD", action = act.SendString("+p") },
   -- zsh autocomplete
-  { key = "Enter", mods = "CMD|SHIFT", action = act.SendString("\x1bxxy") },
+  -- { key = "Enter", mods = "CMD|SHIFT", action = act.SendString("\x1bxxy") },
   { key = "Enter", mods = "CMD", action = act.SendString("\x1bxxx") },
   { key = "LeftArrow", mods = "ALT", action = act.SendString("\x1b[1;5D") },
   { key = "RightArrow", mods = "ALT", action = act.SendString("\x1b[1;5C") },

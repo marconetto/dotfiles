@@ -19,6 +19,10 @@ install_zsh_plugin "zsh-autosuggestions"
 install_zsh_plugin "zsh-syntax-highlighting"
 install_zsh_plugin "zsh-history-substring-search"
 autoload -U compaudit compinit; compinit
+
+if [[ ! -d "$HOME"/.zsh/zsh-histdb ]]; then
+  git clone https://github.com/larkery/zsh-histdb "$HOME"/.zsh/zsh-histdb
+fi
 # -----------------------------------------------------------
 
 
@@ -156,7 +160,7 @@ bindkey "^x" delete-char
 
 # shift+enter for completing suggestion and shift+cmd+enter for accepting and
 # executing suggestion. This requires add this keystrokes in iterm2
-bindkey '^[xxy' autosuggest-accept
+bindkey '^[[Z' autosuggest-accept # shift+tab
 bindkey '^[xxx' autosuggest-execute
 bindkey ' ' magic-space # do history expansion on space
 
@@ -222,6 +226,9 @@ bindkey -v '^?' backward-delete-char
 bindkey -s '\e[5~' ''
 bindkey -s '\e[6~' ''
 
+# disable vi mode for now
+# bindkey -e
+
 #################################################### OSC 7
 # https://github.com/wez/wezterm/discussions/3718
 _urlencode() {
@@ -238,6 +245,25 @@ _urlencode() {
 osc7_cwd() {
     printf '\033]7;file://%s%s\e\\' "$HOSTNAME" "$(_urlencode "$PWD")"
 }
+
+##### make autosuggest location aware ###########################
+HISTDB_TABULATE_CMD=(sed -e $'s/\x1f/\t/g')
+source "$HOME"/.zsh/zsh-histdb/sqlite-history.zsh
+autoload -Uz add-zsh-hook
+
+_zsh_autosuggest_strategy_histdb_top_here() {
+    local query="select commands.argv from
+history left join commands on history.command_id = commands.rowid
+left join places on history.place_id = places.rowid
+where places.dir LIKE '$(sql_escape "$PWD")%'
+and commands.argv LIKE '$(sql_escape "$1")%'
+group by commands.argv order by count(*) desc limit 1"
+    suggestion=$(_histdb_query "$query")
+}
+
+ZSH_AUTOSUGGEST_STRATEGY=histdb_top_here
+#################################################################
+
 
 [[ -f $HOME/.mycomp ]] && add-zsh-hook -Uz chpwd osc7_cwd
 ####################################################
