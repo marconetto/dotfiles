@@ -552,6 +552,13 @@ wezterm.on("update-right-status", function(window, pane)
   }))
 end)
 
+config.max_fps = 240
+config.front_end = "WebGpu"
+-- config.front_end = "OpenGL"
+-- config.webgpu_power_preference = "HighPerformance"
+
+config.scrollback_lines = 10000
+
 return config
 -- ----------------------------------------------------------------------------
 --  may be useful ... work in progress
