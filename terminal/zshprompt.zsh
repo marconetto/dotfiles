@@ -11,10 +11,10 @@
 
 function home2() {
 
-  if [[ "$HOME" = "`pwd`" ]]; then
+  if [[ "$HOME" = "$(pwd)" ]]; then
       echo "%F{247}home"
   else
-     v=`tput cols`
+     v=$(tput cols)
      if [[ $v -lt 100 ]] then
          echo "%F{242}%20<..<%~%<<"
      else
@@ -39,21 +39,21 @@ function arrow() {
 
 
   # %n not working in some machines ...
-  username=`whoami`
+  username=$(whoami)
   if [[ ! -f $HOME/.mycomp ]]; then
     echo -n "%F{green}$username%F{64}@%F{green}%m:%1 "
-    if [[ "$HOME" = `pwd` ]]; then
+    if [[ "$HOME" = $(pwd) ]]; then
         echo -n "%F{blue}~ %f"
     fi
   fi
-  if [[ "$KEYMAP" = "vicmd" && "$HOME" = `pwd` ]]; then
+  if [[ "$KEYMAP" = "vicmd" && "$HOME" = $(pwd) ]]; then
          echo "%F{240}❯%f"
   elif [[ $KEYMAP == "vicmd" ]]; then
          echo "%F{blue}%1~ %F{240}❯%f"
-  elif [[ "$HOME" = "`pwd`" ]]; then
-        echo "%F{red}❯%f"
+  elif [[ "$HOME" = "$(pwd)" ]]; then
+        echo "%F{green}❯%f"
   else
-        echo "%F{blue}%1~ %F{red}❯%f"
+        echo "%F{blue}%1~ %F{green}❯%f"
   fi
 }
 
