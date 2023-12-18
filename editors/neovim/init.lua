@@ -1271,6 +1271,10 @@ if vim.fn.has 'mac' == 1 then
   vim.cmd [[
 :au FocusLost   * :set nocursorline
 :au FocusLost   * :set nocursorcolumn
+:au WinLeave   * :set nocursorcolumn
+:au WinLeave   * :set nocursorline
+:au WinEnter   * :set cursorline
+:au WinEnter   * :set cursorcolumn
 :au FocusGained * :set cursorline
 :au FocusGained * :set cursorcolumn
 ]]
