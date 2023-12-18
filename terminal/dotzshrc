@@ -218,6 +218,9 @@ bindkey "^[[3~" delete-char
 #fix backspace after vim mode is used
 bindkey -v '^?' backward-delete-char
 
+# remote action for pageup/pagedown
+bindkey -s '\e[5~' ''
+bindkey -s '\e[6~' ''
 
 #################################################### OSC 7
 # https://github.com/wez/wezterm/discussions/3718
