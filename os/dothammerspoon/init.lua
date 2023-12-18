@@ -45,17 +45,16 @@ USE_UBER_POMODORO_ALERT = true
 -------------------------------------------------------------------------------
 function cleanuberalert()
   return function()
-    message = ""
-    messagefile = os.getenv("HOME") .. DIR_SIMPLE_ALERT .. "/message.txt"
-    command = 'echo "' .. message .. '" > ' .. messagefile
-    hs.execute(command, false)
-
     command =
       'tell application "Übersicht" to set hidden of widget id "simplealert-widget-simplealert-coffee" to true'
     hs.osascript.applescript(command)
     command = 'tell application "Übersicht" to refresh widget id "simplealert-widget-simplealert-coffee"'
     hs.osascript.applescript(command)
 
+    message = ""
+    messagefile = os.getenv("HOME") .. DIR_SIMPLE_ALERT .. "/message.txt"
+    command = 'echo "' .. message .. '" > ' .. messagefile
+    hs.execute(command, false)
     if uber_last_clean_timer ~= nil then
       uber_last_clean_timer = nil
     end
@@ -83,6 +82,7 @@ function show_alert(message, duration)
   print("show_alert")
   if USE_UBER_ALERT then
     print(message)
+    print(duration)
     uberalert(message, duration)
   else
     hs.alert.closeAll(0.0)
@@ -137,6 +137,9 @@ hs.hotkey.bind({ "cmd" }, "escape", function()
   -- hs.eventtap.keyStroke({ "ctrl", "cmd", "shift", "alt" }, "3")
 end)
 
+-- hs.hotkey.bind({ "shift" }, "escape", function()
+--   hs.eventtap.keyStroke("shift", "`")
+-- end)
 -------------------------------------------------------------------------------
 -- lock screen shortcut
 -------------------------------------------------------------------------------
