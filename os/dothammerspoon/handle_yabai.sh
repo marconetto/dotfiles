@@ -1,16 +1,20 @@
 #!/bin/sh
 
-if [ $1 == "restart" ]; then
-    # https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
-    /usr/local/bin/yabai --restart-service
-    # https://github.com/koekeishiya/skhd
-    /usr/local/bin/skhd --restart-service
+if [ "$1" == "restart" ]; then
+  # https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)
+  /usr/local/bin/yabai --stop-service
+  /usr/local/bin/yabai --start-service
+  /usr/local/bin/skhd --stop-service
+  /usr/local/bin/skhd --start-service
+  # if restart is used but yabai is not running
+  # it won't start yabai
 else
-    VAR=$(ps aux | grep yabai | grep "[/]usr/local/bin/yabai")
+  VAR=$(pgrep yabai)
+  # VAR=$(ps aux | grep yabai | grep "[/]usr/local/bin/yabai")
 
-    if [ $VAR == "0" ]; then
-        echo "off"
-    else
-        echo "on"
-    fi
+  if [ -z "$VAR" ]; then
+    echo "off"
+  else
+    echo "on"
+  fi
 fi

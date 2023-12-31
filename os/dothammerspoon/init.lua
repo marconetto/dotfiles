@@ -106,7 +106,7 @@ function reloadConfig(files)
 end
 
 myWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.hammerspoon/", reloadConfig):start()
-show_alert("config reloaded", 1.0)
+show_alert("config reloaded", 0.5)
 
 local hyperkeys = { "ctrl", "alt", "cmd", "shift" }
 local threekeys = { "ctrl", "alt", "cmd" }
@@ -119,7 +119,7 @@ hs.hotkey.bind(hyperkeys, "a", function()
   hs.alert.closeAll(0.0)
   hs.alert.show("Test Hyper!", {
     textFont = "Comic Sans MS",
-    textSize = 70,
+    textSize = 20,
     fadeOutDuration = 1,
   })
 end)
@@ -670,6 +670,7 @@ hs.hotkey.bind(threekeys, "9", nextMonitor(), nil, nil)
 -- now it fixes when battery status change and machine wakes up
 -------------------------------------------------------------------------------
 function function_fixkeyboard()
+  -- command = (os.getenv("HOME")) .. "/dotfiles/os/dry/dry 0.019"
   command = (os.getenv("HOME")) .. "/dotfiles/os/dry/dry 0.0166666666667"
   output, status, termType, rc = hs.execute(command, false)
   if rc == 1 then

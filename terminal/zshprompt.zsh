@@ -51,9 +51,9 @@ function arrow() {
   elif [[ $KEYMAP == "vicmd" ]]; then
          echo "%F{blue}%1~ %F{240}❯%f"
   elif [[ "$HOME" = "$(pwd)" ]]; then
-        echo "%F{green}❯%f"
+        echo "%F{204}❯%f"
   else
-        echo "%F{blue}%1~ %F{green}❯%f"
+        echo "%F{blue}%1~ %F{204}❯%f"
   fi
 }
 

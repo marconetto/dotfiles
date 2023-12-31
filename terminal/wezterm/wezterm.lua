@@ -108,8 +108,8 @@ config.colors = {
 config.inactive_pane_hsb = {
   -- saturation = 0.9, -- default
   -- brightness = 0.8, -- default
-  saturation = 0.9,
-  brightness = 0.7,
+  saturation = 0.7,
+  brightness = 0.6,
 }
 
 config.window_padding = {
