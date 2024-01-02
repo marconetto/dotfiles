@@ -317,14 +317,10 @@ config.keys = {
   -- { key = 'v',          mods = 'CMD',                       action = act.PasteFrom 'Clipboard' },
   --    { key = 'v',          mods = 'CTRL',                      action = act.PasteFrom 'PrimarySelection' },
   --Pane navigation
-  { key = "LeftArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-left") },
-  { key = "RightArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-right") },
-  { key = "UpArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-up") },
-  { key = "DownArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-down") },
-  -- { key = "LeftArrow", mods = "CMD", action = act.ActivatePaneDirection("Left") },
-  -- { key = "RightArrow", mods = "CMD", action = act.ActivatePaneDirection("Right") },
-  -- { key = "UpArrow", mods = "CMD", action = act.ActivatePaneDirection("Up") },
-  -- { key = "DownArrow", mods = "CMD", action = act.ActivatePaneDirection("Down") },
+  { key = "LeftArrow", mods = "CMD", action = act.ActivatePaneDirection("Left") },
+  { key = "RightArrow", mods = "CMD", action = act.ActivatePaneDirection("Right") },
+  { key = "UpArrow", mods = "CMD", action = act.ActivatePaneDirection("Up") },
+  { key = "DownArrow", mods = "CMD", action = act.ActivatePaneDirection("Down") },
   --Pane spliting
   {
     key = "d",
