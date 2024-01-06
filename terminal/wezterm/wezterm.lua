@@ -36,6 +36,12 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   -- ensure that the titles fit in the available space,
   -- and that we have room for the edges.
   local title = wezterm.truncate_right(tab.active_pane.title, max_width + 2)
+  if string.len(title) > 4 then
+    title = wezterm.truncate_right(title, 3) .. "…"
+  end
+  if string.len(title) < 4 then
+    title = string.rep(" ", 4 - string.len(title)) .. title
+  end
   local zoomed = "  "
   local zz
   if tab.active_pane.is_zoomed then
