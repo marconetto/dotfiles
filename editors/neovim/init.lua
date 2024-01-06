@@ -1180,8 +1180,9 @@ augroup END
 nnoremap <leader>1 :set invspell<CR>
 nnoremap <leader>3 ]s
 nnoremap <leader>4 [s
-" f3
+
 ]]
+vim.api.nvim_set_keymap('n', '<Leader>rn', ':lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
 
 -- vim.keymap.set('n', '<c-s>', ':Telescope possession list<CR>', { silent = true })
 -- vim.keymap.set('n', '<leader>s', ':MarksListBuf<CR>', { silent = true })
@@ -1425,6 +1426,8 @@ local opts_ff = {
 vim.keymap.set('n', '<leader>ff', function()
   return require('telescope.builtin').find_files(opts_ff)
 end, s)
+
+-- vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { silent = true })
 
 ------------------------------------------------
 -- local events = {

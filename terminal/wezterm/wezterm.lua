@@ -104,6 +104,7 @@ config.colors = {
   -- make border (which is shown in inactive pane), transparent
   cursor_border = "#2C323B",
 }
+config.pane_focus_follows_mouse = true
 
 config.inactive_pane_hsb = {
   -- saturation = 0.9, -- default
@@ -257,11 +258,7 @@ mycopy = wezterm.action_callback(function(window, pane)
 end)
 
 local function isViProcess(pane)
-  -- get_foreground_process_name On Linux, macOS and Windows,
-  -- the process can be queried to determine this path. Other operating systems
-  -- (notably, FreeBSD and other unix systems) are not currently supported
-  return pane:get_foreground_process_name():find("n?vim") ~= nil
-  -- return pane:get_title():find("n?vim") ~= nil
+  return pane:get_title():find("n?vim") ~= nil
 end
 
 local function conditionalActivatePane(window, pane, pane_direction, vim_direction)
@@ -321,6 +318,10 @@ config.keys = {
   { key = "RightArrow", mods = "CMD", action = act.ActivatePaneDirection("Right") },
   { key = "UpArrow", mods = "CMD", action = act.ActivatePaneDirection("Up") },
   { key = "DownArrow", mods = "CMD", action = act.ActivatePaneDirection("Down") },
+  { key = "RightArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-right") },
+  { key = "LeftArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-left") },
+  { key = "UpArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-up") },
+  { key = "DownArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-down") },
   --Pane spliting
   {
     key = "d",
@@ -558,7 +559,7 @@ wezterm.on("update-right-status", function(window, pane)
   }))
 end)
 
-config.max_fps = 240
+config.max_fps = 120
 config.front_end = "WebGpu"
 -- config.front_end = "OpenGL"
 -- config.webgpu_power_preference = "HighPerformance"
