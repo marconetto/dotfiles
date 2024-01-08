@@ -202,6 +202,58 @@ require('lazy').setup {
       }
     end,
   },
+  {
+    'SmiteshP/nvim-navbuddy',
+    dependencies = {
+      'neovim/nvim-lspconfig',
+      'SmiteshP/nvim-navic',
+      'MunifTanjim/nui.nvim',
+      'numToStr/Comment.nvim', -- Optional
+      'nvim-telescope/telescope.nvim', -- Optional
+    },
+    keys = {
+      { '<leader>nv', '<cmd>Navbuddy<cr>', desc = 'Nav' },
+    },
+    config = function()
+      local actions = require 'nvim-navbuddy.actions'
+      local navbuddy = require 'nvim-navbuddy'
+      navbuddy.setup {
+        window = {
+          border = 'rounded', -- "rounded", "double", "solid", "none"
+          -- or an array with eight chars building up the border in a clockwise fashion
+          -- starting with the top-left corner. eg: { "╔", "═" ,"╗", "║", "╝", "═", "╚", "║" }.
+          size = '60%', -- Or table format example: { height = "40%", width = "100%"}
+          position = '50%', -- Or table format example: { row = "100%", col = "0%"}
+          scrolloff = nil, -- scrolloff value within navbuddy window
+          sections = {
+            left = {
+              size = '05%',
+              border = nil, -- You can set border style for each section individually as well.
+            },
+            mid = {
+              size = '40%',
+              border = nil,
+            },
+            right = {
+              -- No size option for right most section. It fills to
+              -- remaining area.
+              border = nil,
+              preview = 'always', -- Right section can show previews too.
+              -- Options: "leaf", "always" or "never"
+            },
+          },
+        },
+        -- window = {
+        --   border = 'single',
+        -- },
+        mappings = {
+          ['<Left>'] = actions.parent(),
+          ['<Right>'] = actions.children(),
+        },
+        lsp = { auto_attach = true },
+      }
+    end,
+  },
   -- lsp -----------------------------------------------------------------------------
   {
     -- TODO, add here black and shfmt to auto install
@@ -1563,3 +1615,11 @@ vim.keymap.set(
 vim.keymap.set('n', '<leader>rn', function()
   return ':IncRename ' .. vim.fn.expand '<cword>'
 end, { expr = true })
+
+-- local navbuddy = require 'nvim-navbuddy'
+--
+-- require('lspconfig').pyright.setup {
+--   on_attach = function(client, bufnr)
+--     navbuddy.attach(client, bufnr)
+--   end,
+-- }
