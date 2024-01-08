@@ -732,6 +732,12 @@ require('lazy').setup {
       }
     end,
   },
+  {
+    'smjonas/inc-rename.nvim',
+    config = function()
+      require('inc_rename').setup()
+    end,
+  },
   -- {
   --
   --   'jedrzejboczar/possession.nvim',
@@ -794,6 +800,7 @@ require('lazy').setup {
   --     end)
   --   end,
   -- },
+  --
 }
 
 -- f3
@@ -1552,3 +1559,7 @@ vim.keymap.set(
   ':botright vsplit | lua vim.lsp.buf.definition()<CR>',
   { noremap = true, silent = true }
 )
+
+vim.keymap.set('n', '<leader>rn', function()
+  return ':IncRename ' .. vim.fn.expand '<cword>'
+end, { expr = true })

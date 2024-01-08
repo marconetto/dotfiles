@@ -14,6 +14,7 @@
   "gitsigns.nvim": { "branch": "main", "commit": "af0f583cd35286dd6f0e3ed52622728703237e50" },
   "goto-preview": { "branch": "main", "commit": "16ec236fabb40b2cebfe283b1d701338886462db" },
   "gruvbox-material": { "branch": "master", "commit": "b5f8c6a6c1cda630c53b061b765068a0898d47a3" },
+  "inc-rename.nvim": { "branch": "main", "commit": "6f9b5f9cb237e12935144cdc535322b8c93c1b25" },
   "lazy.nvim": { "branch": "main", "commit": "16603c6917435d8446f7357cb61095138a417085" },
   "lazygit.nvim": { "branch": "main", "commit": "75c920883f44243f2bbb172be423e484a58f7c45" },
   "lsp-format.nvim": { "branch": "master", "commit": "ca0df5c8544e51517209ea7b86ecc522c98d4f0a" },
