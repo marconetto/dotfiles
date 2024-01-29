@@ -5,6 +5,7 @@ Dotfiles using the following major technologies:
 - zsh: https://www.zsh.org
 - karabiner: https://karabiner-elements.pqrs.org/
 - kitty: https://sw.kovidgoyal.net/kitty/
+- wezterm: https://wezfurlong.org/wezterm/index.html
 - yabai: https://github.com/koekeishiya/yabai
 - neovim: https://neovim.io/
 - hammerspoon: https://www.hammerspoon.org/
