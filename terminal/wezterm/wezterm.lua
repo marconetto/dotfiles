@@ -110,7 +110,8 @@ config.colors = {
   -- make border (which is shown in inactive pane), transparent
   cursor_border = "#2C323B",
 }
-config.pane_focus_follows_mouse = true
+-- not convinced it is a good idea
+-- config.pane_focus_follows_mouse = true
 
 config.inactive_pane_hsb = {
   -- saturation = 0.9, -- default
@@ -568,7 +569,7 @@ wezterm.on("update-right-status", function(window, pane)
 end)
 
 config.max_fps = 120
-config.front_end = "WebGpu"
+-- config.front_end = "WebGpu"
 -- config.front_end = "OpenGL"
 -- config.webgpu_power_preference = "HighPerformance"
 
