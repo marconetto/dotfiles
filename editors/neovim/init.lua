@@ -1187,7 +1187,7 @@ nmap <silent> <leader>l :set nohlsearch<CR>*:let @/ = ''<CR>:set hlsearch<CR>
 "exe "hi! IncSearch      gui=BOLD   guifg=#303030   guibg=#cd8b60"
 exe "hi! IncSearch guibg=#a9b1d6 guifg=#444444 gui=NONE"
 exe "hi! Search guibg=#444444 guifg=#cccccc gui=NONE"
-"exe "hi! Search guibg=#b16286 guifg=#ababa2 gui=NONE"
+exe "hi! Visual  guibg=#444449 gui=none"
 set autochdir
 
 
