@@ -316,7 +316,7 @@
             ]
           },
           {
-            "description": "Chrome shortcuts",
+            "description": "Chrome shortcuts Control + J/L page down/up",
             "manipulators": [
               {
                 "conditions": [
