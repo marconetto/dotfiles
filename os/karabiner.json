@@ -18,10 +18,208 @@
         },
         "rules": [
           {
+            "description": "NEW ARROWS WITH CAPSLOCK",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_option",
+                      "left_control",
+                      "left_shift"
+                    ],
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "left_arrow"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "l",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_option",
+                      "left_control",
+                      "left_shift"
+                    ],
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "right_arrow"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "i",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_option",
+                      "left_control",
+                      "left_shift"
+                    ],
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "up_arrow"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "k",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_option",
+                      "left_control",
+                      "left_shift"
+                    ],
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "down_arrow"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Volume UP/DOWN/MUTE -> RIGHT_SHIFT Q/W/E",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "a",
+                  "modifiers": {
+                    "mandatory": [
+                      "right_shift"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "consumer_key_code": "volume_decrement"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "s",
+                  "modifiers": {
+                    "mandatory": [
+                      "right_shift"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "consumer_key_code": "volume_increment"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "d",
+                  "modifiers": {
+                    "mandatory": [
+                      "right_shift"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "consumer_key_code": "mute"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "SPOTIFY ",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "q",
+                  "modifiers": {
+                    "mandatory": [
+                      "right_shift"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "f13"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "w",
+                  "modifiers": {
+                    "mandatory": [
+                      "right_shift"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "f14"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "e",
+                  "modifiers": {
+                    "mandatory": [
+                      "right_shift"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "f15"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "Map Option+J/K/P to Mouse Scroll Down/Up/Click",
             "manipulators": [
               {
-                "type": "basic",
                 "from": {
                   "key_code": "j",
                   "modifiers": {
@@ -33,17 +231,17 @@
                 "to": [
                   {
                     "mouse_key": {
-                      "x": 0,
-                      "y": 0,
-                      "vertical_wheel": 60,
                       "horizontal_wheel": 0,
-                      "speed_multiplier": 1
+                      "speed_multiplier": 1,
+                      "vertical_wheel": 60,
+                      "x": 0,
+                      "y": 0
                     }
                   }
-                ]
+                ],
+                "type": "basic"
               },
               {
-                "type": "basic",
                 "from": {
                   "key_code": "k",
                   "modifiers": {
@@ -55,17 +253,17 @@
                 "to": [
                   {
                     "mouse_key": {
-                      "x": 0,
-                      "y": 0,
-                      "vertical_wheel": -60,
                       "horizontal_wheel": 0,
-                      "speed_multiplier": 1
+                      "speed_multiplier": 1,
+                      "vertical_wheel": -60,
+                      "x": 0,
+                      "y": 0
                     }
                   }
-                ]
+                ],
+                "type": "basic"
               },
               {
-                "type": "basic",
                 "from": {
                   "key_code": "p",
                   "modifiers": {
@@ -81,7 +279,8 @@
                   {
                     "pointing_button": "button1"
                   }
-                ]
+                ],
+                "type": "basic"
               }
             ]
           },
@@ -309,6 +508,49 @@
                     "modifiers": [
                       "command"
                     ]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Chrome smooth scroll replace j/k with arrow down/up",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.google\\.Chrome"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "j"
+                },
+                "to": [
+                  {
+                    "key_code": "down_arrow"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.google\\.Chrome"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "k"
+                },
+                "to": [
+                  {
+                    "key_code": "up_arrow"
                   }
                 ],
                 "type": "basic"
@@ -1091,6 +1333,50 @@
           },
           "ignore": false,
           "manipulate_caps_lock_led": true,
+          "mouse_flip_horizontal_wheel": false,
+          "mouse_flip_vertical_wheel": false,
+          "mouse_flip_x": false,
+          "mouse_flip_y": false,
+          "mouse_swap_wheels": false,
+          "mouse_swap_xy": false,
+          "simple_modifications": [],
+          "treat_as_built_in_keyboard": false
+        },
+        {
+          "disable_built_in_keyboard_if_exists": false,
+          "fn_function_keys": [],
+          "game_pad_swap_sticks": false,
+          "identifiers": {
+            "is_game_pad": false,
+            "is_keyboard": true,
+            "is_pointing_device": false,
+            "product_id": 591,
+            "vendor_id": 1452
+          },
+          "ignore": false,
+          "manipulate_caps_lock_led": true,
+          "mouse_flip_horizontal_wheel": false,
+          "mouse_flip_vertical_wheel": false,
+          "mouse_flip_x": false,
+          "mouse_flip_y": false,
+          "mouse_swap_wheels": false,
+          "mouse_swap_xy": false,
+          "simple_modifications": [],
+          "treat_as_built_in_keyboard": false
+        },
+        {
+          "disable_built_in_keyboard_if_exists": false,
+          "fn_function_keys": [],
+          "game_pad_swap_sticks": false,
+          "identifiers": {
+            "is_game_pad": false,
+            "is_keyboard": false,
+            "is_pointing_device": true,
+            "product_id": 591,
+            "vendor_id": 1452
+          },
+          "ignore": true,
+          "manipulate_caps_lock_led": false,
           "mouse_flip_horizontal_wheel": false,
           "mouse_flip_vertical_wheel": false,
           "mouse_flip_x": false,
