@@ -545,10 +545,10 @@ require('lazy').setup {
   {
     'numToStr/Navigator.nvim',
     keys = {
-      { '<A-h>', '<CMD>NavigatorLeft<CR>', mode = { 'n', 't' } },
-      { '<A-l>', '<CMD>NavigatorRight<CR>', mode = { 'n', 't' } },
-      { '<A-k>', '<CMD>NavigatorUp<CR>', mode = { 'n', 't' } },
-      { '<A-j>', '<CMD>NavigatorDown<CR>', mode = { 'n', 't' } },
+      { '<C-M-h>', '<CMD>NavigatorLeft<CR>', mode = { 'n', 't' } },
+      { '<C-M-l>', '<CMD>NavigatorRight<CR>', mode = { 'n', 't' } },
+      { '<C-M-k>', '<CMD>NavigatorUp<CR>', mode = { 'n', 't' } },
+      { '<C-M-j>', '<CMD>NavigatorDown<CR>', mode = { 'n', 't' } },
     },
     config = function()
       local ok, wezterm = pcall(function()
@@ -1113,8 +1113,8 @@ function! JumpWithinFile(back, forw)
     endwhile
 endfunction
 
-nnoremap <silent> <c-k> :call JumpWithinFile("\<c-i>", "\<c-o>")<cr>
-nnoremap <silent> <c-j> :call JumpWithinFile("\<c-o>", "\<c-i>")<cr>
+nnoremap <silent> <c-9> :call JumpWithinFile("\<c-i>", "\<c-o>")<cr>
+nnoremap <silent> <c-8> :call JumpWithinFile("\<c-o>", "\<c-i>")<cr>
 
 " autocmd CursorHold * silent lua vim.diagnostic.open_float()
 
@@ -1264,6 +1264,16 @@ augroup END
 nnoremap <leader>1 :set invspell<CR>
 nnoremap <leader>3 ]s
 nnoremap <leader>4 [s
+
+"unmap <M-j>
+"unmap <M-k>
+"unmap <M-h>
+"unmap <M-l>
+
+"nnoremap <c-k> <PageUp>
+"nnoremap <c-k> <PageUp>
+"nnoremap <c-j> <PageDown>
+"nnoremap <c-j> <PageDown>
 
 ]]
 vim.api.nvim_set_keymap('n', '<Leader>rn', ':lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })

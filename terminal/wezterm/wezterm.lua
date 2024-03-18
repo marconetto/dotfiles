@@ -272,7 +272,7 @@ local function conditionalActivatePane(window, pane, pane_direction, vim_directi
   if isViProcess(pane) then
     window:perform_action(
       -- This should match the keybinds set in Neovim
-      act.SendKey({ key = vim_direction, mods = "ALT" }),
+      act.SendKey({ key = vim_direction, mods = "ALT|CTRL" }),
       pane
     )
   else
@@ -321,14 +321,23 @@ config.keys = {
   -- { key = 'v',          mods = 'CMD',                       action = act.PasteFrom 'Clipboard' },
   --    { key = 'v',          mods = 'CTRL',                      action = act.PasteFrom 'PrimarySelection' },
   --Pane navigation
-  { key = "LeftArrow", mods = "CMD", action = act.ActivatePaneDirection("Left") },
-  { key = "RightArrow", mods = "CMD", action = act.ActivatePaneDirection("Right") },
-  { key = "UpArrow", mods = "CMD", action = act.ActivatePaneDirection("Up") },
-  { key = "DownArrow", mods = "CMD", action = act.ActivatePaneDirection("Down") },
+  -- { key = "LeftArrow", mods = "CMD", action = act.ActivatePaneDirection("Left") },
+  -- { key = "j", mods = "CMD", action = act.ActivatePaneDirection("Left") },
+  -- { key = "RightArrow", mods = "CMD", action = act.ActivatePaneDirection("Right") },
+  -- { key = "l", mods = "CMD", action = act.ActivatePaneDirection("Right") },
+  -- { key = "UpArrow", mods = "CMD", action = act.ActivatePaneDirection("Up") },
+  -- { key = "i", mods = "CMD", action = act.ActivatePaneDirection("Up") },
+  -- { key = "DownArrow", mods = "CMD", action = act.ActivatePaneDirection("Down") },
+  -- { key = "k", mods = "CMD", action = act.ActivatePaneDirection("Down") },
+
   { key = "RightArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-right") },
+  { key = "l", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-right") },
   { key = "LeftArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-left") },
+  { key = "j", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-left") },
   { key = "UpArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-up") },
+  { key = "i", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-up") },
   { key = "DownArrow", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-down") },
+  { key = "k", mods = "CMD", action = act.EmitEvent("ActivatePaneDirection-down") },
   --Pane spliting
   {
     key = "d",
@@ -343,14 +352,20 @@ config.keys = {
   { key = "w", mods = "CMD", action = wezterm.action.CloseCurrentPane({ confirm = false }) },
   --Pane resize
   { key = "LeftArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Left", 1 }) },
+  { key = "j", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Left", 1 }) },
   { key = "RightArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Right", 1 }) },
+  { key = "l", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Right", 1 }) },
   { key = "UpArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Up", 1 }) },
+  { key = "i", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Up", 1 }) },
   { key = "DownArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Down", 1 }) },
+  { key = "k", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Down", 1 }) },
   -- Pane zoom
   { key = "z", mods = "CMD", action = wezterm.action.TogglePaneZoomState },
   --Tab navigation
   { key = "LeftArrow", mods = "CMD|SHIFT", action = act.ActivateTabRelative(-1) },
+  { key = "j", mods = "CMD|SHIFT", action = act.ActivateTabRelative(-1) },
   { key = "RightArrow", mods = "CMD|SHIFT", action = act.ActivateTabRelative(1) },
+  { key = "l", mods = "CMD|SHIFT", action = act.ActivateTabRelative(1) },
   --    { key = '\\',         mods = 'ALT',       action = act.ShowTabNavigator },
   --Tab spawning
   { key = "t", mods = "CMD", action = act.SpawnTab("DefaultDomain") },
@@ -363,7 +378,9 @@ config.keys = {
   -- { key = "Enter", mods = "CMD|SHIFT", action = act.SendString("\x1bxxy") },
   { key = "Enter", mods = "CMD", action = act.SendString("\x1bxxx") },
   { key = "LeftArrow", mods = "ALT", action = act.SendString("\x1b[1;5D") },
+  -- { key = "j", mods = "ALT", action = act.SendString("\x1b[1;5D") },
   { key = "RightArrow", mods = "ALT", action = act.SendString("\x1b[1;5C") },
+  -- { key = "l", mods = "ALT", action = act.SendString("\x1b[1;5C") },
   {
     key = "l",
     mods = "CTRL|SHIFT",
@@ -383,7 +400,7 @@ config.keys = {
     }),
   },
   {
-    key = "l",
+    key = "o",
     mods = "CMD",
     action = wezterm.action.QuickSelectArgs({
       label = "open url",

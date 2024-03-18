@@ -18,6 +18,65 @@
         },
         "rules": [
           {
+            "description": "Chrome control-w/u delete word/line",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.google\\.Chrome"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "w",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_control"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "delete_or_backspace",
+                    "modifiers": [
+                      "left_option"
+                    ]
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.google\\.Chrome"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "u",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_control"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "delete_or_backspace",
+                    "modifiers": [
+                      "left_command"
+                    ]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "NEW ARROWS WITH CAPSLOCK",
             "manipulators": [
               {
@@ -111,11 +170,35 @@
             ]
           },
           {
+            "description": "BACKSPACE WITH CAPSLOCK+D",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "d",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_option",
+                      "left_control",
+                      "left_shift"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "delete_or_backspace"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "Volume UP/DOWN/MUTE -> RIGHT_SHIFT Q/W/E",
             "manipulators": [
               {
                 "from": {
-                  "key_code": "a",
+                  "key_code": "d",
                   "modifiers": {
                     "mandatory": [
                       "right_shift"
@@ -131,7 +214,7 @@
               },
               {
                 "from": {
-                  "key_code": "s",
+                  "key_code": "f",
                   "modifiers": {
                     "mandatory": [
                       "right_shift"
@@ -147,7 +230,7 @@
               },
               {
                 "from": {
-                  "key_code": "d",
+                  "key_code": "s",
                   "modifiers": {
                     "mandatory": [
                       "right_shift"
@@ -515,23 +598,28 @@
             ]
           },
           {
-            "description": "Chrome smooth scroll replace j/k with arrow down/up",
+            "description": "Wezterm shortcuts Control + J/L page down/up",
             "manipulators": [
               {
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.google\\.Chrome"
+                      "^com\\.github\\.wez\\.wezterm$"
                     ],
                     "type": "frontmost_application_if"
                   }
                 ],
                 "from": {
-                  "key_code": "j"
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_control"
+                    ]
+                  }
                 },
                 "to": [
                   {
-                    "key_code": "down_arrow"
+                    "key_code": "page_down"
                   }
                 ],
                 "type": "basic"
@@ -540,17 +628,22 @@
                 "conditions": [
                   {
                     "bundle_identifiers": [
-                      "^com\\.google\\.Chrome"
+                      "^com\\.github\\.wez\\.wezterm$"
                     ],
                     "type": "frontmost_application_if"
                   }
                 ],
                 "from": {
-                  "key_code": "k"
+                  "key_code": "k",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_control"
+                    ]
+                  }
                 },
                 "to": [
                   {
-                    "key_code": "up_arrow"
+                    "key_code": "page_up"
                   }
                 ],
                 "type": "basic"

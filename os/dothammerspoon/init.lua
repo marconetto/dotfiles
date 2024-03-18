@@ -236,6 +236,7 @@ function changeVolume(diff)
 end
 
 function togglePlay()
+  print("toggle play")
   return function()
     local playing = hs.spotify.isPlaying()
     hs.alert.closeAll(0.0)
@@ -250,6 +251,7 @@ function togglePlay()
 end
 
 function myPrevious()
+  print("myPrevious")
   return function()
     local playing = hs.spotify.isPlaying()
     hs.alert.closeAll(0.0)
@@ -273,15 +275,16 @@ end
 
 local inc_volume = 10
 
-hs.hotkey.bind(hyperkeys, "i", changeVolume(-inc_volume), nil, nil)
+-- hs.hotkey.bind(hyperkeys, "i", changeVolume(-inc_volume), nil, nil)
+--
+-- hs.hotkey.bind(hyperkeys, "o", changeVolume(inc_volume), nil, nil)
+--
+-- hs.hotkey.bind(hyperkeys, "u", toggleMute())
 
-hs.hotkey.bind(hyperkeys, "o", changeVolume(inc_volume), nil, nil)
-
-hs.hotkey.bind(hyperkeys, "u", toggleMute())
-
-hs.hotkey.bind(threekeys, "q", togglePlay())
-hs.hotkey.bind(threekeys, "w", myPrevious())
-hs.hotkey.bind(threekeys, "e", myNext())
+hs.hotkey.bind("", "f13", togglePlay())
+-- hs.hotkey.bind(hyperkeys, "p", togglePlay())
+hs.hotkey.bind("", "f14", myPrevious())
+hs.hotkey.bind("", "f15", myNext())
 
 -------------------------------------------------------------------------------
 -- hyper+numbers mapped to function keys
