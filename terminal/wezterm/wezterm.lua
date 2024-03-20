@@ -378,8 +378,10 @@ config.keys = {
   -- { key = "Enter", mods = "CMD|SHIFT", action = act.SendString("\x1bxxy") },
   { key = "Enter", mods = "CMD", action = act.SendString("\x1bxxx") },
   { key = "LeftArrow", mods = "ALT", action = act.SendString("\x1b[1;5D") },
+  { key = "j", mods = "ALT", action = act.SendString("\x1b[1;5D") },
   -- { key = "j", mods = "ALT", action = act.SendString("\x1b[1;5D") },
   { key = "RightArrow", mods = "ALT", action = act.SendString("\x1b[1;5C") },
+  { key = "l", mods = "ALT", action = act.SendString("\x1b[1;5C") },
   -- { key = "l", mods = "ALT", action = act.SendString("\x1b[1;5C") },
   {
     key = "l",

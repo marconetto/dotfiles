@@ -1095,7 +1095,9 @@ nnoremap <silent> <S-q> :bw<cr>
 nnoremap <silent> <leader>bq :bp<cr>:bd #<cr>
 nnoremap <silent> <leader>k :bp<cr>:bd #<cr>
 nnoremap <silent> <S-Right> :bnext<CR>
+nnoremap <silent> <S-l> :bnext<CR>
 nnoremap <silent> <S-Left>  :bprevious<CR>
+nnoremap <silent> <S-j>  :bprevious<CR>
 
 function! JumpWithinFile(back, forw)
     let [n, i] = [bufnr('%'), 1]
@@ -1237,9 +1239,18 @@ nnoremap <leader>d :<C-u>call DelmFunction(input("Enter mark letter: ",""))<CR>
  endfunction
 
 
+nnoremap <A-i> {
 nnoremap <A-Up> {
+nnoremap <A-k> }
 nnoremap <A-Down> }
 
+
+" H to move to the first character in a line
+noremap H ^
+" L to move to the last character in a line
+noremap L g_
+
+nnoremap <silent> <leader>i ^i
 
 "autocmd FileType qf nnoremap <buffer><silent> q :cclose<cr>
 
@@ -1274,6 +1285,9 @@ nnoremap <leader>4 [s
 "nnoremap <c-k> <PageUp>
 "nnoremap <c-j> <PageDown>
 "nnoremap <c-j> <PageDown>
+
+nnoremap <C-M-i> <c-i>
+nnoremap <C-M-o> <c-o>
 
 ]]
 vim.api.nvim_set_keymap('n', '<Leader>rn', ':lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })

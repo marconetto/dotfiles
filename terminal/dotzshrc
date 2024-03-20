@@ -113,6 +113,8 @@ unset '_comps[source]'
 bindkey '^[[1;5C' forward-word               # "option key + arrow"
 bindkey '^[[1;5D' backward-word              # "option key + arrow"
 
+#bindkey '^[j' backward-word              # "option key + arrow"
+
 bindkey '^?' backward-delete-char            # [Backspace] - delete backward
 if [[ "${terminfo[kdch1]}" != "" ]]; then
   bindkey "${terminfo[kdch1]}" delete-char   # [Delete] - delete forward
@@ -132,13 +134,16 @@ zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
 
 # alt+arrows to jump words
-bindkey "\e\e[D" backward-word
 bindkey "\e\e[C" forward-word
+bindkey "\e\e[D" backward-word
 bindkey "^[OH" beginning-of-line
 bindkey "^[OF" end-of-line
 
 bindkey '^[[1;5C' forward-word    # [alt-RightArrow] - move forward one word
 bindkey '^[[1;5D' backward-word   # [alt-LeftArrow] - move backward one word
+
+#bindkey '^[j' backward-word   # [alt-LeftArrow] - move backward one word
+#bindkey '^[l' forward-word   # [alt-LeftArrow] - move backward one word
 
 # fix incremental search when enabling vim-mode
 bindkey "^[OA" up-line-or-beginning-search
