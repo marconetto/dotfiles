@@ -77,6 +77,125 @@
             ]
           },
           {
+            "description": "Chrome scroll with option + i/k/j",
+            "manipulators": [
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.google\\.Chrome"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "i",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "mouse_key": {
+                      "horizontal_wheel": 0,
+                      "speed_multiplier": 1,
+                      "vertical_wheel": -60,
+                      "x": 0,
+                      "y": 0
+                    }
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.google\\.Chrome"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "k",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "mouse_key": {
+                      "horizontal_wheel": 0,
+                      "speed_multiplier": 1,
+                      "vertical_wheel": 60,
+                      "x": 0,
+                      "y": 0
+                    }
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.google\\.Chrome"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "mouse_key": {
+                      "horizontal_wheel": 0,
+                      "speed_multiplier": 1,
+                      "vertical_wheel": 60,
+                      "x": 0,
+                      "y": 0
+                    }
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  {
+                    "bundle_identifiers": [
+                      "^com\\.google\\.Chrome"
+                    ],
+                    "type": "frontmost_application_if"
+                  }
+                ],
+                "from": {
+                  "key_code": "j",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_control"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "page_down"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
             "description": "NEW ARROWS WITH CAPSLOCK",
             "manipulators": [
               {
@@ -1023,14 +1142,15 @@
             ]
           },
           {
-            "description": "HOME/END left_control + right/left",
+            "description": "HOME/END left_control/option + right/left",
             "manipulators": [
               {
                 "from": {
                   "key_code": "right_arrow",
                   "modifiers": {
                     "mandatory": [
-                      "left_control"
+                      "left_control",
+                      "left_option"
                     ]
                   }
                 },
@@ -1046,7 +1166,8 @@
                   "key_code": "left_arrow",
                   "modifiers": {
                     "mandatory": [
-                      "left_control"
+                      "left_control",
+                      "left_option"
                     ],
                     "optional": [
                       "any"
@@ -1070,7 +1191,8 @@
                   "key_code": "l",
                   "modifiers": {
                     "mandatory": [
-                      "left_control"
+                      "left_control",
+                      "left_option"
                     ]
                   }
                 },
@@ -1086,7 +1208,8 @@
                   "key_code": "j",
                   "modifiers": {
                     "mandatory": [
-                      "left_control"
+                      "left_control",
+                      "left_option"
                     ],
                     "optional": [
                       "any"

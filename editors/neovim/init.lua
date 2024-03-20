@@ -1338,7 +1338,7 @@ nmap <silent> cib :call ModifyInsideBrackets("change")<CR>
 nmap <silent> cb :call ModifyInsideBrackets("change")<CR>
 nmap <silent> vib :call ModifyInsideBrackets("select")<CR>
 nmap <silent> yib :call ModifyInsideBrackets("yank")<CR>
-nnoremap <leader>l <c-l>
+" nnoremap <leader>l <c-l>
 
 ]]
 vim.api.nvim_set_keymap('n', '<Leader>rn', ':lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
