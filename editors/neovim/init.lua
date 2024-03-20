@@ -785,6 +785,16 @@ require('lazy').setup {
     end,
   },
   {
+    'kylechui/nvim-surround',
+    version = '*', -- Use for stability; omit to use `main` branch for the latest features
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup {
+        -- Configuration here, or leave empty to use defaults
+      }
+    end,
+  },
+  {
     'smjonas/inc-rename.nvim',
     config = function()
       require('inc_rename').setup()
@@ -1288,6 +1298,47 @@ nnoremap <leader>4 [s
 
 nnoremap <C-M-i> <c-i>
 nnoremap <C-M-o> <c-o>
+
+"nnoremap cb cib
+
+function! ModifyInsideBrackets(commandType) abort
+    let curr_line=getline('.')
+    let cursor_pos=col('.')
+
+    let brackets = ["[", "]", "(", ")", "{", "}", "\"", "'", "<", ">"]
+    let str_till_cursor_pos=strpart(curr_line,0,cursor_pos)
+    let reversed_str=join(reverse(split(str_till_cursor_pos, '.\zs')), '')
+
+    for char in split(reversed_str, '\zs')
+        let value_found_at = index(brackets, char)
+
+        if(value_found_at >= 0)
+            if(a:commandType ==? 'change')
+              execute "normal! ci".char
+
+              :normal! l
+              :startinsert
+            elseif(a:commandType==?'delete')
+              execute "normal! ci".char
+            elseif(a:commandType==? 'select')
+              execute "normal! vi".char
+            elseif(a:commandType==? 'yank')
+              execute "normal! yi".char
+            endif
+
+            break
+        endif
+    endfor
+endfunction
+
+" https://github.com/hrai/vim-files/blob/0cbc90229c0de0be296f3453396120f216a2870b/config.lua#L348
+" command! ModifyInsideBrackets call ModifyInsideBrackets()
+nmap <silent> dib :call ModifyInsideBrackets("delete")<CR>
+nmap <silent> cib :call ModifyInsideBrackets("change")<CR>
+nmap <silent> cb :call ModifyInsideBrackets("change")<CR>
+nmap <silent> vib :call ModifyInsideBrackets("select")<CR>
+nmap <silent> yib :call ModifyInsideBrackets("yank")<CR>
+nnoremap <leader>l <c-l>
 
 ]]
 vim.api.nvim_set_keymap('n', '<Leader>rn', ':lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
