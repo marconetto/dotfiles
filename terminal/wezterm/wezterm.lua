@@ -379,13 +379,15 @@ config.keys = {
   { key = "Enter", mods = "CMD", action = act.SendString("\x1bxxx") },
   { key = "LeftArrow", mods = "ALT", action = act.SendString("\x1b[1;5D") },
   { key = "j", mods = "ALT", action = act.SendString("\x1b[1;5D") },
+  { key = "n", mods = "ALT|CMD|SHIFT|CTRL", action = act.SendString("\x1b[1;5D") },
   -- { key = "j", mods = "ALT", action = act.SendString("\x1b[1;5D") },
   { key = "RightArrow", mods = "ALT", action = act.SendString("\x1b[1;5C") },
   { key = "l", mods = "ALT", action = act.SendString("\x1b[1;5C") },
+  { key = "m", mods = "ALT|CMD|SHIFT|CTRL", action = act.SendString("\x1b[1;5C") },
   -- { key = "l", mods = "ALT", action = act.SendString("\x1b[1;5C") },
   {
     key = "l",
-    mods = "CTRL|SHIFT",
+    mods = "CTRL|SHIFT|ALT",
     action = act.EmitEvent("multipaneclean"),
   },
   {
@@ -540,6 +542,8 @@ config.keys = {
       act.SendKey({ key = "m", mods = "CTRL" }),
     }),
   },
+
+  -- { key = "w", mods = "CTRL|SHIFT|CMD|ALT", action = act.SendKey({ key = "w", mods = "CTRL" }) },
   --------------------------------------------------
 }
 
