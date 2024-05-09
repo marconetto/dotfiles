@@ -127,15 +127,15 @@ end)
 -------------------------------------------------------------------------------
 -- go to desktop used for video confs for all keyboard types
 -------------------------------------------------------------------------------
-hs.hotkey.bind({ "cmd" }, "`", function()
-  hs.eventtap.keyStroke({ "fn" }, "F9")
-  -- hs.eventtap.keyStroke({ "ctrl", "cmd", "shift", "alt" }, "3")
-end)
-
-hs.hotkey.bind({ "cmd" }, "escape", function()
-  hs.eventtap.keyStroke({ "fn" }, "F9")
-  -- hs.eventtap.keyStroke({ "ctrl", "cmd", "shift", "alt" }, "3")
-end)
+-- hs.hotkey.bind({ "cmd" }, "`", function()
+--   hs.eventtap.keyStroke({ "fn" }, "F9")
+--   -- hs.eventtap.keyStroke({ "ctrl", "cmd", "shift", "alt" }, "3")
+-- end)
+--
+-- hs.hotkey.bind({ "cmd" }, "escape", function()
+--   hs.eventtap.keyStroke({ "fn" }, "F9")
+--   -- hs.eventtap.keyStroke({ "ctrl", "cmd", "shift", "alt" }, "3")
+-- end)
 
 -- hs.hotkey.bind({ "shift" }, "escape", function()
 --   hs.eventtap.keyStroke("shift", "`")
