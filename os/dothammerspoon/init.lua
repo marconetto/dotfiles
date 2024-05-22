@@ -143,9 +143,9 @@ end)
 -------------------------------------------------------------------------------
 -- lock screen shortcut
 -------------------------------------------------------------------------------
-hs.hotkey.bind(threekeys, "m", function()
-  hs.eventtap.keyStroke({ "ctrl", "cmd" }, "q")
-end)
+-- hs.hotkey.bind(threekeys, "m", function()
+--   hs.eventtap.keyStroke({ "ctrl", "cmd" }, "q")
+-- end)
 
 function toggle_window_maximized()
   local win = hs.window.focusedWindow()
