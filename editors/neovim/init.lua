@@ -17,6 +17,31 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 --------------------------------------------------------------------------------
+--- color setup ----------------------------------------------------------------
+--------------------------------------------------------------------------------
+local function lighten_color(hex, percent)
+  local function hex_to_rgb(hex)
+    hex = hex:gsub('#', '')
+    return tonumber('0x' .. hex:sub(1, 2)), tonumber('0x' .. hex:sub(3, 4)), tonumber('0x' .. hex:sub(5, 6))
+  end
+
+  local function rgb_to_hex(r, g, b)
+    return string.format('#%02X%02X%02X', r, g, b)
+  end
+
+  local r, g, b = hex_to_rgb(hex)
+
+  r = math.min(255, math.floor(r + (255 - r) * percent))
+  g = math.min(255, math.floor(g + (255 - g) * percent))
+  b = math.min(255, math.floor(b + (255 - b) * percent))
+
+  return rgb_to_hex(r, g, b)
+end
+
+local colorbg = '#2C323B'
+local colorbg1 = lighten_color(colorbg, 0.04)
+local colorbg2 = lighten_color(colorbg, 0.09)
+--------------------------------------------------------------------------------
 --- plugins --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 require('lazy').setup {
@@ -25,7 +50,7 @@ require('lazy').setup {
     'sainnhe/gruvbox-material',
     enabled = true,
     lazy = false,
-    priority = 1000,
+    priority = 1001,
     config = function(_, opts)
       vim.cmd [[colorscheme gruvbox-material]]
     end,
@@ -39,6 +64,17 @@ require('lazy').setup {
       vim.g.gruvbox_material_disable_italic_comment = 1
     end,
   },
+  -- {
+  --   'catppuccin/nvim',
+  --   name = 'catppuccin',
+  --   priority = 1000,
+  --   config = function(_, opts)
+  --     require('catppuccin').setup {
+  --       transparent_background = true,
+  --     }
+  --     vim.cmd [[colorscheme catppuccin-mocha]]
+  --   end,
+  -- },
   -- statusline ---------------------------------------------------------------
   {
     'nvim-lualine/lualine.nvim',
@@ -479,7 +515,6 @@ require('lazy').setup {
   },
   -- MRU -------------------------------------------------------------------------------
   {
-
     'yegappan/mru',
   },
   -- git support -----------------------------------------------------------------------
@@ -748,7 +783,7 @@ require('lazy').setup {
         auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
         auto_session_enabled = true,
         auto_save_enabled = true,
-        auto_restore_enabled = true,
+        auto_restore_enabled = false,
         session_lens = {
           -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
           buftypes_to_ignore = {}, -- list of buffer types what should not be deleted from current session
@@ -757,6 +792,10 @@ require('lazy').setup {
           previewer = false,
         },
       }
+      local keymap = vim.keymap
+
+      keymap.set('n', '<leader>wr', '<cmd>SessionRestore<CR>', { desc = 'Restore session for cwd' })
+      keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>', { desc = 'Save session for auto session root dir' })
     end,
   },
   {
@@ -799,6 +838,73 @@ require('lazy').setup {
     config = function()
       require('inc_rename').setup()
     end,
+  },
+  {
+    'goolord/alpha-nvim',
+    event = 'VimEnter', -- load plugin after all configuration is set
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      local alpha = require 'alpha'
+      local dashboard = require 'alpha.themes.dashboard'
+
+      dashboard.section.header.val = {
+        '     ',
+        '     ',
+        '     ',
+        '     ',
+        '       ┏┓ ╻   ╻ ╻   ╻   ┏┳┓',
+        '       ┃┃┏┛   ┃┏┛   ┃   ┃┃┃',
+        '       ┃┗┛    ┗┛    ╹   ╹ ╹',
+        '   ',
+      }
+
+      _Gopts = {
+        position = 'center',
+        hl = 'Type',
+        -- wrap = "overflow";
+      }
+
+      -- Set menu
+      dashboard.section.buttons.val = {
+        dashboard.button('j', '󰈚   Restore Session', ':SessionRestore<cr>'),
+        dashboard.button('e', '   New file', ':ene <BAR> startinsert <CR>'),
+        dashboard.button('f', '   Find file', ':cd $HOME/dotfiles | Telescope find_files<CR>'),
+        dashboard.button('g', '󰱼   Find word', ':Telescope live_grep<CR>'),
+        dashboard.button('r', '   Recent', ':Telescope oldfiles<CR>'),
+        dashboard.button('s', '   Settings', ':e $MYVIMRC <CR>'),
+        dashboard.button('q', '✗   Quit NVIM', ':qa<CR>'),
+      }
+
+      -- local function footer()
+      --   return 'Welcome to neovim'
+      -- end
+      -- dashboard.section.footer.val = footer()
+
+      dashboard.opts.opts.noautocmd = true
+      alpha.setup(dashboard.opts)
+
+      require('alpha').setup(dashboard.opts)
+
+      -- vim.api.nvim_create_autocmd("User", {
+      -- 	pattern = "LazyVimStarted",
+      -- 	callback = function()
+      -- 		local stats = require("lazy").stats()
+      -- 		local count = (math.floor(stats.startuptime * 100) / 100)
+      -- 		dashboard.section.footer.val = {
+      -- 			"󱐌 " .. stats.count .. " plugins loaded in " .. count .. " ms",
+      -- 			" ",
+      -- 			"      Mohammed Babiker Babai",
+      -- 		}
+      -- 		pcall(vim.cmd.AlphaRedraw)
+      -- 	end,
+      -- })
+    end,
+  },
+  {
+    'stevearc/dressing.nvim',
+    opts = {},
   },
   -- {
   --
@@ -865,13 +971,10 @@ require('lazy').setup {
   --
 }
 
--- f3
-
 -------------------------------------------------------------------------------
-
--- more plugin reelated config
-
+-- more plugin related config
 -------------------------------------------------------------------------------
+require('telescope').load_extension 'file_browser'
 
 -- have decent autocompletion with ENTER + TAB ---------------
 local cmp = require 'cmp'
@@ -891,22 +994,22 @@ cmp.setup {
 vim.keymap.set('n', '<C-s>', require('auto-session.session-lens').search_session, {
   noremap = true,
 })
+
 -------------------------------------------------------------------------------
 --- settings ------------------------------------------------------------------
 -------------------------------------------------------------------------------
-
 vim.opt.termguicolors = true -- Enable 24-bit RGB colors
 vim.opt.updatetime = 200
 
 -- vim.opt.clipboard = 'unnamedplus' -- Copy/paste to system clipboard -- PLEASE NO!
-vim.opt.swapfile = false -- Don't use swapfile
-vim.opt.ignorecase = true -- Search case insensitive...
-vim.opt.smartcase = true -- ... but not it begins with upper case
+vim.opt.swapfile = false
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
-vim.opt.expandtab = true -- expand tabs into spaces
-vim.opt.shiftwidth = 4 -- number of spaces to use for each step of indent.
-vim.opt.tabstop = 4 -- number of spaces a TAB counts for
-vim.opt.autoindent = true -- copy indent from current line when starting a new line
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.autoindent = true
 vim.opt.wrap = true
 vim.opt.smartindent = true
 
@@ -914,25 +1017,31 @@ vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 vim.opt.showmode = false
 
-vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true }) -- required for yank line
-vim.keymap.set('x', '<c-y>', require('osc52').copy_visual)
-vim.keymap.set('x', '<leader>y', require('osc52').copy_visual) --- not working???
+vim.o.backup = false
+vim.o.modeline = false
+
+vim.o.number = false
+vim.o.scrolloff = 8
+
+vim.o.list = true
+vim.o.listchars = 'tab:▸\\ ,trail:¬,nbsp:.,extends:❯,precedes:❮'
+vim.o.signcolumn = 'no'
+
+vim.o.autochdir = true
+
+--vim.o.iskeyword = vim.o.iskeyword .. '-'
+
+-- Set automatic formatting options
+vim.o.formatoptions = 'qrn1'
+
+-- Disable starting new lines with comment leader
+vim.o.formatoptions = vim.o.formatoptions:gsub('o', '')
 
 vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 
--- vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true })
--- vim.keymap.set('n', 'Y', '<leader>c_', {remap = true})
--- vim.keymap.set('x', '<leader>y', require('osc52').copy_visual)
-
-require('telescope').load_extension 'file_browser'
--- require('telescope').load_extension 'possession'
--- vim.keymap.set('n', '\\S', require('telescope').extensions.possession.list, { desc = '[S]essionManager: load session' })
-
-vim.api.nvim_set_keymap('n', '<space>fw', ':Telescope file_browser<CR>', { noremap = true, silent = true })
-
--- vim.keymap.set('n', '++', 'gcc')
--- vim.keymap.set('v', '++', 'gcc')
-
+-------------------------------------------------------------------------------
+--- shortcuts -----------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- source: https://sbulav.github.io/vim/neovim-opening-urls/
 if vim.fn.has 'mac' == 1 then
   vim.keymap.set('', 'gu', '<Cmd>call jobstart(["open", expand("<cfile>")], {"detach": v:true})<CR>', {})
@@ -940,104 +1049,259 @@ elseif vim.fn.has 'unix' == 1 then
   vim.keymap.set('', 'gu', '<Cmd>call jobstart(["xdg-open", expand("<cfile>")], {"detach": v:true})<CR>', {})
 end
 
--- vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
+vim.api.nvim_set_keymap('n', '<C-p>', 'gwap', { noremap = true, silent = true })
 
+vim.api.nvim_set_keymap('n', '<leader>z', ':x<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>q', ':q!<CR>', { noremap = true, silent = true })
+
+-- clear research highlight
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader>/',
+  ':set nohlsearch<CR>:echo ""<CR>:let @/ = ""<CR>:set hlsearch<CR>',
+  { silent = true }
+)
+
+vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true }) -- required for yank line
+vim.keymap.set('x', '<c-y>', require('osc52').copy_visual)
+vim.keymap.set('x', '<leader>y', require('osc52').copy_visual) --- not working???
+
+vim.api.nvim_set_keymap('n', 'U', '<C-R>', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<space>fw', ':Telescope file_browser<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
 
--- vim.keymap.set({ 'n' }, '<C-b>', '<cmd>rshada<cr><Plug>(Marks-toggle)<cmd>wshada!<CR>')
--- vim.keymap.set({ 'n' }, '<C-b>', '<cmd>rshada<cr><Plug>(Marks-toggle)')
+vim.api.nvim_set_keymap('n', 'Y', '^vg_<leader>y:echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>', { silent = true })
 
-vim.keymap.set('n', 'ml', ':Telescope vim_bookmarks current_file<CR>', { silent = true })
-vim.keymap.set('n', 'mL', ':Telescope vim_bookmarks all<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', 'W', 'viw', { silent = true })
 
-vim.cmd [[autocmd FileType markdown set tw=80 wrap]]
+vim.api.nvim_set_keymap('n', '<leader>1', ':set invspell<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<leader>2', '<cmd> Telescope spell_suggest<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>3', ']s', { silent = true })
+vim.api.nvim_set_keymap('n', '<leader>4', '[s', { silent = true })
+
+vim.api.nvim_set_keymap('n', '<leader>r', '<cmd> Telescope lsp_references<CR>', { noremap = true })
+vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
+
+vim.keymap.set('n', 'gp', "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
+vim.keymap.set('n', '<leader>gr', "<cmd>lua require('goto-preview').goto_preview_references()<CR>", { noremap = true })
+
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader>fm',
+  '<cmd> Telescope lsp_document_symbols  symbols={"function","method"}<CR>',
+  { noremap = true }
+)
+
+vim.keymap.set(
+  'n',
+  '<leader>v',
+  ':botright vsplit | lua vim.lsp.buf.definition()<CR>',
+  { noremap = true, silent = true }
+)
+
+vim.keymap.set('n', '<leader>rn', function()
+  return ':IncRename ' .. vim.fn.expand '<cword>'
+end, { expr = true })
+
+vim.api.nvim_set_keymap('n', '<leader>fg', ':Telescope live_grep<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fc', ':Telescope find_files cwd=%:h<CR>', { silent = true })
+
+vim.api.nvim_set_keymap('n', '<Leader>rn', ':lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<leader>gg', ':LazyGitCurrentFile<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<leader>m', ':MarkdownPreview<CR>', { silent = true })
+
+vim.api.nvim_set_keymap('n', 'cd', 'ciw', { silent = true })
+
+vim.api.nvim_set_keymap('n', '<A-i>', '{', { silent = true })
+vim.api.nvim_set_keymap('n', '<A-Up>', '{', { silent = true })
+vim.api.nvim_set_keymap('n', '<A-k>', '}', { silent = true })
+vim.api.nvim_set_keymap('n', '<A-Down>', '}', { silent = true })
+
+vim.api.nvim_set_keymap(
+  'n',
+  '<leader>x',
+  ':silent exec "!chmod +x %" <CR>:echo "made it executable"<CR>:sleep 700m<CR>:echo ""<CR>',
+  { silent = true }
+)
+
+-------------------------------------------------------------------------------
+--- colors --------------------------------------------------------------------
+-------------------------------------------------------------------------------
+vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#AAAAAA', bg = 'None', bold = true })
+vim.api.nvim_set_hl(0, 'SignColumn', { fg = '#AAAAAA', bg = 'None', bold = true })
+vim.api.nvim_set_hl(0, 'LineNr', { fg = '#47525C', bg = 'None', bold = true })
+
+vim.api.nvim_set_hl(0, 'EndOfBuffer', { fg = colorbg, bg = 'None' })
+vim.api.nvim_set_hl(0, 'CursorLine', { bg = colorbg1 })
+vim.api.nvim_set_hl(0, 'CursorColumn', { bg = colorbg1 })
+
+vim.api.nvim_set_hl(0, 'CurrentWordTwins', { bg = '#3A4149' })
+vim.api.nvim_set_hl(0, 'CurrentWord', { bg = '#3A4139' })
+
+vim.api.nvim_create_autocmd('InsertEnter', {
+  pattern = '*',
+  callback = function()
+    vim.api.nvim_set_hl(0, 'CursorLine', { bg = colorbg2 })
+    vim.api.nvim_set_hl(0, 'CursorColumn', { bg = colorbg2 })
+  end,
+})
+
+vim.api.nvim_create_autocmd('InsertLeave', {
+  pattern = '*',
+  callback = function()
+    vim.api.nvim_set_hl(0, 'CursorLine', { bg = colorbg1 })
+    vim.api.nvim_set_hl(0, 'CursorColumn', { bg = colorbg1 })
+  end,
+})
+
+-- float for diagnosticis and pmenu keep transparent background
+-- vim.cmd('hi! link FloatBorder Normal')
+vim.cmd 'hi! link NormalFloat Normal'
+vim.cmd 'hi! WildMenu guifg=#226622'
+vim.cmd 'hi! PMenu guifg=Normal guibg=NONE'
+
+vim.cmd 'hi! IncSearch guibg=#a9b1d6 guifg=#444444 gui=NONE'
+vim.cmd 'hi! Search guibg=#444444 guifg=#cccccc gui=NONE'
+vim.cmd 'hi! Visual guibg=#444449 gui=none'
+
+-------------------------------------------------------------------------------
+--- autocmds --------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+-- open file in the same position closed
+vim.api.nvim_command 'autocmd BufWinLeave * silent! mkview'
+vim.api.nvim_command 'autocmd BufWinEnter * silent! loadview'
+
+-------------------------------------------------------------------------------
+--- plugins -------------------------------------------------------------------
+-------------------------------------------------------------------------------
+require('bufferline').setup {
+  options = {
+    show_close_icon = false,
+    show_buffer_close_icons = false,
+    show_tab_indicators = false,
+    separator_style = { ' ', ' ' },
+    always_show_bufferline = false,
+    indicator = {
+      icon = ' ',
+      style = 'none',
+    },
+  },
+  highlights = {
+    background = {
+      bold = true,
+      italic = true,
+      fg = '#6f6b79',
+    },
+    buffer_selected = {
+      bold = true,
+      italic = true,
+      fg = '#dddddd',
+    },
+  },
+}
+
+require('nvim-web-devicons').set_icon {
+  txt = {
+    icon = '',
+    color = '#777777',
+    cterm_color = '65',
+    name = 'Txt',
+  },
+  md = {
+    icon = '',
+    color = '#777777',
+    cterm_color = '65',
+    name = 'markdown',
+  },
+}
+
+-- https://github.com/nvim-telescope/telescope.nvim/issues/1048
+local opts_ff = {
+  attach_mappings = function(prompt_bufnr, map)
+    local actions = require 'telescope.actions'
+    actions.select_default:replace(function(prompt_bufnr)
+      local actions = require 'telescope.actions'
+      local state = require 'telescope.actions.state'
+      local picker = state.get_current_picker(prompt_bufnr)
+      local multi = picker:get_multi_selection()
+      local single = picker:get_selection()
+      local str = ''
+      if #multi > 0 then
+        for i, j in pairs(multi) do
+          str = str .. 'edit ' .. j[1] .. ' | '
+        end
+      end
+      str = str .. 'edit ' .. single[1]
+      -- To avoid populating qf or doing ":edit! file", close the prompt first
+      actions.close(prompt_bufnr)
+      vim.api.nvim_command(str)
+    end)
+    return true
+  end,
+}
+-- And then to call find_files with a mapping or whatever:
+vim.keymap.set('n', '<leader>ff', function()
+  return require('telescope.builtin').find_files(opts_ff)
+end, s)
+
+-- put gray because txt file color icon does not change
+local nvim_web_devicons = require 'nvim-web-devicons'
+local current_icons = nvim_web_devicons.get_icons()
+local new_icons = {}
+for key, icon in pairs(current_icons) do
+  icon.color = '#6f6b79'
+  icon.cterm_color = 198
+  new_icons[key] = icon
+end
+nvim_web_devicons.set_icon(new_icons)
+
+require('conform').setup {
+  notify_on_error = false,
+  formatters_by_ft = {
+    lua = { 'stylua' },
+    -- Conform will run multiple formatters sequentially
+    python = { 'autoflake', 'isort', 'black' },
+    bash = { 'shfmt', 'shellcheck' },
+    zsh = { 'shfmt', 'shellcheck' },
+    sh = { 'shfmt', 'shellcheck' },
+    yaml = { 'yamlfmt' },
+    json = { 'jq' },
+    ['_'] = { 'trim_whitespace' },
+    -- python = { "black" },
+    -- python = { "isort", "black" },
+    -- Use a sub-list to run only the first available formatter
+    -- javascript = { { "prettierd", "prettier" } },
+  },
+  format_after_save = {
+    lsp_fallback = true,
+    timeout_ms = 500,
+  },
+}
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*',
+  callback = function(args)
+    require('conform').format { bufnr = args.buf }
+  end,
+})
+
+-------------------------------------------------------------------------------
+--- misc ----------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
+-- set signs for diagnostics
+-- local signs = { Error = "E", Warn = "W", Hint = "H", Info = "I" }
+-- local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = '', Warn = '', Hint = '', Info = '' }
+for type, icon in pairs(signs) do
+  local hl = 'DiagnosticSign' .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
 
 vim.cmd [[
-
-
-" nnoremap <silent> <leader>fc :Telescope find_files cwd=%:h<CR>
-nnoremap <C-b> <Plug>BookmarkToggle:echo""<cr>
-nnoremap <leader><leader> <Plug>BookmarkToggle:echo""<cr>
-nnoremap <silent> <C-n> <Plug>BookmarkNext:echo""<cr>
-nnoremap <silent> <tab><tab> <Plug>BookmarkNext:echo ""<cr>
-nnoremap <C-S-n> <Plug>BookmarkPrev:echo""<cr>
-nnoremap <S-tab><S-tab> <Plug>BookmarkPrev:echo""<cr>
-autocmd VimEnter * delmarks 0-9
-
-" nnoremap <leader>= :let original_cursor = getpos(".")<CR>:%normal =<CR>:call setpos('.', original_cursor)<CR>
-"autocmd FileType &filetype != 'lua' autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
-
-" remove trailing spaces when saving file
-" autocmd BufWritePre * :%s/\s\+$//e
-function! StripTrailingWhitespaces()
-"function! <SID>StripTrailingWhitespaces()
-  if !&binary && &filetype != 'diff'
-    let l:save = winsaveview()
-    keeppatterns %s/\s\+$//e
-    call winrestview(l:save)
-  endif
-endfun
-
-
-"nnoremap <silent> <leader>w :silent w<CR>:echo ""<CR>
-nnoremap <silent> <leader>w :call StripTrailingWhitespaces()<cr>:silent w<cr>:echo ""<CR>
-
-
-nnoremap <leader>z :x<CR>
-nnoremap <leader>q :q!<CR>
-
-nnoremap <C-p> gwap
-
-
-set noswapfile
-set nobackup
-set nomodeline
-
-" nnoremap <silent> <c-p> :KittyNavigateRight<cr>
-" nnoremap <silent> <c-h> :KittyNavigateLeft<cr>
-" as removed trim from osc52, to yank line go to first non-whitespace char
-nmap <silent> Y ^vg_<leader>y:echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
-" nmap <silent> Y 0vg_<leader>y:echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
-
-
-" open file in the same position closed (line and screen positions)
-au BufWinLeave * silent! mkview
-au BufWinEnter * silent! loadview
-
-
-" clear research highlight
-nmap <silent> <leader>/ :set nohlsearch<CR>:echo ""<CR>:let @/ = ''<CR>:set hlsearch<CR>
-
-nmap <silent> W viw
-
-
-exe "hi! CursorLine guibg=#323741"
-exe "hi! CursorColumn guibg=#323741"
-exe "hi! ColorColumn guibg=#2f353e"
-exe "hi! CurrentWordTwins guibg=#3A4149"
-exe "hi! CurrentWord guibg=#3A4149"
-autocmd InsertEnter * highlight  CursorLine guibg=#373c47
-autocmd InsertEnter * highlight  CursorColumn guibg=#373c47
-autocmd InsertLeave * highlight  CursorLine guibg=#323741
-autocmd InsertLeave * highlight  CursorColumn guibg=#323741
-
-
-exe "hi! CursorLineNr guifg=#AAAAAA guibg=None gui=bold"
-exe "hi! SignColumn guifg=#AAAAAA guibg=None gui=bold"
-exe "hi! EndOfBuffer guifg=#2C323B guibg=None"
-
-exe "hi! LineNr guifg=#47525C guibg=None gui=bold"
-
-set nonumber
-"autocmd BufReadPre * if &filetype != 'zsh' | set number | else | set nonumber | endif
-
-set list
-set listchars=tab:▸\ ,trail:¬,nbsp:.,extends:❯,precedes:❮
-set signcolumn=no
-
-autocmd BufRead * if !empty(&filetype) && &filetype != 'text' | set number | set signcolumn=yes  |endif
-
-
 function! SaveJump(motion)
   if exists('#SaveJump#CursorMoved')
     autocmd! SaveJump
@@ -1058,57 +1322,39 @@ function! SetJump()
   augroup END
 endfunction
 
-
 nnoremap <silent> <PageUp> :call SaveJump("\<lt>C-u>")<CR>:call SetJump()<CR>
 nnoremap <silent> <PageDown> :cal SaveJump("\<lt>C-d>")<CR>:call SetJump()<CR>
+]]
 
-"Clone Paragraph with cp
-noremap <leader>cp yip<S-}>o<ESC>p:echo "cloned paragraph"<CR>
+if vim.fn.has 'persistent_undo' == 1 then
+  vim.o.undodir = vim.fn.expand '~/.undodir'
+  vim.o.undofile = true
+  if vim.fn.isdirectory(vim.o.undodir) == 0 then
+    vim.fn.mkdir(vim.o.undodir, 'p')
+  end
+  vim.o.undolevels = 99999
+  vim.o.undoreload = 10000
+end
 
-"Yank Paragraph with yp
-noremap <leader>gp yip<S-}>:echo "yanked paragraph"<CR>
+-- have line and sign for all filetypes except text
+vim.cmd [[
+autocmd BufRead * if !empty(&filetype) && &filetype != 'text' | set number | set signcolumn=yes  |endif
+]]
 
-"Align Current Paragraph
-noremap <silent> <leader>fa =ip
+vim.cmd [[autocmd FileType markdown set tw=80 wrap]]
 
-"format current line
-noremap  <silent> <leader>a :AutoformatLine<CR>
+function ToggleCurline()
+  if vim.o.cursorline == true and vim.o.cursorcolumn == true then
+    vim.o.cursorline = false
+    vim.o.cursorcolumn = false
+  else
+    vim.o.cursorline = true
+    vim.o.cursorcolumn = true
+  end
+end
+vim.api.nvim_set_keymap('n', '<leader>tc', ':lua ToggleCurline()<CR>', { silent = true })
 
-nnoremap U <C-R> " redo
-
-nmap <silent> ++ gcc
-vmap <silent> ++ gc
-nmap <silent> +p gcip
-
-if has('persistent_undo')
-    set undodir=~/.undodir
-    set undofile
-    if !isdirectory(expand(&undodir))
-        call mkdir(expand(&undodir), "p")
-    endif
-    set undolevels=99999
-    set undolevels=10000
-  endif
-
-set noswapfile
-set nobackup
-set nomodeline
-
-
-nnoremap <silent> <leader>fc :Telescope find_files cwd=%:h<CR>
-nnoremap <silent> <leader>fg :Telescope live_grep<CR>
-
-let g:vim_current_word#highlight_delay = 300
-
-nnoremap <silent> <S-q> :bw<cr>
-" nnoremap <silent> <S-q> :bp<cr>:bd #<cr>
-nnoremap <silent> <leader>bq :bp<cr>:bd #<cr>
-nnoremap <silent> <leader>k :bp<cr>:bd #<cr>
-nnoremap <silent> <S-Right> :bnext<CR>
-nnoremap <silent> <c-s-l> :bnext<CR>
-nnoremap <silent> <S-Left>  :bprevious<CR>
-nnoremap <silent> <c-s-j>  :bprevious<CR>
-
+vim.cmd [[
 function! JumpWithinFile(back, forw)
     let [n, i] = [bufnr('%'), 1]
     let p = [n] + getpos('.')[1:]
@@ -1127,181 +1373,86 @@ endfunction
 
 nnoremap <silent> <c-9> :call JumpWithinFile("\<c-i>", "\<c-o>")<cr>
 nnoremap <silent> <c-8> :call JumpWithinFile("\<c-o>", "\<c-i>")<cr>
+]]
 
-" autocmd CursorHold * silent lua vim.diagnostic.open_float()
+vim.cmd [[
+nnoremap <C-b> <Plug>BookmarkToggle:echo""<cr>
+nnoremap <leader><leader> <Plug>BookmarkToggle:echo""<cr>
+nnoremap <silent> <C-n> <Plug>BookmarkNext:echo""<cr>
+nnoremap <silent> <tab><tab> <Plug>BookmarkNext:echo ""<cr>
+nnoremap <C-S-n> <Plug>BookmarkPrev:echo""<cr>
+nnoremap <S-tab><S-tab> <Plug>BookmarkPrev:echo""<cr>
+autocmd VimEnter * delmarks 0-9
+]]
 
-function! SetLSPHighlights()
-    highlight LspDiagnosticsUnderlineError guifg=#aa4917 gui=none
-    highlight LspDiagnosticsUnderlineWarning guifg=#EBA217 gui=undercurl
-    highlight LspDiagnosticsUnderlineInformation guifg=#17D6EB, gui=undercurl
-    highlight LspDiagnosticsUnderlineHint guifg=#17EB7A gui=undercurl
-endfunction
-
-autocmd ColorScheme * call SetLSPHighlights()
-
-set scrolloff=8                    " start scrolling n lines before horizontal
-
-
-" float for diagnosticis and pmenu keep transparent background
-exe "hi! link FloatBorder Normal"
-exe "hi! link NormalFloat Normal"
-exe "hi! WildMenu guifg=#226622"
-exe "hi! PMenu guifg=Normal guibg=NONE"
-
-
-
-"exe "hi! MatchParen guifg=lightblue guibg=darkblue"
-
-" pmenu up and down arrow support
-if &wildoptions =~ "pum"
-    cnoremap <expr> <up> pumvisible() ? "<C-p>" : "\\<up>"
-    cnoremap <expr> <down> pumvisible() ? "<C-n>" : "\\<down>"
-endif
-
-" temporary solution for not showing ~@k when scrolling
-set noshowcmd
-let g:lsp_diagnostics_float_delay = 5000
-
-
-fu! ToggleCurline ()
-  if &cursorline && &cursorcolumn
-    set nocursorline
-    set nocursorcolumn
-
-  else
-    set cursorline
-    set cursorcolumn
+vim.cmd [[
+function! StripTrailingWhitespaces()
+  if !&binary && &filetype != 'diff'
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
   endif
-endfunction
+endfun
+nnoremap <silent> <leader>w :call StripTrailingWhitespaces()<cr>:silent w<cr>:echo ""<CR>
+]]
 
-map <silent><leader>tc :call ToggleCurline()<CR>
-
-set lazyredraw
-let g:loaded_matchparen=0
-let g:vimtex_matchparen_enabled =0
-let g:matchparen_timeout = 2
-let g:matchparen_insert_timeout = 2
-
-" do something (cut or delete) then press dot to replace down or up
-nnoremap c* /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
-nnoremap c# /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
-nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
-nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
-
-
-nnoremap <leader>gd <cmd> lua vim.lsp.buf.definition()<cr>
-
-"nmap <silent> <leader>l :set nohlsearch<CR>*:set hlsearch<CR>
-nmap <silent> <leader>l :set nohlsearch<CR>*:let @/ = ''<CR>:set hlsearch<CR>
-
-
-"exe "hi! Search         gui=NONE   guifg=#303030   guibg=#ad7b57"
-"exe "hi! IncSearch      gui=BOLD   guifg=#303030   guibg=#cd8b60"
-exe "hi! IncSearch guibg=#a9b1d6 guifg=#444444 gui=NONE"
-exe "hi! Search guibg=#444444 guifg=#cccccc gui=NONE"
-exe "hi! Visual  guibg=#444449 gui=none"
-set autochdir
-
-
-nnoremap <silent> <leader>gg :LazyGitCurrentFile<CR>
-nnoremap <silent> <leader>m :MarkdownPreview<CR>
-"let g:lazygit_floating_window_winblend = 0 " transparency of floating window
-"let g:lazygit_floating_window_scaling_factor = 0.9 " scaling factor for floating window
-"let g:lazygit_floating_window_corner_chars = ['╭', '╮', '╰', '╯'] " customize lazygit popup window corner characters
-"let g:lazygit_floating_window_use_plenary = 0 " use plenary.nvim to manage floating window if available
-"let g:lazygit_use_neovim_remote = 1 " fallback to 0 if neovim-remote is not installed
-
-
-nmap <silent> <leader>x :silent exec "! chmod +x % "<CR>:echo "made it executable"<CR>:sleep 700m<CR>:echo ""<CR>
-" nmap <silent> <leader>x :!chmod +x % echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>
-
-set formatoptions=qrn1          " automatic formating.
-set formatoptions-=o            " don't start new lines w/ comment leader on
-""-- set clipboard=unnamedplus
-" "--- cw need to be "_cw to avoid cw yank text
-set iskeyword+=-
-
-
-nnoremap cd ciw
-" cut (c) or delete (d) then press dot to replace down(*) or up(#) and 'n' to skip
-nnoremap c* /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
-nnoremap c# /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
-nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
-nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
-
-let g:VM_highlight_matches = 'hi Search guifg=#ffffff'
-
-
-" -- but when deleting marks -- temporary solution"
-""-- nnoremap dm<space> :delm!<CR>:wshada!<CR>
-
-""-- nnoremap km :execute 'delm '.nr2char(getchar())<cr>:wshada!<CR>
-
-nnoremap <leader>d :<C-u>call DelmFunction(input("Enter mark letter: ",""))<CR>
-" nnoremap <C-b> :<Plug>(Marks-toggle)<CR>
-
-
-
-""-- endfunction
- function! DelmFunction(letter)
-   execute "delm ".a:letter
-"  execute "wshada!"
- endfunction
-
-
-nnoremap <A-i> {
-nnoremap <A-Up> {
-nnoremap <A-k> }
-nnoremap <A-Down> }
-
-"nnoremap W b
-
-" H to move to the first character in a line
-" noremap H ^
-" L to move to the last character in a line
-"noremap L g_
-
-" nnoremap <silent> <leader>i ^i
-
-"autocmd FileType qf nnoremap <buffer><silent> q :cclose<cr>
-
-" function! ToggleQuickFix()
-"     if empty(filter(getwininfo(), 'v:val.quickfix'))
-"         copen
-"     else
-"         cclose
-"     endif
-" endfunction
-" nnoremap <silent> Q :call ToggleQuickFix()<cr>
+vim.cmd [[
 autocmd FileType qf nnoremap <buffer><silent> q :quit<cr>
-
 
 augroup qf
     autocmd!
     autocmd FileType qf set nobuflisted
 augroup END
+]]
 
-"noremap('n', '<Leader>l', ':cclose|lclose<CR>')
+vim.cmd [[
+    function! StripTrailingWhitespaces()
+  if !&binary && &filetype != 'diff'
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+  endif
+endfun
+nnoremap <silent> <leader>w :call StripTrailingWhitespaces()<cr>:silent w<cr>:echo ""<CR>
+]]
 
-nnoremap <leader>1 :set invspell<CR>
-nnoremap <leader>3 ]s
-nnoremap <leader>4 [s
+vim.cmd [[
+" do something (cut or delete) then press dot to replace down or up
+" cut (c) or delete (d) then press dot to replace down(*) or up(#) and 'n' to skip
+nnoremap c* /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
+nnoremap c# /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
+nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+]]
 
-"unmap <M-j>
-"unmap <M-k>
-"unmap <M-h>
-"unmap <M-l>
+vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
 
-"nnoremap <c-k> <PageUp>
-"nnoremap <c-k> <PageUp>
-"nnoremap <c-j> <PageDown>
-"nnoremap <c-j> <PageDown>
+if vim.fn.has 'mac' == 1 then
+  vim.cmd [[
+:au FocusLost   * :set nocursorline
+:au FocusLost   * :set nocursorcolumn
+:au WinLeave   * :set nocursorcolumn
+:au WinLeave   * :set nocursorline
+:au WinEnter   * :set cursorline
+:au WinEnter   * :set cursorcolumn
+:au FocusGained * :set cursorline
+:au FocusGained * :set cursorcolumn
+]]
+end
 
-nnoremap <C-M-i> <c-i>
-nnoremap <C-M-o> <c-o>
+vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
+  callback = function()
+    if vim.fn.has 'mac' == 0 then
+      vim.cmd 'IlluminatePauseBuf'
+      vim.cmd [[
+               set nocursorline
+               set nocursorcolumn
+            ]]
+    end
+  end,
+})
 
-"nnoremap cb cib
-
+vim.cmd [[
 function! ModifyInsideBrackets(commandType) abort
     let curr_line=getline('.')
     let cursor_pos=col('.')
@@ -1339,45 +1490,70 @@ nmap <silent> cib :call ModifyInsideBrackets("change")<CR>
 nmap <silent> cb :call ModifyInsideBrackets("change")<CR>
 nmap <silent> vib :call ModifyInsideBrackets("select")<CR>
 nmap <silent> yib :call ModifyInsideBrackets("yank")<CR>
-" nnoremap <leader>l <c-l>
-
 ]]
-vim.api.nvim_set_keymap('n', '<Leader>rn', ':lua vim.lsp.buf.rename()<CR>', { noremap = true, silent = true })
 
--- vim.keymap.set('n', '<c-s>', ':Telescope possession list<CR>', { silent = true })
--- vim.keymap.set('n', '<leader>s', ':MarksListBuf<CR>', { silent = true })
--- local mark_list = vim.fn.getmarklist(1)
--- for i in mark_list:iter() do
---     print(i)
--- end
--- print(mark_list)
+vim.cmd [[
+nmap <silent> ++ gcc
+vmap <silent> ++ gc
+nmap <silent> +p gcip
+]]
 
--- vim.api.nvim_set_keymap('n', '<leader>qc', ':cclose<CR>', {})
-require('bufferline').setup {
-  options = {
-    show_close_icon = false,
-    show_buffer_close_icons = false,
-    show_tab_indicators = false,
-    separator_style = { ' ', ' ' },
-    always_show_bufferline = false,
-    indicator = {
-      icon = ' ',
-      style = 'none',
-    },
-  },
-  highlights = {
-    background = {
-      bold = true,
-      italic = true,
-      fg = '#6f6b79',
-    },
-    buffer_selected = {
-      bold = true,
-      italic = true,
-      fg = '#dddddd',
-    },
-  },
-}
+vim.cmd [[
+let g:vim_current_word#highlight_delay = 300
+]]
+
+vim.cmd [[
+nnoremap <silent> <S-q> :bw<cr>
+" nnoremap <silent> <S-q> :bp<cr>:bd #<cr>
+nnoremap <silent> <leader>bq :bp<cr>:bd #<cr>
+nnoremap <silent> <leader>k :bp<cr>:bd #<cr>
+nnoremap <silent> <S-Right> :bnext<CR>
+nnoremap <silent> <c-s-l> :bnext<CR>
+nnoremap <silent> <S-Left>  :bprevious<CR>
+nnoremap <silent> <c-s-j>  :bprevious<CR>
+]]
+
+vim.cmd [[
+function! SetLSPHighlights()
+    highlight LspDiagnosticsUnderlineError guifg=#aa4917 gui=none
+    highlight LspDiagnosticsUnderlineWarning guifg=#EBA217 gui=undercurl
+    highlight LspDiagnosticsUnderlineInformation guifg=#17D6EB, gui=undercurl
+    highlight LspDiagnosticsUnderlineHint guifg=#17EB7A gui=undercurl
+endfunction
+
+autocmd ColorScheme * call SetLSPHighlights()
+]]
+
+vim.cmd [[
+" pmenu up and down arrow support
+if &wildoptions =~ "pum"
+    cnoremap <expr> <up> pumvisible() ? "<C-p>" : "\\<up>"
+    cnoremap <expr> <down> pumvisible() ? "<C-n>" : "\\<down>"
+endif
+]]
+
+vim.cmd [[
+" temporary solution for not showing ~@k when scrolling
+set noshowcmd
+let g:lsp_diagnostics_float_delay = 5000
+]]
+
+vim.cmd [[
+let g:VM_highlight_matches = 'hi Search guifg=#ffffff'
+]]
+
+vim.cmd [[
+set lazyredraw
+let g:loaded_matchparen=0
+let g:vimtex_matchparen_enabled =0
+let g:matchparen_timeout = 2
+let g:matchparen_insert_timeout = 2
+]]
+
+vim.cmd [[
+nnoremap <C-M-i> <c-i>
+nnoremap <C-M-o> <c-o>
+]]
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = false,
@@ -1389,203 +1565,15 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
   severity_sort = true,
 })
 
-require('nvim-web-devicons').set_icon {
-  txt = {
-    icon = '',
-    color = '#777777',
-    cterm_color = '65',
-    name = 'Txt',
-  },
-  md = {
-    icon = '',
-    color = '#777777',
-    cterm_color = '65',
-    name = 'markdown',
-  },
-}
-
--- local signs = { Error = "E", Warn = "W", Hint = "H", Info = "I" }
--- local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-local signs = { Error = '', Warn = '', Hint = '', Info = '' }
-for type, icon in pairs(signs) do
-  local hl = 'DiagnosticSign' .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { focusable = false })
 
--- local diag_float_grp = vim.api.nvim_create_augroup("DiagnosticFloat", { clear = true })
--- vim.api.nvim_create_autocmd("CursorHold", {
---     callback = function()
---         vim.diagnostic.open_float(nil, { focusable = false })
---     end,
---     group = diag_float_grp,
--- })
---
---
--- vim.o.updatetime = 250
--- vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})]]
+----------------------------------------------------------------------------------------
+-- TO BE REMOVED -----------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
-vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
-
-if vim.fn.has 'mac' == 1 then
-  vim.cmd [[
-:au FocusLost   * :set nocursorline
-:au FocusLost   * :set nocursorcolumn
-:au WinLeave   * :set nocursorcolumn
-:au WinLeave   * :set nocursorline
-:au WinEnter   * :set cursorline
-:au WinEnter   * :set cursorcolumn
-:au FocusGained * :set cursorline
-:au FocusGained * :set cursorcolumn
-]]
-end
-
-vim.api.nvim_create_autocmd({ 'BufWinEnter' }, {
-  callback = function()
-    if vim.fn.has 'mac' == 0 then
-      vim.cmd 'IlluminatePauseBuf'
-      vim.cmd [[
-               set nocursorline
-               set nocursorcolumn
-            ]]
-    end
-  end,
-})
-
-local nvim_web_devicons = require 'nvim-web-devicons'
-
-local current_icons = nvim_web_devicons.get_icons()
-local new_icons = {}
-
--- put gray because txt file color icon does not change
-for key, icon in pairs(current_icons) do
-  icon.color = '#6f6b79'
-  icon.cterm_color = 198
-  new_icons[key] = icon
-end
-
-nvim_web_devicons.set_icon(new_icons)
-
--- vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
--- vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
--- vim.keymap.set({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
--- vim.keymap.set({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
-
--- "n", "<leader>p", ':set paste<cr>o<esc>"*]p:set nopaste<cr>'
--- vim.keymap.set("n", "<Leader>p", ':set paste<cr>o<esc>"*]p:set nopaste<cr>')
-vim.keymap.set('n', '<Leader>p', '"+p')
-vim.keymap.set('n', '<Leader>P', '"+]p')
--- vim.keymap.set("n", "<leader>]", 'm]')
--- vim.keymap.set("n", "<leader>[", 'm[')
-
--- vim.api.nvim_set_keymap('n', '<C-e>', ':cclose<CR>', { noremap = true, silent = true })
-
--- vim.api.nvim_set_keymap('n', '<leader>b',
---     '<cmd>lua require"telescope.builtin".marks({bufnr= vim.api.nvim_get_current_buf()})<CR>',
---     { noremap = true })
-
--- vim.api.nvim_set_keymap(
---   'n',
---   '<leader>v',
---   '<cmd>lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})<CR>',
---   { noremap = true, silent = true }
--- )
-
-vim.api.nvim_set_keymap('n', '<leader>r', '<cmd> Telescope lsp_references<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader>2', '<cmd> Telescope spell_suggest<CR>', { noremap = true })
-
--- function quit_buffer()
--- vim.cmd('q')
--- end
-
--- vim.api.nvim_buf_set_keymap(0, 'n', 'q', ':lua quit_buffer()<CR>', { noremap = true, silent = true })
--- if vim.bo.filetype == 'qf' then
--- vim.api.nvim_set_keymap("n", "q", ":q<CR>", { noremap = true, silent = true })
--- end
--- if vim.o.filetype == 'python' then
-vim.api.nvim_set_keymap(
-  'n',
-  '<leader>fm',
-  '<cmd> Telescope lsp_document_symbols  symbols={"function","method"}<CR>',
-  { noremap = true }
-)
-
--- local lsp_fallback = setmetatable({
---   html = 'always',
---   -- yaml = 'always',
---   lua = false,
--- }, {
---   -- default true
---   __index = function()
---     return true
---   end,
--- })
---
-require('conform').setup {
-  notify_on_error = false,
-  formatters_by_ft = {
-    lua = { 'stylua' },
-    -- Conform will run multiple formatters sequentially
-    python = { 'autoflake', 'isort', 'black' },
-    bash = { 'shfmt', 'shellcheck' },
-    zsh = { 'shfmt', 'shellcheck' },
-    sh = { 'shfmt', 'shellcheck' },
-    yaml = { 'yamlfmt' },
-    json = { 'jq' },
-    ['_'] = { 'trim_whitespace' },
-    -- python = { "black" },
-    -- python = { "isort", "black" },
-    -- Use a sub-list to run only the first available formatter
-    -- javascript = { { "prettierd", "prettier" } },
-  },
-  format_after_save = {
-    lsp_fallback = true,
-    timeout_ms = 500,
-  },
-  -- format_on_save = function(buf)
-  --   return {
-  --     lsp_fallback = lsp_fallback[vim.bo[buf].filetype],
-  --   }
-  -- end,
-}
---
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
-  callback = function(args)
-    require('conform').format { bufnr = args.buf }
-  end,
-})
-
--- https://github.com/nvim-telescope/telescope.nvim/issues/1048
-local opts_ff = {
-  attach_mappings = function(prompt_bufnr, map)
-    local actions = require 'telescope.actions'
-    actions.select_default:replace(function(prompt_bufnr)
-      local actions = require 'telescope.actions'
-      local state = require 'telescope.actions.state'
-      local picker = state.get_current_picker(prompt_bufnr)
-      local multi = picker:get_multi_selection()
-      local single = picker:get_selection()
-      local str = ''
-      if #multi > 0 then
-        for i, j in pairs(multi) do
-          str = str .. 'edit ' .. j[1] .. ' | '
-        end
-      end
-      str = str .. 'edit ' .. single[1]
-      -- To avoid populating qf or doing ":edit! file", close the prompt first
-      actions.close(prompt_bufnr)
-      vim.api.nvim_command(str)
-    end)
-    return true
-  end,
-}
--- And then to call find_files with a mapping or whatever:
-vim.keymap.set('n', '<leader>ff', function()
-  return require('telescope.builtin').find_files(opts_ff)
-end, s)
+--vim.keymap.set('n', '<Leader>p', '"+p')
+--vim.keymap.set('n', '<Leader>P', '"+]p')
 
 -- vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { silent = true })
 
@@ -1678,19 +1666,6 @@ end, s)
 --   '<cmd>lua require"telescope.builtin".lsp_definitions({jump_type="vsplit",reuse_win=false})<CR>',
 --   { noremap = true, silent = true }
 -- )
-vim.keymap.set('n', 'gp', "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
-vim.keymap.set('n', '<leader>gr', "<cmd>lua require('goto-preview').goto_preview_references()<CR>", { noremap = true })
-
-vim.keymap.set(
-  'n',
-  '<leader>v',
-  ':botright vsplit | lua vim.lsp.buf.definition()<CR>',
-  { noremap = true, silent = true }
-)
-
-vim.keymap.set('n', '<leader>rn', function()
-  return ':IncRename ' .. vim.fn.expand '<cword>'
-end, { expr = true })
 
 -- local navbuddy = require 'nvim-navbuddy'
 --
@@ -1699,3 +1674,24 @@ end, { expr = true })
 --     navbuddy.attach(client, bufnr)
 --   end,
 -- }
+-- vim.keymap.set('n', 'ml', ':Telescope vim_bookmarks current_file<CR>', { silent = true })
+-- vim.keymap.set('n', 'mL', ':Telescope vim_bookmarks all<CR>', { silent = true })
+
+--  function! DelmFunction(letter)
+--    execute "delm ".a:letter
+-- "  execute "wshada!"
+--  endfunction
+
+-- nnoremap <leader>d :<C-u>call DelmFunction(input("Enter mark letter: ",""))<CR>
+-- autocmd BufRead * if !empty(&filetype) && &filetype != 'text' | set number | set signcolumn=yes  |endif
+-- "Clone Paragraph with cp
+-- noremap <leader>cp yip<S-}>o<ESC>p:echo "cloned paragraph"<CR>
+
+-- "Yank Paragraph with yp
+-- noremap <leader>gp yip<S-}>:echo "yanked paragraph"<CR>
+
+-- "Align Current Paragraph
+-- noremap <silent> <leader>fa =ip
+
+-- "format current line
+-- noremap  <silent> <leader>a :AutoformatLine<CR>
