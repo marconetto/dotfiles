@@ -163,7 +163,7 @@ config.inactive_pane_hsb = {
 
 config.foreground_text_hsb = {
   hue = 1.0,
-  saturation = 0.8,
+  saturation = 1.0,
   brightness = 0.9,
 }
 

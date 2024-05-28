@@ -284,3 +284,24 @@ ZSH_AUTOSUGGEST_STRATEGY=histdb_top_fallback
 
 [[ -f $HOME/.mycomp ]] && add-zsh-hook -Uz chpwd osc7_cwd
 ####################################################
+
+
+#### remove bold #########
+current_ls_colors=$(echo "$LS_COLORS")
+new_ls_colors=$(echo "$current_ls_colors" | sed 's/1;//g')
+export LS_COLORS=$new_ls_colors
+for key in ${(k)ZSH_HIGHLIGHT_STYLES}; do
+  ZSH_HIGHLIGHT_STYLES[$key]="${ZSH_HIGHLIGHT_STYLES[$key]//,bold/}"
+  ZSH_HIGHLIGHT_STYLES[$key]="${ZSH_HIGHLIGHT_STYLES[$key]//bold,}"
+  ZSH_HIGHLIGHT_STYLES[$key]="${ZSH_HIGHLIGHT_STYLES[$key]//bold/}"
+done
+#########################
+
+function yy() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		cd -- "$cwd" || exit
+	fi
+	rm -f -- "$tmp"
+}
