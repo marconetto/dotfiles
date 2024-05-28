@@ -46,25 +46,6 @@ local colorbg2 = lighten_color(colorbg, 0.09)
 --- plugins --------------------------------------------------------------------
 --------------------------------------------------------------------------------
 require('lazy').setup {
-  -- colorscheme ---------------------------------------------------------------
-  -- {
-  --   'sainnhe/gruvbox-material',
-  --   enabled = true,
-  --   lazy = false,
-  --   priority = 1001,
-  --   config = function(_, opts)
-  --     vim.cmd [[colorscheme gruvbox-material]]
-  --   end,
-  --   init = function()
-  --     vim.g.gruvbox_material_palette = 'material'
-  --     vim.g.gruvbox_material_transparent_background = 1
-  --     vim.g.gruvbox_material_background = 'soft'
-  --     vim.g.gruvbox_material_better_performance = 1
-  --     vim.g.gruvbox_material_enable_bold = 0
-  --     vim.g.gruvbox_material_enable_italic = 0
-  --     vim.g.gruvbox_material_disable_italic_comment = 1
-  --   end,
-  -- },
   {
     'catppuccin/nvim',
     name = 'catppuccin',
@@ -141,14 +122,6 @@ require('lazy').setup {
             {
               'diagnostics',
               sources = { 'nvim_diagnostic' },
-              -- diagnostics_color = {
-              --     error = "LspDiagnosticsDefaultError",      -- Changes diagnostics' error color.
-              --     warn = "LspDiagnosticsDefaultWarning",     -- Changes diagnostics' warn color.
-              --     info = "LspDiagnosticsDefaultInformation", -- Changes diagnostics' info color.
-              --     hint =
-              --     "LspDiagnosticsDefaultHint"                -- Changes diagnostics' hint color.
-              -- },
-              -- " ", Warn = " ", Hint = " ", Info = " "
               symbols = {
                 error = ' ',
                 warn = ' ',
@@ -190,9 +163,9 @@ require('lazy').setup {
     'ojroques/nvim-osc52',
     config = function()
       require('osc52').setup {
-        max_length = 0, -- Maximum length of selection (0 for no limit)
-        silent = true, -- Disable message on successful copy
-        trim = false, -- Trim text before copy
+        max_length = 0,
+        silent = true,
+        trim = false,
       }
     end,
   },
@@ -482,16 +455,11 @@ require('lazy').setup {
       },
     },
     init = function()
-      -- If you want the formatexpr, here is the place to set it
       vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
     end,
     config = function(_, opts)
       require('conform').setup(opts)
       notify_on_error = false
-      -- vim.api.nvim_create_autocmd('BufWritePre', {
-      --   pattern = '*',
-      --   callback = function(args) require('conform').format({ bufnr = args.buf }) end,
-      -- })
     end,
   },
   {
@@ -1336,133 +1304,3 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { 
 -- STUFF TESTING------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
-
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
--- TO BE REMOVED -----------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-----------------------------------------------------------------------------------------
-
---vim.keymap.set('n', '<Leader>p', '"+p')
---vim.keymap.set('n', '<Leader>P', '"+]p')
-
--- vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { silent = true })
-
-------------------------------------------------
--- local events = {
---   --   --'CursorHold',
---   'BufDelete',
---   -- 'BufWipeout',
---   --   'BufWinLeave',
---   --   -- 'WinNew',
---   --   -- 'WinClosed',
---   --   -- 'TabNew',
--- }
---
--- vim.api.nvim_create_autocmd(events, {
---   group = vim.api.nvim_create_augroup('PossessionAutosave', { clear = true }),
---   callback = function()
---     local session = require 'possession.session'
---     if session.session_name then
---       session.autosave()
---     end
---   end,
--- })
--- else
--- vim.api.nvim_set_keymap('n', '<leader>fm',
--- '<cmd> Telescope lsp_document_symbols theme=dropdown symbols={"interface","class","constructor","method"}<CR>',
--- { noremap = true })
--- end
-
--- vim.api.nvim_set_keymap("n", "<C-t>", function()
---     require("telescope.builtin").quickfix()
---     vim.cmd(":cclose")
--- end, { desc = "Open Quickfix (Telescope)" })
-
--- vim.keymap.set("n", "<Leader>p", ':set paste<CR>"+]p:set nopaste<cr>')
-
--- vim.keymap.set("x", "<leader>p", [["_dP]])
--- vim.keymap.set('n', '<leader>p', '"*]p')
-
--- vim.keymap.set('n', '<Leader>v', 'i<C-r><C-o>+<ESC>l=`[`]$', { desc = 'Paste block and indent' })
--- -- Indenting
--- vim.opt.expandtab = true
--- vim.opt.shiftwidth = 2
--- vim.opt.smartindent = true
--- vim.opt.tabstop = 2
--- vim.opt.softtabstop = 2
---
--- vim.opt.fillchars = { eob = " " }
--- vim.opt.ignorecase = true
--- vim.opt.smartcase = true
--- vim.opt.mouse = "a"
-
--- vim.cmd("highlight! link CmpPmenu         Pmenu")
--- vim.cmd("highlight! link CmpPmenuBorder   Pmenu")
--- vim.cmd("highlight! CmpPmenu         guibg=#282828")
--- vim.cmd("highlight! CmpPmenuBorder   guifg=#615750")
-
---
---
--- local format_on_save = require("format-on-save")
--- local formatters = require("format-on-save.formatters")
---
--- format_on_save.setup({
---     exclude_path_patterns = {
---         "/node_modules/",
---         ".local/share/nvim/lazy",
---     },
---     formatter_by_ft = {
---         css = formatters.lsp,
---         html = formatters.lsp,
---         java = formatters.lsp,
---         javascript = formatters.lsp,
---         json = formatters.lsp,
---         lua = formatters.lsp,
---         markdown = formatters.prettierd,
---         -- python = formatters.lsp,
---         python = formatters.black,
---         rust = formatters.lsp,
---         sh = formatters.shfmt,
---         terraform = formatters.lsp,
---         typescript = formatters.prettierd,
---         typescriptreact = formatters.prettierd,
---         yaml = formatters.lsp,
---     },
--- })
-
--- vim.keymap.set(
---   'n',
---   '<LEADER>jv',
---   '<cmd>lua require"telescope.builtin".lsp_definitions({jump_type="vsplit",reuse_win=false})<CR>',
---   { noremap = true, silent = true }
--- )
-
--- local navbuddy = require 'nvim-navbuddy'
---
--- require('lspconfig').pyright.setup {
---   on_attach = function(client, bufnr)
---     navbuddy.attach(client, bufnr)
---   end,
--- }
--- vim.keymap.set('n', 'ml', ':Telescope vim_bookmarks current_file<CR>', { silent = true })
--- vim.keymap.set('n', 'mL', ':Telescope vim_bookmarks all<CR>', { silent = true })
-
---  function! DelmFunction(letter)
---    execute "delm ".a:letter
--- "  execute "wshada!"
---  endfunction
-
--- nnoremap <leader>d :<C-u>call DelmFunction(input("Enter mark letter: ",""))<CR>
--- autocmd BufRead * if !empty(&filetype) && &filetype != 'text' | set number | set signcolumn=yes  |endif
--- "Clone Paragraph with cp
--- noremap <leader>cp yip<S-}>o<ESC>p:echo "cloned paragraph"<CR>
-
--- "Yank Paragraph with yp
--- noremap <leader>gp yip<S-}>:echo "yanked paragraph"<CR>
-
--- "Align Current Paragraph
--- noremap <silent> <leader>fa =ip
-
--- "format current line
--- noremap  <silent> <leader>a :AutoformatLine<CR>
