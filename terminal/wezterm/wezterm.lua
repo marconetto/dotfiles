@@ -4,6 +4,29 @@ local os = require("os")
 local act = wezterm.action
 local config = {}
 
+local function lighten_color(hex, percent)
+  local function hex_to_rgb(hex)
+    hex = hex:gsub("#", "")
+    return tonumber("0x" .. hex:sub(1, 2)), tonumber("0x" .. hex:sub(3, 4)), tonumber("0x" .. hex:sub(5, 6))
+  end
+
+  local function rgb_to_hex(r, g, b)
+    return string.format("#%02X%02X%02X", r, g, b)
+  end
+
+  local r, g, b = hex_to_rgb(hex)
+
+  r = math.min(255, math.floor(r + (255 - r) * percent))
+  g = math.min(255, math.floor(g + (255 - g) * percent))
+  b = math.min(255, math.floor(b + (255 - b) * percent))
+
+  return rgb_to_hex(r, g, b)
+end
+
+local mybackground = "#24273a"
+local tabbg1 = lighten_color(mybackground, 0.04)
+local tabbg2 = lighten_color(mybackground, 0.20)
+
 -- https://wezfurlong.org/wezterm/config/default-keys.html
 
 if wezterm.config_builder then
@@ -19,16 +42,18 @@ config.use_fancy_tab_bar = false
 local SOLID_LEFT_ARROW = " "
 local SOLID_RIGHT_ARROW = " "
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-  local edge_background = "#2C323B"
-  local background = "#242a33"
+  local edge_background = mybackground
+  local background = mybackground
   local foreground = "#808080"
 
   if tab.is_active then
-    background = "#242a33"
-    foreground = "#5485c0"
+    background = tabbg1
+    -- foreground = "#ffffff"
+    foreground = "#89b4fa"
+    -- foreground = "#5485c0"
   else
-    background = "#333941"
-    foreground = "#777777"
+    background = "#1e1e2e"
+    foreground = "#666666"
   end
 
   local edge_foreground = background
@@ -36,16 +61,24 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   -- ensure that the titles fit in the available space,
   -- and that we have room for the edges.
   local title = wezterm.truncate_right(tab.active_pane.title, max_width + 2)
+
   if string.len(title) > 4 then
     title = wezterm.truncate_right(title, 3) .. "…"
   end
   if string.len(title) < 4 then
     title = string.rep(" ", 4 - string.len(title)) .. title
   end
+  title = ""
   local zoomed = "  "
   local zz
   if tab.active_pane.is_zoomed then
-    zoomed = " ■"
+    zoomed = "[■]"
+    foreground = "#f38ba8"
+    -- foreground = "#a6e3a1"
+  else
+    zoomed = " ■ "
+    -- zoomed = "□"
+    -- zoomed = ""
   end
 
   return {
@@ -58,18 +91,18 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     { Text = SOLID_LEFT_ARROW },
     { Foreground = { Color = edge_foreground } },
     { Background = { Color = edge_background } },
-    -- { Text = "█" },
+    { Text = "█" },
     { Attribute = { Underline = "None" } },
     { Background = { Color = background } },
     { Foreground = { Color = foreground } },
     { Attribute = { Underline = "None" } },
     { Text = zoomed },
-    { Text = " " },
+    -- { Text = " " },
     { Text = title },
     { Attribute = { Underline = "None" } },
     { Foreground = { Color = edge_foreground } },
     { Background = { Color = edge_background } },
-    { Text = "███" },
+    { Text = "█" },
     { Background = { Color = edge_background } },
     { Foreground = { Color = edge_foreground } },
     { Text = SOLID_RIGHT_ARROW },
@@ -78,13 +111,21 @@ end)
 
 config.tab_max_width = 20
 
-config.color_scheme = "SpaceGray Eighties"
+-- config.color_scheme = "SpaceGray Eighties"
+-- config.color_scheme = "Rosé Pine (Gogh)"
+config.color_scheme = "Catppuccin Macchiato"
+-- config.color_scheme = "Everforest Dark (Gogh)"
+-- config.color_scheme = "nord"
+-- config.color_scheme = "Tokyo Night"
 config.colors = {
-  foreground = "#a9b1d6",
-  background = "#2C323B",
+  -- foreground = "#a9b1d6",
+  --background = "#303446", -- base cat frappe
+  -- background = "#24273a", -- base cat macchiato
+  --  background = "#2C323B",
   selection_fg = "#cccccc",
   selection_bg = "#4466aa",
   split = "#444444",
+  -- split = "#5485c0",
   -- split = "#4E96E2"
 
   quick_select_label_bg = { Color = "#4466aa" },
@@ -93,7 +134,7 @@ config.colors = {
   quick_select_match_fg = { Color = "#888888" },
 
   tab_bar = {
-    background = "#2C323B",
+    background = mybackground,
     active_tab = {
       bg_color = "#2C323B",
       fg_color = "#C8C093",
@@ -116,9 +157,33 @@ config.colors = {
 config.inactive_pane_hsb = {
   -- saturation = 0.9, -- default
   -- brightness = 0.8, -- default
-  saturation = 0.7,
+  saturation = 0.8,
   brightness = 0.6,
 }
+
+config.foreground_text_hsb = {
+  hue = 1.0,
+  saturation = 0.8,
+  brightness = 0.9,
+}
+
+-- window_background_image_hsb = {
+--   brightness = 0.01,
+--   hue = 1.0,
+--   saturation = 0.2,
+-- }
+
+-- config.foreground_text_hsb = {
+--   hue = 1.0,
+--   saturation = 0.8,
+--   brightness = 0.9,
+-- }
+-- config.active_pane_hsb = {
+--   -- saturation = 0.9, -- default
+--   -- brightness = 0.8, -- default
+--   saturation = 0.4,
+--   brightness = 0.6,
+-- }
 
 config.window_padding = {
   left = "0.2cell",
@@ -130,8 +195,6 @@ config.window_padding = {
 config.window_decorations = "NONE | RESIZE"
 -- config.window_decorations = "NONE | MACOS_FORCE_DISABLE_SHADOW | RESIZE"
 config.adjust_window_size_when_changing_font_size = false
-config.bold_brightens_ansi_colors = "No"
-config.line_height = 0.90
 config.font_size = 16
 config.default_cursor_style = "SteadyBlock"
 
@@ -140,17 +203,23 @@ config.cursor_thickness = "3.0"
 config.use_ime = false
 
 config.font = wezterm.font_with_fallback({
-  -- { family = 'Menlo',                  weight = 'Bold' },
-  -- { family = 'Fira Code',              weight = 400 },
-  { family = "Monaco", weight = "Bold" }, --- best font ever
-  { family = "Zapf Dingbats", weight = "Bold" }, --- arrow prompt
-  { family = "Monaco Nerd Font", weight = "Bold" },
+  -- { family = "Menlo", weight = 500 },
+  { family = "SF Mono", weight = 600 },
+  -- { family = "JetBrains Mono", weight = 700 },
+  -- { family = "Fira Mono", weight = 600 },
+  -- { family = "Monaco", weight = "Regular" }, --- best font ever
+  -- { family = "Monaco", weight = 800 }, --- best font ever
+  -- { family = "Monaco", weight = 800 }, --- best font ever
+  { family = "Zapf Dingbats", weight = 700 }, --- arrow prompt
+  { family = "Monaco Nerd Font", weight = 400 },
   { family = "Symbols Nerd Font Mono", weight = "Regular" },
   -- 'Noto Color Emoji',
 })
 
+config.bold_brightens_ansi_colors = "No"
 config.warn_about_missing_glyphs = true
-config.cell_width = 1.10
+config.line_height = 0.95
+-- config.cell_width = 1.10
 -- config.command_palette_font_size = 16.0
 -- config.command_palette_font_size = 24.0 or 16.0
 config.anti_alias_custom_block_glyphs = true

@@ -38,7 +38,8 @@ local function lighten_color(hex, percent)
   return rgb_to_hex(r, g, b)
 end
 
-local colorbg = '#2C323B'
+local colorbg = '#24273a' -- "Catppuccin Macchiato"
+-- local colorbg = '#2C323B' -- original gray
 local colorbg1 = lighten_color(colorbg, 0.04)
 local colorbg2 = lighten_color(colorbg, 0.09)
 --------------------------------------------------------------------------------
@@ -46,35 +47,37 @@ local colorbg2 = lighten_color(colorbg, 0.09)
 --------------------------------------------------------------------------------
 require('lazy').setup {
   -- colorscheme ---------------------------------------------------------------
-  {
-    'sainnhe/gruvbox-material',
-    enabled = true,
-    lazy = false,
-    priority = 1001,
-    config = function(_, opts)
-      vim.cmd [[colorscheme gruvbox-material]]
-    end,
-    init = function()
-      vim.g.gruvbox_material_palette = 'material'
-      vim.g.gruvbox_material_transparent_background = 1
-      vim.g.gruvbox_material_background = 'soft'
-      vim.g.gruvbox_material_better_performance = 1
-      vim.g.gruvbox_material_enable_bold = 1
-      vim.g.gruvbox_material_enable_italic = 0
-      vim.g.gruvbox_material_disable_italic_comment = 1
-    end,
-  },
   -- {
-  --   'catppuccin/nvim',
-  --   name = 'catppuccin',
-  --   priority = 1000,
+  --   'sainnhe/gruvbox-material',
+  --   enabled = true,
+  --   lazy = false,
+  --   priority = 1001,
   --   config = function(_, opts)
-  --     require('catppuccin').setup {
-  --       transparent_background = true,
-  --     }
-  --     vim.cmd [[colorscheme catppuccin-mocha]]
+  --     vim.cmd [[colorscheme gruvbox-material]]
+  --   end,
+  --   init = function()
+  --     vim.g.gruvbox_material_palette = 'material'
+  --     vim.g.gruvbox_material_transparent_background = 1
+  --     vim.g.gruvbox_material_background = 'soft'
+  --     vim.g.gruvbox_material_better_performance = 1
+  --     vim.g.gruvbox_material_enable_bold = 0
+  --     vim.g.gruvbox_material_enable_italic = 0
+  --     vim.g.gruvbox_material_disable_italic_comment = 1
   --   end,
   -- },
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000,
+    config = function(_, opts)
+      require('catppuccin').setup {
+        transparent_background = true,
+        no_italic = true,
+        no_bold = true,
+      }
+      vim.cmd [[colorscheme catppuccin-mocha]]
+    end,
+  },
   -- statusline ---------------------------------------------------------------
   {
     'nvim-lualine/lualine.nvim',
@@ -97,42 +100,12 @@ require('lazy').setup {
         end
       end
 
-      local custom_theme = require 'lualine.themes.gruvbox_dark'
-
-      custom_theme.normal.c.bg = '#323741'
-      custom_theme.insert.a.bg = '#a9b665'
-
-      custom_theme.replace.c.bg = '#323741'
-      custom_theme.visual.c.bg = '#323741'
-      custom_theme.insert.c.bg = '#323741'
-      custom_theme.command.c.bg = '#323741'
-
-      custom_theme.normal.b.bg = '#323741'
-      custom_theme.replace.b.bg = '#323741'
-      custom_theme.visual.b.bg = '#323741'
-      custom_theme.insert.b.bg = '#323741'
-      custom_theme.command.b.bg = '#323741'
-
-      custom_theme.normal.a.bg = '#81A8C1'
-      custom_theme.command.a.bg = '#c48eb0'
-
-      custom_theme.visual.a.bg = '#ffae57'
-      custom_theme.replace.a.bg = '#f07178'
-
-      custom_theme.normal.c.fg = '#888888'
-      custom_theme.normal.b.fg = '#888888'
-
-      custom_theme.insert.c.fg = '#888888'
-      custom_theme.insert.b.fg = '#888888'
-
-      custom_theme.visual.c.fg = '#888888'
-      custom_theme.visual.b.fg = '#888888'
-
-      custom_theme.replace.c.fg = '#888888'
-      custom_theme.replace.b.fg = '#888888'
-
-      custom_theme.command.c.fg = '#888888'
-      custom_theme.command.b.fg = '#888888'
+      local custom_theme = require 'lualine.themes.catppuccin-macchiato'
+      custom_theme.normal.a.gui = ''
+      custom_theme.insert.a.gui = ''
+      custom_theme.replace.a.gui = ''
+      custom_theme.visual.a.gui = ''
+      custom_theme.command.a.gui = ''
 
       require('lualine').setup {
         options = {
@@ -148,12 +121,6 @@ require('lazy').setup {
               'filename',
               symbols = { modified = '[+]', readonly = ' ' },
             },
-            -- {
-            --   require('nvim-possession').status,
-            --   cond = function()
-            --     return require('nvim-possession').status() ~= nil
-            --   end,
-            -- },
           },
           lualine_c = {
             { 'branch', separator = '' },
@@ -184,22 +151,13 @@ require('lazy').setup {
               -- " ", Warn = " ", Hint = " ", Info = " "
               symbols = {
                 error = ' ',
-                -- error = " ",
                 warn = ' ',
-                -- warn = " ",
                 info = ' ',
                 hint = '󰌶 ',
-                -- hint = " "
               },
-              -- symbols = {
-              --     error = "E",
-              --     warn = "W",
-              --     info = "I",
-              --     hint = "H"
-              -- },
-              colored = true, -- Displays diagnostics status in color if set to true.
-              update_in_insert = false, -- Update diagnostics in insert mode.
-              always_visible = false, -- Show diagnostics even if there are none.
+              colored = true,
+              update_in_insert = false,
+              always_visible = false,
             },
           },
           lualine_y = { 'filetype' },
@@ -238,62 +196,29 @@ require('lazy').setup {
       }
     end,
   },
+  -- lsp -----------------------------------------------------------------------------
   {
-    'SmiteshP/nvim-navbuddy',
+    'williamboman/mason.nvim',
     dependencies = {
-      'neovim/nvim-lspconfig',
-      'SmiteshP/nvim-navic',
-      'MunifTanjim/nui.nvim',
-      'numToStr/Comment.nvim', -- Optional
-      'nvim-telescope/telescope.nvim', -- Optional
+      'WhoIsSethDaniel/mason-tool-installer.nvim',
     },
-    keys = {
-      { '<leader>nv', '<cmd>Navbuddy<cr>', desc = 'Nav' },
-    },
+
     config = function()
-      local actions = require 'nvim-navbuddy.actions'
-      local navbuddy = require 'nvim-navbuddy'
-      navbuddy.setup {
-        window = {
-          border = 'rounded', -- "rounded", "double", "solid", "none"
-          -- or an array with eight chars building up the border in a clockwise fashion
-          -- starting with the top-left corner. eg: { "╔", "═" ,"╗", "║", "╝", "═", "╚", "║" }.
-          size = '60%', -- Or table format example: { height = "40%", width = "100%"}
-          position = '50%', -- Or table format example: { row = "100%", col = "0%"}
-          scrolloff = nil, -- scrolloff value within navbuddy window
-          sections = {
-            left = {
-              size = '05%',
-              border = nil, -- You can set border style for each section individually as well.
-            },
-            mid = {
-              size = '40%',
-              border = nil,
-            },
-            right = {
-              -- No size option for right most section. It fills to
-              -- remaining area.
-              border = nil,
-              preview = 'always', -- Right section can show previews too.
-              -- Options: "leaf", "always" or "never"
-            },
-          },
+      require('mason').setup {
+        max_concurrent_installers = 10,
+      }
+      require('mason-tool-installer').setup {
+        ensure_installed = {
+          'autoflake',
+          'black',
+          'isort',
+          'shfmt',
+          'stylua',
         },
-        -- window = {
-        --   border = 'single',
-        -- },
-        mappings = {
-          ['<Left>'] = actions.parent(),
-          ['<Right>'] = actions.children(),
-        },
-        lsp = { auto_attach = true },
       }
     end,
   },
-  -- lsp -----------------------------------------------------------------------------
   {
-    -- TODO, add here black and shfmt to auto install
-    'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     cond = function()
       if vim.fn.executable 'npm' == 1 then
@@ -305,51 +230,13 @@ require('lazy').setup {
   },
   {
     'VonHeikemen/lsp-zero.nvim',
+    branch = 'v3.x',
     dependencies = {
-      'lukas-reineke/lsp-format.nvim',
       'neovim/nvim-lspconfig',
       'hrsh7th/nvim-cmp',
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
-      'saadparwaiz1/cmp_luasnip',
       'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lua',
       'L3MON4D3/LuaSnip',
-      'rafamadriz/friendly-snippets',
-      'onsails/lspkind-nvim',
     },
-    config = function()
-      local lsp = require 'lsp-zero'
-      lsp.preset 'recommended'
-      -- lsp.on_attach(function(client, bufnr)
-      --   require("lsp-format").on_attach(client, bufnr)
-      -- end)
-      lsp.nvim_workspace()
-      lsp.setup()
-      vim.diagnostic.config { virtual_text = true }
-
-      require('mason-lspconfig').setup {
-        ensure_installed = {
-          'lua_ls',
-        },
-      }
-      if vim.fn.executable 'npm' == 1 then
-        require('mason-lspconfig').setup {
-          ensure_installed = {
-            'tsserver',
-            'bashls',
-            'cssls',
-            'lua_ls',
-            'html',
-            'jsonls',
-            -- "shfmt",
-            'pyright',
-            'yamlls',
-            'bicep',
-          },
-        }
-      end
-    end,
   },
   -- proper syntax colors -------------------------------------------------------------
   {
@@ -392,35 +279,7 @@ require('lazy').setup {
   -- telescope -----------------------------------------------------------------------
   {
     'nvim-telescope/telescope.nvim',
-    -- tag = '0.1.2',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    -- dependencies = {
-    --     {
-    --         "nvim-telescope/telescope-live-grep-args.nvim" ,
-    --         -- This will not install any breaking changes.
-    --         -- For major updates, this must be adjusted manually.
-    --         version = "^1.0.0",
-    --     },
-    --   },
-    -- config = function()
-    --   require('telescope').load_extension 'live_grep_args'
-    -- end,
-    -- config = function()
-    --   require('telescope').setup {
-    --     pickers = {
-    --       find_files = {
-    --         mappings = {
-    --           i = {
-    --             ['<CR>'] = telescope_custom_actions.multi_selection_open,
-    --             ['<C-v>'] = telescope_custom_actions.multi_selection_open_vsplit,
-    --             ['<C-s>'] = telescope_custom_actions.multi_selection_open_split,
-    --             ['<C-t>'] = telescope_custom_actions.multi_selection_open_tab,
-    --           },
-    --         },
-    --       },
-    --     },
-    --   }
-    -- end,
   },
   {
     'nvim-telescope/telescope-file-browser.nvim',
@@ -451,17 +310,8 @@ require('lazy').setup {
     end,
     build = 'make',
   },
-  -- toggle comment --------------------------------------------------------------------
+  -- highlight current word --------------------------------------------------
   {
-    'terrortylor/nvim-comment',
-    config = function()
-      require('nvim_comment').setup()
-    end,
-  },
-  -- highlight current word ------------------------------------------------------------
-  {
-
-    -- 'dominikduda/vim_current_word'
     'RRethy/vim-illuminate',
     -- event = "BufReadPost",
     event = { 'BufReadPost', 'BufWinEnter' },
@@ -470,17 +320,13 @@ require('lazy').setup {
       require('illuminate').configure(opts)
     end,
   },
-  -- auto pair brackets ----------------------------------------------------------------
+  -- auto pair brackets ------------------------------------------------------
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
-    opts = {}, -- this is equalent to setup({}) function
+    opts = {},
   },
-  -- multi cursor ----------------------------------------------------------------------
-  {
-    'mg979/vim-visual-multi',
-  },
-  -- buffer names on top of screen -----------------------------------------------------
+  -- buffer names on top of screen --------------------------------------------
   {
     'akinsho/bufferline.nvim',
     version = '*',
@@ -500,12 +346,12 @@ require('lazy').setup {
         },
         highlights = {
           background = {
-            bold = true,
+            bold = false,
             italic = true,
             fg = '#6f6b79',
           },
           buffer_selected = {
-            bold = true,
+            bold = false,
             italic = true,
             fg = '#dddddd',
           },
@@ -528,13 +374,10 @@ require('lazy').setup {
     end,
   },
   {
-
     'kdheepak/lazygit.nvim',
-    -- optional for floating window border decoration
     dependencies = {
       'nvim-lua/plenary.nvim',
     },
-
     config = function()
       require('telescope').load_extension 'lazygit'
       vim.g.lazygit_floating_window_winblend = 0
@@ -561,21 +404,6 @@ require('lazy').setup {
       vim.g.mkdp_page_title = '${name}'
     end,
   },
-  -- kitty -----------------------------------------------------------------------------
-  -- {
-  --   'knubie/vim-kitty-navigator',
-  --   cond = function()
-  --     if vim.fn.has 'mac' == 1 then
-  --       return true
-  --     else
-  --       return false
-  --     end
-  --   end,
-  --   build = 'cp ./*.py ~/.config/kitty/',
-  --   init = function()
-  --     vim.g.kitty_navigator_no_mappings = 1
-  --   end,
-  -- },
   -- wezterm navigator ----------------------------------------------------------------
   {
     'numToStr/Navigator.nvim',
@@ -592,26 +420,6 @@ require('lazy').setup {
       require('Navigator').setup { mux = ok and wezterm or 'auto' }
     end,
   },
-  -- {
-  --   'chentoast/marks.nvim',
-  --   event = 'VeryLazy',
-  --
-  --   config = function()
-  --     require('marks').setup {
-  --       mappings = {
-  --         set_next = 'm,',
-  --         toggle = '<c-6>',
-  --         next = '<c-n>',
-  --         -- next = "<leader>]",
-  --         prev = '<c-j>',
-  --         -- prev = "<leader>["
-  --         preview = 'm:',
-  --         --set_bookmark0 = "m0",
-  --       },
-  --     }
-  --     -- vim.keymap.set("n", "<leader>s", ":MarksListBuf<CR>", { silent = true })
-  --   end,
-  -- },
   {
     'github/copilot.vim',
 
@@ -653,9 +461,8 @@ require('lazy').setup {
   {
     'stevearc/conform.nvim',
     opts = {
-      -- Define your formatters
       formatters_by_ft = {
-        -- lua = { "stylua" },
+        lua = { 'stylua' },
         python = { 'isort', 'black' },
         javascript = { { 'prettierd', 'prettier' } },
       },
@@ -697,81 +504,7 @@ require('lazy').setup {
   {
     'tom-anders/telescope-vim-bookmarks.nvim',
   },
-  -- {
-  --   'olimorris/persisted.nvim',
-  --   config = function()
-  --     require('persisted').setup {
-  --       save_dir = vim.fn.expand(vim.fn.stdpath 'data' .. '/sessions/'), -- directory where session files are saved
-  --       silent = false, -- silent nvim message when sourcing session file
-  --       use_git_branch = false, -- create session files based on the branch of the git enabled repository
-  --       autosave = true, -- automatically save session files when exiting Neovim
-  --       should_autosave = nil, -- function to determine if a session should be autosaved
-  --       autoload = true, -- automatically load the session for the cwd on Neovim startup
-  --       on_autoload_no_session = nil, -- function to run when `autoload = true` but there is no session to load
-  --       follow_cwd = true, -- change session file name to match current working directory if it changes
-  --       allowed_dirs = nil, -- table of dirs that the plugin will auto-save and auto-load from
-  --       ignored_dirs = nil, -- table of dirs that are ignored when auto-saving and auto-loading
-  --       telescope = { -- options for the telescope extension
-  --         reset_prompt_after_deletion = true, -- whether to reset prompt after session deleted
-  --       },
-  --     }
-  --     require('telescope').load_extension 'persisted'
-  --   end,
-  -- },
-  -- {
-  --   'folke/persistence.nvim',
-  --   event = 'BufReadPre', -- this will only start session saving when an actual file was opened
-  --   opts = {
-  --     -- add any custom options here
-  --   },
-  -- },
-  -- {
-  --
-  --   'echasnovski/mini.sessions',
-  --   -- dir = D.plugin .. "mini.sessions",
-  --   event = 'VeryLazy',
-  --   config = function()
-  --     require('mini.sessions').setup {
-  --       autowrite = true,
-  --     }
-  --   end,
-  -- },
-  -- {
-  --
-  --   'jedrzejboczar/possession.nvim',
-  --   lazy = false,
-  --   dependencies = { 'nvim-lua/plenary.nvim' },
-  --   config = function()
-  --     require('possession').setup {
-  --       silent = false,
-  --       autosave = {
-  --         current = true, -- or fun(name): boolean
-  --         tmp = false, -- or fun(): boolean
-  --         tmp_name = 'tmp', -- or fun(): string
-  --         on_load = true,
-  --         on_quit = true,
-  --       },
-  --       plugins = {
-  --         close_windows = {
-  --           preserve_layout = true, -- or fun(win): boolean
-  --           match = {
-  --             floating = true,
-  --             buftype = {
-  --               'terminal',
-  --             },
-  --             filetype = {},
-  --             custom = false, -- or fun(win): boolean
-  --           },
-  --         },
-  --         delete_hidden_buffers = true,
-  --         nvim_tree = true,
-  --         -- tabby = true,
-  --         delete_buffers = false,
-  --       },
-  --     }
-  --     require('telescope').load_extension 'possession'
-  --   end,
-  -- },
+
   {
 
     'rmagatti/auto-session',
@@ -976,6 +709,36 @@ require('lazy').setup {
 -------------------------------------------------------------------------------
 require('telescope').load_extension 'file_browser'
 
+local lsp_zero = require 'lsp-zero'
+
+lsp_zero.on_attach(function(client, bufnr)
+  -- see :help lsp-zero-keybindings
+  -- to learn the available actions
+  lsp_zero.default_keymaps { buffer = bufnr }
+end)
+
+-- to learn how to use mason.nvim
+-- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guide/integrate-with-mason-nvim.md
+require('mason').setup {}
+require('mason-lspconfig').setup {
+  ensure_installed = {
+    'tsserver',
+    'bashls',
+    'cssls',
+    'lua_ls',
+    'html',
+    'jsonls',
+    'pyright',
+    'yamlls',
+    'bicep',
+  },
+  handlers = {
+    function(server_name)
+      require('lspconfig')[server_name].setup {}
+    end,
+  },
+}
+
 -- have decent autocompletion with ENTER + TAB ---------------
 local cmp = require 'cmp'
 local cmp_action = require('lsp-zero').cmp_action()
@@ -1130,9 +893,9 @@ vim.api.nvim_set_keymap(
 -------------------------------------------------------------------------------
 --- colors --------------------------------------------------------------------
 -------------------------------------------------------------------------------
-vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#AAAAAA', bg = 'None', bold = true })
-vim.api.nvim_set_hl(0, 'SignColumn', { fg = '#AAAAAA', bg = 'None', bold = true })
-vim.api.nvim_set_hl(0, 'LineNr', { fg = '#47525C', bg = 'None', bold = true })
+vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = '#AAAAAA', bg = 'None', bold = false })
+vim.api.nvim_set_hl(0, 'SignColumn', { fg = '#AAAAAA', bg = 'None', bold = false })
+vim.api.nvim_set_hl(0, 'LineNr', { fg = '#47525C', bg = 'None', bold = false })
 
 vim.api.nvim_set_hl(0, 'EndOfBuffer', { fg = colorbg, bg = 'None' })
 vim.api.nvim_set_hl(0, 'CursorLine', { bg = colorbg1 })
@@ -1192,12 +955,12 @@ require('bufferline').setup {
   },
   highlights = {
     background = {
-      bold = true,
+      bold = false,
       italic = true,
       fg = '#6f6b79',
     },
     buffer_selected = {
-      bold = true,
+      bold = false,
       italic = true,
       fg = '#dddddd',
     },
@@ -1352,6 +1115,7 @@ function ToggleCurline()
     vim.o.cursorcolumn = true
   end
 end
+
 vim.api.nvim_set_keymap('n', '<leader>tc', ':lua ToggleCurline()<CR>', { silent = true })
 
 vim.cmd [[
@@ -1567,6 +1331,13 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
 
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { focusable = false })
 
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+-- STUFF TESTING------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 -- TO BE REMOVED -----------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
