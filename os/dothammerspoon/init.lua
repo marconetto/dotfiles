@@ -147,58 +147,58 @@ end)
 --   hs.eventtap.keyStroke({ "ctrl", "cmd" }, "q")
 -- end)
 
-function toggle_window_maximized()
-  local win = hs.window.focusedWindow()
-  if frameCache[win:id()] then
-    win:setFrame(frameCache[win:id()])
-    frameCache[win:id()] = nil
-  else
-    frameCache[win:id()] = win:frame()
-    win:maximize()
-  end
-end
+-- function toggle_window_maximized()
+--   local win = hs.window.focusedWindow()
+--   if frameCache[win:id()] then
+--     win:setFrame(frameCache[win:id()])
+--     frameCache[win:id()] = nil
+--   else
+--     frameCache[win:id()] = win:frame()
+--     win:maximize()
+--   end
+-- end
 
 -------------------------------------------------------------------------------
 -- make window full screen with border
 -------------------------------------------------------------------------------
-function borderFullScreen()
-  return function()
-    if hs.window.focusedWindow() then
-      local win = hs.window.frontmostWindow()
-      if frameMaxCache[win:id()] then
-        win:setFrame(frameMaxCache[win:id()])
-        frameMaxCache[win:id()] = nil
-      else
-        local id = win:id()
-        local screen = win:screen()
-        frameMaxCache[win:id()] = win:frame()
+-- function borderFullScreen()
+--   return function()
+--     if hs.window.focusedWindow() then
+--       local win = hs.window.frontmostWindow()
+--       if frameMaxCache[win:id()] then
+--         win:setFrame(frameMaxCache[win:id()])
+--         frameMaxCache[win:id()] = nil
+--       else
+--         local id = win:id()
+--         local screen = win:screen()
+--         frameMaxCache[win:id()] = win:frame()
+--
+--         h = screen:currentMode().h
+--         w = screen:currentMode().w
+--         local f = win:frame()
+--         -- border = WINDOW_BORDER
+--         -- f.x = border
+--         -- f.y = border + 00
+--         -- f.w = w - border * 2
+--         -- f.h = h - border * 2 - 00
+--
+--         -- TODO: fix hardcoded values
+--         f.x = 08
+--         f.y = 24 + 00
+--         f.w = w - 08 * 2
+--         f.h = h - 24 - 08 - 00
+--         -- border = 30
+--         -- f.x = border
+--         -- f.y = border + border
+--         -- f.w = w-border*2
+--         -- f.h = h-border*2 - border
+--         win:setFrame(f)
+--       end
+--     end
+--   end
+-- end
 
-        h = screen:currentMode().h
-        w = screen:currentMode().w
-        local f = win:frame()
-        -- border = WINDOW_BORDER
-        -- f.x = border
-        -- f.y = border + 00
-        -- f.w = w - border * 2
-        -- f.h = h - border * 2 - 00
-
-        -- TODO: fix hardcoded values
-        f.x = 08
-        f.y = 24 + 00
-        f.w = w - 08 * 2
-        f.h = h - 24 - 08 - 00
-        -- border = 30
-        -- f.x = border
-        -- f.y = border + border
-        -- f.w = w-border*2
-        -- f.h = h-border*2 - border
-        win:setFrame(f)
-      end
-    end
-  end
-end
-
-hs.hotkey.bind({ "cmd" }, "m", borderFullScreen())
+-- hs.hotkey.bind({ "cmd" }, "m", borderFullScreen())
 
 -------------------------------------------------------------------------------
 -- volume control and play functions
