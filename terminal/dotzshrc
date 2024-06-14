@@ -287,14 +287,14 @@ ZSH_AUTOSUGGEST_STRATEGY=histdb_top_fallback
 
 
 #### remove bold #########
-current_ls_colors=$(echo "$LS_COLORS")
-new_ls_colors=$(echo "$current_ls_colors" | sed 's/1;//g')
-export LS_COLORS=$new_ls_colors
-for key in ${(k)ZSH_HIGHLIGHT_STYLES}; do
-  ZSH_HIGHLIGHT_STYLES[$key]="${ZSH_HIGHLIGHT_STYLES[$key]//,bold/}"
-  ZSH_HIGHLIGHT_STYLES[$key]="${ZSH_HIGHLIGHT_STYLES[$key]//bold,}"
-  ZSH_HIGHLIGHT_STYLES[$key]="${ZSH_HIGHLIGHT_STYLES[$key]//bold/}"
-done
+# current_ls_colors=$(echo "$LS_COLORS")
+# new_ls_colors=$(echo "$current_ls_colors" | sed 's/1;//g')
+# export LS_COLORS=$new_ls_colors
+# for key in ${(k)ZSH_HIGHLIGHT_STYLES}; do
+#   ZSH_HIGHLIGHT_STYLES[$key]="${ZSH_HIGHLIGHT_STYLES[$key]//,bold/}"
+#   ZSH_HIGHLIGHT_STYLES[$key]="${ZSH_HIGHLIGHT_STYLES[$key]//bold,}"
+#   ZSH_HIGHLIGHT_STYLES[$key]="${ZSH_HIGHLIGHT_STYLES[$key]//bold/}"
+# done
 #########################
 
 function yy() {

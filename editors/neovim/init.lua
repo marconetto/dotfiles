@@ -800,6 +800,7 @@ vim.keymap.set('x', '<leader>y', require('osc52').copy_visual) --- not working??
 vim.api.nvim_set_keymap('n', 'U', '<C-R>', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('n', '<space>fw', ':Telescope file_browser<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<space>fb', ':Telescope buffers<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
 
 vim.api.nvim_set_keymap('n', 'Y', '^vg_<leader>y:echo "yank line"<CR>:sleep 700m<CR>:echo ""<CR>', { silent = true })
@@ -815,7 +816,7 @@ vim.api.nvim_set_keymap('n', '<leader>r', '<cmd> Telescope lsp_references<CR>', 
 vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd> Telescope lsp_definitions<CR>', { noremap = true })
 
 vim.keymap.set('n', 'gp', "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", { noremap = true })
-vim.keymap.set('n', '<leader>gr', "<cmd>lua require('goto-preview').goto_preview_references()<CR>", { noremap = true })
+vim.keymap.set('n', 'gr', "<cmd>lua require('goto-preview').goto_preview_references()<CR>", { noremap = true })
 
 vim.api.nvim_set_keymap(
   'n',
@@ -887,16 +888,6 @@ vim.api.nvim_create_autocmd('InsertLeave', {
     vim.api.nvim_set_hl(0, 'CursorColumn', { bg = colorbg1 })
   end,
 })
-
--- float for diagnosticis and pmenu keep transparent background
--- vim.cmd('hi! link FloatBorder Normal')
-vim.cmd 'hi! link NormalFloat Normal'
-vim.cmd 'hi! WildMenu guifg=#226622'
-vim.cmd 'hi! PMenu guifg=Normal guibg=NONE'
-
-vim.cmd 'hi! IncSearch guibg=#a9b1d6 guifg=#444444 gui=NONE'
-vim.cmd 'hi! Search guibg=#444444 guifg=#cccccc gui=NONE'
-vim.cmd 'hi! Visual guibg=#444449 gui=none'
 
 -------------------------------------------------------------------------------
 --- autocmds --------------------------------------------------------------------
@@ -1157,7 +1148,7 @@ nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 ]]
 
-vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
+-- vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
 
 if vim.fn.has 'mac' == 1 then
   vim.cmd [[
@@ -1240,20 +1231,13 @@ nnoremap <silent> <S-q> :bw<cr>
 nnoremap <silent> <leader>bq :bp<cr>:bd #<cr>
 nnoremap <silent> <leader>k :bp<cr>:bd #<cr>
 nnoremap <silent> <S-Right> :bnext<CR>
-nnoremap <silent> <c-s-l> :bnext<CR>
 nnoremap <silent> <S-Left>  :bprevious<CR>
+nnoremap <silent> <c-s-l> :bnext<CR>
 nnoremap <silent> <c-s-j>  :bprevious<CR>
-]]
-
-vim.cmd [[
-function! SetLSPHighlights()
-    highlight LspDiagnosticsUnderlineError guifg=#aa4917 gui=none
-    highlight LspDiagnosticsUnderlineWarning guifg=#EBA217 gui=undercurl
-    highlight LspDiagnosticsUnderlineInformation guifg=#17D6EB, gui=undercurl
-    highlight LspDiagnosticsUnderlineHint guifg=#17EB7A gui=undercurl
-endfunction
-
-autocmd ColorScheme * call SetLSPHighlights()
+nnoremap <silent> <s-h>  :bprevious<CR>
+nnoremap <silent> <s-l>  :bnext<CR>
+nnoremap <silent> <a-.>  :bnext<CR>
+nnoremap <silent> <a-,>  :bnext<CR>
 ]]
 
 vim.cmd [[
@@ -1264,11 +1248,11 @@ if &wildoptions =~ "pum"
 endif
 ]]
 
-vim.cmd [[
-" temporary solution for not showing ~@k when scrolling
-set noshowcmd
-let g:lsp_diagnostics_float_delay = 5000
-]]
+-- vim.cmd [[
+-- " temporary solution for not showing ~@k when scrolling
+-- set noshowcmd
+-- let g:lsp_diagnostics_float_delay = 5000
+-- ]]
 
 vim.cmd [[
 let g:VM_highlight_matches = 'hi Search guifg=#ffffff'
@@ -1304,3 +1288,57 @@ vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { 
 -- STUFF TESTING------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
+---
+vim.diagnostic.config {
+  virtual_text = false,
+  signs = true,
+  update_in_insert = true,
+  underline = false,
+  severity_sort = true,
+  float = {
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '- ',
+  },
+}
+--
+vim.api.nvim_set_keymap('n', '<C-S-a>', '<C-a>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-S-x>', '<C-x>', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<C-a>', '^', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '<C-a>', '^', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('o', '<C-a>', '^', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('i', '<C-a>', '<C-o>0', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('i', '<C-e>', '<C-o>$', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<C-e>', '$', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '<C-e>', '$', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('o', '<C-e>', '$', { noremap = true, silent = true })
+
+vim.cmd [[
+nnoremap <c-d>    <cmd>lua vim.diagnostic.open_float()<CR>
+nnoremap <leader>d    <cmd>lua vim.diagnostic.open_float()<CR>
+]]
+
+-- float for diagnosticis and pmenu keep transparent background
+-- vim.cmd('hi! link FloatBorder Normal')
+-- vim.cmd 'hi! link NormalFloat Normal'
+-- vim.cmd 'hi! WildMenu guifg=#226622'
+-- vim.cmd 'hi! PMenu guifg=Normal guibg=NONE'
+
+-- vim.cmd 'hi! IncSearch guibg=#a9b1d6 guifg=#444444 gui=NONE'
+-- vim.cmd 'hi! Search guibg=#444444 guifg=#cccccc gui=NONE'
+-- vim.cmd 'hi! Visual guibg=#444449 gui=none'
+
+-- vim.cmd [[
+-- function! SetLSPHighlights()
+--     highlight LspDiagnosticsUnderlineError guifg=#aa4917 gui=none
+--     highlight LspDiagnosticsUnderlineWarning guifg=#EBA217 gui=undercurl
+--     highlight LspDiagnosticsUnderlineInformation guifg=#17D6EB, gui=undercurl
+--     highlight LspDiagnosticsUnderlineHint guifg=#17EB7A gui=undercurl
+-- endfunction
+--
+-- autocmd ColorScheme * call SetLSPHighlights()
+-- ]]
