@@ -1,4 +1,7 @@
-hs.ipc.cliInstall()
+if not hs.ipc.cliStatus() then
+  hs.ipc.cliInstall()
+end
+-- hs.ipc.cliInstall()
 hs.window.animationDuration = 0
 
 function set_alert_color()
@@ -71,10 +74,11 @@ function uberalert(message, duration)
   command = 'tell application "Übersicht" to refresh widget id "simplealert-widget-simplealert-coffee"'
   hs.osascript.applescript(command)
 
-  if uber_last_clean_timer ~= nil then
-    uber_last_clean_timer:stop()
-  end
-  timer = hs.timer.doAfter(duration, cleanuberalert())
+  print(uber_last_clean_timer)
+  -- if uber_last_clean_timer ~= nil then
+  -- uber_last_clean_timer:stop()
+  -- end
+  local timer = hs.timer.doAfter(duration, cleanuberalert())
   uber_last_clean_timer = timer
 end
 
@@ -203,77 +207,77 @@ end)
 -------------------------------------------------------------------------------
 -- volume control and play functions
 -------------------------------------------------------------------------------
-function toggleMute()
-  return function()
-    local current = hs.audiodevice.defaultOutputDevice():outputMuted()
-    hs.alert.closeAll(0.0)
-    if current == false then
-      hs.audiodevice.defaultOutputDevice():setMuted(true)
-      show_alert("muted", 3.0)
-    else
-      hs.audiodevice.defaultOutputDevice():setMuted(false)
-      show_alert("unmuted", 3.0)
-    end
-  end
-end
+-- function toggleMute()
+--   return function()
+--     local current = hs.audiodevice.defaultOutputDevice():outputMuted()
+--     hs.alert.closeAll(0.0)
+--     if current == false then
+--       hs.audiodevice.defaultOutputDevice():setMuted(true)
+--       show_alert("muted", 3.0)
+--     else
+--       hs.audiodevice.defaultOutputDevice():setMuted(false)
+--       show_alert("unmuted", 3.0)
+--     end
+--   end
+-- end
+--
+-- function changeVolume(diff)
+--   return function()
+--     local current = hs.audiodevice.defaultOutputDevice():volume()
+--     local new = math.min(100, math.max(0, math.floor(current + diff)))
+--
+--     new = math.floor(new / 10 + 0.5) * 10
+--     -- if new > 0 then
+--     -- hs.audiodevice.defaultOutputDevice():setMuted(false)
+--     -- end
+--     -- hs.alert.closeAll(0.0)
+--     -- hs.timer.usleep(90000)
+--     hs.audiodevice.defaultOutputDevice():setVolume(new)
+--     message = "vol " .. new
+--     -- hs.alert.show(message, {}, 2)
+--     show_alert(message, 1)
+--   end
+-- end
 
-function changeVolume(diff)
-  return function()
-    local current = hs.audiodevice.defaultOutputDevice():volume()
-    local new = math.min(100, math.max(0, math.floor(current + diff)))
-
-    new = math.floor(new / 10 + 0.5) * 10
-    -- if new > 0 then
-    -- hs.audiodevice.defaultOutputDevice():setMuted(false)
-    -- end
-    -- hs.alert.closeAll(0.0)
-    -- hs.timer.usleep(90000)
-    hs.audiodevice.defaultOutputDevice():setVolume(new)
-    message = "vol " .. new
-    -- hs.alert.show(message, {}, 2)
-    show_alert(message, 1)
-  end
-end
-
-function togglePlay()
-  print("toggle play")
-  return function()
-    local playing = hs.spotify.isPlaying()
-    hs.alert.closeAll(0.0)
-    if playing == false then
-      hs.spotify.play()
-      show_alert("play", 3)
-    else
-      hs.spotify.pause()
-      show_alert("pause", 3)
-    end
-  end
-end
-
-function myPrevious()
-  print("myPrevious")
-  return function()
-    local playing = hs.spotify.isPlaying()
-    hs.alert.closeAll(0.0)
-    if playing == true then
-      hs.spotify.previous()
-      show_alert("previous", 3)
-    end
-  end
-end
-
-function myNext()
-  return function()
-    local playing = hs.spotify.isPlaying()
-    hs.alert.closeAll(0.0)
-    if playing == true then
-      hs.spotify.next()
-      show_alert("next", 3)
-    end
-  end
-end
-
-local inc_volume = 10
+-- function togglePlay()
+--   print("toggle play test")
+--   return function()
+--     local playing = hs.spotify.isPlaying()
+--     hs.alert.closeAll(0.0)
+--     if playing == false then
+--       hs.spotify.play()
+--       show_alert("play", 3)
+--     else
+--       hs.spotify.pause()
+--       show_alert("pause", 3)
+--     end
+--   end
+-- end
+--
+-- function myPrevious()
+--   print("myPrevious")
+--   return function()
+--     local playing = hs.spotify.isPlaying()
+--     hs.alert.closeAll(0.0)
+--     if playing == true then
+--       hs.spotify.previous()
+--       show_alert("previous", 3)
+--     end
+--   end
+-- end
+--
+-- function myNext()
+--   return function()
+--     local playing = hs.spotify.isPlaying()
+--     hs.alert.closeAll(0.0)
+--     if playing == true then
+--       hs.spotify.next()
+--       show_alert("next", 3)
+--     end
+--   end
+-- end
+--
+-- local inc_volume = 10
 
 -- hs.hotkey.bind(hyperkeys, "i", changeVolume(-inc_volume), nil, nil)
 --
@@ -281,10 +285,10 @@ local inc_volume = 10
 --
 -- hs.hotkey.bind(hyperkeys, "u", toggleMute())
 
-hs.hotkey.bind("", "f13", togglePlay())
+-- hs.hotkey.bind("", "f20", togglePlay())
 -- hs.hotkey.bind(hyperkeys, "p", togglePlay())
-hs.hotkey.bind("", "f14", myPrevious())
-hs.hotkey.bind("", "f15", myNext())
+-- hs.hotkey.bind("", "f21", myPrevious())
+-- hs.hotkey.bind("", "f22", myNext())
 
 -------------------------------------------------------------------------------
 -- hyper+numbers mapped to function keys
@@ -512,27 +516,29 @@ function toggle_battery()
 end
 
 hs.hotkey.bind(threekeys, "1", toggle_battery(), nil, nil)
+--
+-- function wifi_changed()
+--   print("wifi changed  ")
+-- end
 
-function wifi_changed()
-  print("wifi changed  ")
-end
+-- network_watcher = hs.wifi.watcher.new(wifi_changed)
+-- network_watcher:start()
 
-network_watcher = hs.wifi.watcher.new(wifi_changed)
-network_watcher:start()
+-- function network_set_off()
+--   command = 'tell application "Übersicht" to set hidden of widget id "net-widget-net-coffee" to true'
+--   hs.osascript.applescript(command)
+--   print("SET network OFF")
+-- end
+--
+-- function network_set_on()
+--   command = 'tell application "Übersicht" to set hidden of widget id "net-widget-net-coffee" to false'
+--   hs.osascript.applescript(command)
+--   print("SET network ON")
+-- end
+--
+-- require("vpntest")
 
-function network_set_off()
-  command = 'tell application "Übersicht" to set hidden of widget id "net-widget-net-coffee" to true'
-  hs.osascript.applescript(command)
-  print("SET network OFF")
-end
-
-function network_set_on()
-  command = 'tell application "Übersicht" to set hidden of widget id "net-widget-net-coffee" to false'
-  hs.osascript.applescript(command)
-  print("SET network ON")
-end
-
-require("vpntest")
+--
 -- hs.network.reachability.forAddress("172.20.100.3"):setCallback(function(self, flags)
 -- -- note that because having an internet connection at all will show the remote network
 -- -- as "reachable", we instead look at whether or not our specific address is "local" instead
@@ -1049,3 +1055,61 @@ end
 
 hs.hotkey.bind(threekeys, "s", uberpomodoro(POMODORO_LEN), nil, nil)
 hs.hotkey.bind(threekeys, "x", cleanuberpomdoro(), nil, nil)
+
+-- function toggleSpotifyPlayPause()
+--   local spotify = hs.appfinder.appFromName("Spotify")
+--   if not spotify then
+--     show_alert("spotify not running", 2)
+--     -- hs.alert.show("Spotify is not running!")
+--     return
+--   end
+--
+--   local playerState = hs.spotify.getPlaybackState()
+--   if playerState == hs.spotify.state_playing or playerState == hs.spotify.state_paused then
+--     hs.spotify.playpause()
+--     show_alert("play/pause", 2)
+--   else
+--     hs.alert.show("Spotify is not playing or paused!")
+--   end
+--   -- hs.timer.usleep(500000)
+-- end
+
+-- function getSpotifyTrack()
+--   hs.timer.usleep(100000)
+--   local track = hs.spotify.getCurrentTrack()
+--
+--   local limitedName = string.sub(track, 1, 15)
+--
+--   if #track > 15 then
+--     limitedName = limitedName .. "..."
+--   end
+--
+--   return limitedName
+-- end
+--
+-- function nextSpotifyTrack()
+--   local spotify = hs.appfinder.appFromName("Spotify")
+--   if not spotify then
+--     show_alert("spotify not running", 2)
+--     return
+--   end
+--
+--   hs.spotify.next()
+--   local track = getSpotifyTrack()
+--   -- show_alert("next: " .. track, 2)
+-- end
+--
+-- -- Function to play the previous track in Spotify
+-- function previousSpotifyTrack()
+--   local spotify = hs.appfinder.appFromName("Spotify")
+--   if not spotify then
+--     show_alert("spotify not running", 2)
+--     return
+--   end
+--
+--   hs.spotify.previous()
+--
+--   local track = getSpotifyTrack()
+--
+--   show_alert("previous: " .. track, 2)
+-- end
