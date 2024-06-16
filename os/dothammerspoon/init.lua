@@ -1,6 +1,6 @@
-if not hs.ipc.cliStatus() then
-  hs.ipc.cliInstall()
-end
+-- if not hs.ipc.cliStatus() then
+--   hs.ipc.cliInstall()
+-- end
 -- hs.ipc.cliInstall()
 hs.window.animationDuration = 0
 
@@ -451,7 +451,7 @@ hs.hotkey.bind({ "alt" }, "1", seeMail)
 -------------------------------------------------------------------------------
 -- refresh ubersicht battery menubar item
 -------------------------------------------------------------------------------
-function battery_changed()
+local function battery_changed()
   command = 'tell application "Übersicht" to refresh widget id "battery_pro-widget-index-coffee"'
   hs.osascript.applescript(command)
 
@@ -462,7 +462,7 @@ function battery_changed()
   charged = hs.battery.isCharged()
   percentage = hs.battery.percentage()
   charging = hs.battery.isCharging()
-  print("IS CHARGED: " .. tostring(charged) .. "percentage:" .. percentage)
+  print("IS CHARGED: [" .. tostring(charged) .. "] percentage: " .. percentage)
   print("IS CHARGING: " .. tostring(charging))
 
   if charged then
@@ -569,26 +569,26 @@ hs.hotkey.bind(threekeys, "1", toggle_battery(), nil, nil)
 -------------------------------------------------------------------------------
 -- toggle network menubar
 -------------------------------------------------------------------------------
-function toggle_network_func()
-  command = 'tell application "Übersicht" to get hidden of widget id "net-widget-net-coffee"'
-  error, network_on, output = hs.osascript.applescript(command)
-  print(network_on)
-
-  if network_on then
-    command = 'tell application "Übersicht" to set hidden of widget id "net-widget-net-coffee" to false'
-  else
-    command = 'tell application "Übersicht" to set hidden of widget id "net-widget-net-coffee" to true'
-  end
-  hs.osascript.applescript(command)
-end
-
-function toggle_network()
-  return function()
-    toggle_network_func()
-  end
-end
-
-hs.hotkey.bind(threekeys, "3", toggle_network(), nil, nil)
+-- function toggle_network_func()
+--   command = 'tell application "Übersicht" to get hidden of widget id "net-widget-net-coffee"'
+--   error, network_on, output = hs.osascript.applescript(command)
+--   print(network_on)
+--
+--   if network_on then
+--     command = 'tell application "Übersicht" to set hidden of widget id "net-widget-net-coffee" to false'
+--   else
+--     command = 'tell application "Übersicht" to set hidden of widget id "net-widget-net-coffee" to true'
+--   end
+--   hs.osascript.applescript(command)
+-- end
+--
+-- function toggle_network()
+--   return function()
+--     toggle_network_func()
+--   end
+-- end
+--
+-- hs.hotkey.bind(threekeys, "3", toggle_network(), nil, nil)
 
 -------------------------------------------------------------------------------
 -- toggle appworkspace menubar

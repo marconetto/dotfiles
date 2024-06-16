@@ -109,7 +109,7 @@
             ]
           },
           {
-            "description": "f10-f19 key",
+            "description": "right/left shift to f10-f19 key",
             "manipulators": [
               {
                 "type": "basic",
@@ -319,38 +319,16 @@
               {
                 "type": "basic",
                 "from": {
-                  "key_code": "0",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ],
-                    "optional": [
-                      "any"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f10"
-                  }
-                ]
-              },
-              {
-                "type": "basic",
-                "from": {
                   "key_code": "1",
                   "modifiers": {
                     "mandatory": [
                       "left_command"
-                    ],
-                    "optional": [
-                      "any"
                     ]
                   }
                 },
                 "to": [
                   {
-                    "key_code": "f11"
+                    "key_code": "f18"
                   }
                 ]
               },
@@ -361,9 +339,6 @@
                   "modifiers": {
                     "mandatory": [
                       "left_command"
-                    ],
-                    "optional": [
-                      "any"
                     ]
                   }
                 },
@@ -380,9 +355,6 @@
                   "modifiers": {
                     "mandatory": [
                       "left_command"
-                    ],
-                    "optional": [
-                      "any"
                     ]
                   }
                 },
@@ -399,9 +371,6 @@
                   "modifiers": {
                     "mandatory": [
                       "left_command"
-                    ],
-                    "optional": [
-                      "any"
                     ]
                   }
                 },
@@ -418,9 +387,6 @@
                   "modifiers": {
                     "mandatory": [
                       "left_command"
-                    ],
-                    "optional": [
-                      "any"
                     ]
                   }
                 },
@@ -437,9 +403,6 @@
                   "modifiers": {
                     "mandatory": [
                       "left_command"
-                    ],
-                    "optional": [
-                      "any"
                     ]
                   }
                 },
@@ -456,9 +419,6 @@
                   "modifiers": {
                     "mandatory": [
                       "left_command"
-                    ],
-                    "optional": [
-                      "any"
                     ]
                   }
                 },
@@ -475,9 +435,6 @@
                   "modifiers": {
                     "mandatory": [
                       "left_command"
-                    ],
-                    "optional": [
-                      "any"
                     ]
                   }
                 },
@@ -494,9 +451,6 @@
                   "modifiers": {
                     "mandatory": [
                       "left_command"
-                    ],
-                    "optional": [
-                      "any"
                     ]
                   }
                 },
@@ -725,7 +679,7 @@
                 },
                 "to": [
                   {
-                    "key_code": "f10"
+                    "key_code": "f19"
                   }
                 ],
                 "type": "basic"
@@ -741,7 +695,7 @@
                 },
                 "to": [
                   {
-                    "key_code": "f10"
+                    "key_code": "f19"
                   }
                 ],
                 "type": "basic"
@@ -1220,7 +1174,7 @@
             ]
           },
           {
-            "description": "Volume UP/DOWN/MUTE -> RIGHT_SHIFT Q/W/E",
+            "description": "Volume UP/DOWN/MUTE -> RIGHT_SHIFT D/F/S",
             "manipulators": [
               {
                 "from": {
@@ -1286,7 +1240,7 @@
                 },
                 "to": [
                   {
-                    "key_code": "f13"
+                    "shell_command": "bash ~/misc/spotifyuber.sh play"
                   }
                 ],
                 "type": "basic"
@@ -1302,7 +1256,7 @@
                 },
                 "to": [
                   {
-                    "key_code": "f14"
+                    "shell_command": "bash ~/misc/spotifyuber.sh previous"
                   }
                 ],
                 "type": "basic"
@@ -1318,7 +1272,23 @@
                 },
                 "to": [
                   {
-                    "key_code": "f15"
+                    "shell_command": "bash ~/misc/spotifyuber.sh next"
+                  }
+                ],
+                "type": "basic"
+              },
+              {
+                "from": {
+                  "key_code": "r",
+                  "modifiers": {
+                    "mandatory": [
+                      "right_shift"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "bash ~/misc/spotifyuber.sh track"
                   }
                 ],
                 "type": "basic"

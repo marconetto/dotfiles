@@ -473,32 +473,32 @@ require('lazy').setup {
     'tom-anders/telescope-vim-bookmarks.nvim',
   },
 
-  {
-
-    'rmagatti/auto-session',
-    config = function()
-      require('auto-session').setup {
-        log_level = 'error',
-        auto_session_enable_last_session = true,
-        auto_session_root_dir = vim.fn.stdpath 'data' .. '/sessions/',
-        auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
-        auto_session_enabled = true,
-        auto_save_enabled = true,
-        auto_restore_enabled = false,
-        session_lens = {
-          -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
-          buftypes_to_ignore = {}, -- list of buffer types what should not be deleted from current session
-          load_on_setup = true,
-          theme_conf = { border = true },
-          previewer = false,
-        },
-      }
-      local keymap = vim.keymap
-
-      keymap.set('n', '<leader>wr', '<cmd>SessionRestore<CR>', { desc = 'Restore session for cwd' })
-      keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>', { desc = 'Save session for auto session root dir' })
-    end,
-  },
+  -- {
+  --
+  --   'rmagatti/auto-session',
+  --   config = function()
+  --     require('auto-session').setup {
+  --       log_level = 'error',
+  --       auto_session_enable_last_session = true,
+  --       auto_session_root_dir = vim.fn.stdpath 'data' .. '/sessions/',
+  --       auto_session_suppress_dirs = { '~/', '~/Downloads', '/' },
+  --       auto_session_enabled = true,
+  --       auto_save_enabled = true,
+  --       auto_restore_enabled = false,
+  --       session_lens = {
+  --         -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
+  --         buftypes_to_ignore = {}, -- list of buffer types what should not be deleted from current session
+  --         load_on_setup = true,
+  --         theme_conf = { border = true },
+  --         previewer = false,
+  --       },
+  --     }
+  --     local keymap = vim.keymap
+  --
+  --     keymap.set('n', '<leader>wr', '<cmd>SessionRestore<CR>', { desc = 'Restore session for cwd' })
+  --     keymap.set('n', '<leader>ws', '<cmd>SessionSave<CR>', { desc = 'Save session for auto session root dir' })
+  --   end,
+  -- },
   {
     'rmagatti/goto-preview',
     config = function()
@@ -722,9 +722,9 @@ cmp.setup {
   },
 }
 
-vim.keymap.set('n', '<C-s>', require('auto-session.session-lens').search_session, {
-  noremap = true,
-})
+-- vim.keymap.set('n', '<C-s>', require('auto-session.session-lens').search_session, {
+--   noremap = true,
+-- })
 
 -------------------------------------------------------------------------------
 --- settings ------------------------------------------------------------------
@@ -1000,7 +1000,7 @@ require('conform').setup {
   },
   format_after_save = {
     lsp_fallback = true,
-    timeout_ms = 500,
+    timeout_ms = 200,
   },
 }
 vim.api.nvim_create_autocmd('BufWritePre', {
@@ -1116,7 +1116,9 @@ function! StripTrailingWhitespaces()
     call winrestview(l:save)
   endif
 endfun
-nnoremap <silent> <leader>w :call StripTrailingWhitespaces()<cr>:silent w<cr>:echo ""<CR>
+nnoremap <silent> <leader>w :w<cr>echo ""<CR>
+"nnoremap <silent> <leader>w :<cr>:echo ""<CR>
+"nnoremap <silent> <leader>w :call StripTrailingWhitespaces()<cr>:silent w<cr>:echo ""<CR>
 ]]
 
 vim.cmd [[
@@ -1321,6 +1323,10 @@ vim.cmd [[
 nnoremap <c-d>    <cmd>lua vim.diagnostic.open_float()<CR>
 nnoremap <leader>d    <cmd>lua vim.diagnostic.open_float()<CR>
 ]]
+
+vim.api.nvim_set_keymap('n', '<C-s>', ':w<CR>:echo""<CR>', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:w<CR>:echo""<CR>', { noremap = true, silent = true })
 
 -- float for diagnosticis and pmenu keep transparent background
 -- vim.cmd('hi! link FloatBorder Normal')
