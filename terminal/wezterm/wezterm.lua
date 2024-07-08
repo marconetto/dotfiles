@@ -55,7 +55,7 @@ end
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
   local edge_background = mybackground
   local background = "#2a2a3a"
-  local foreground = "#DDDAD6"
+  local foreground = "#dfbf8e"
 
   if tab.is_active then
     -- background = "#7f849c"
@@ -68,7 +68,8 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   if tab.active_pane.is_zoomed then
     title = "■"
     if tab.is_active then
-      foreground = "#8addff"
+      foreground = "#FFA500"
+      -- foreground = "#8addff"
     end
   else
     title = "▪"
@@ -170,8 +171,8 @@ config.window_padding = {
   bottom = "0.2cell",
 }
 
-config.window_decorations = "NONE | RESIZE"
--- config.window_decorations = "NONE | MACOS_FORCE_DISABLE_SHADOW | RESIZE"
+-- config.window_decorations = "NONE | RESIZE"
+config.window_decorations = "NONE | MACOS_FORCE_DISABLE_SHADOW | RESIZE"
 config.adjust_window_size_when_changing_font_size = false
 config.font_size = 16
 config.default_cursor_style = "SteadyBlock"
@@ -480,7 +481,15 @@ config.keys = {
   ---- tmux ---------------------------------------
   {
     key = "UpArrow",
-    mods = "LEADER|CMD",
+    mods = "LEADER",
+    action = act.Multiple({
+      act.SendKey({ key = "f", mods = "CTRL" }),
+      act.SendKey({ key = "UpArrow" }),
+    }),
+  },
+  {
+    key = "i",
+    mods = "LEADER",
     action = act.Multiple({
       act.SendKey({ key = "f", mods = "CTRL" }),
       act.SendKey({ key = "UpArrow" }),
@@ -488,7 +497,15 @@ config.keys = {
   },
   {
     key = "DownArrow",
-    mods = "LEADER|CMD",
+    mods = "LEADER",
+    action = act.Multiple({
+      act.SendKey({ key = "f", mods = "CTRL" }),
+      act.SendKey({ key = "DownArrow" }),
+    }),
+  },
+  {
+    key = "k",
+    mods = "LEADER",
     action = act.Multiple({
       act.SendKey({ key = "f", mods = "CTRL" }),
       act.SendKey({ key = "DownArrow" }),
@@ -496,20 +513,38 @@ config.keys = {
   },
   {
     key = "LeftArrow",
-    mods = "LEADER|CMD",
+    mods = "LEADER",
     action = act.Multiple({
       act.SendKey({ key = "f", mods = "CTRL" }),
       act.SendKey({ key = "LeftArrow" }),
     }),
   },
   {
+    key = "j",
+    mods = "LEADER",
+    action = act.Multiple({
+      act.SendKey({ key = "f", mods = "CTRL" }),
+      act.SendKey({ key = "LeftArrow" }),
+    }),
+  },
+
+  {
     key = "RightArrow",
-    mods = "LEADER|CMD",
+    mods = "LEADER",
     action = act.Multiple({
       act.SendKey({ key = "f", mods = "CTRL" }),
       act.SendKey({ key = "RightArrow" }),
     }),
   },
+  {
+    key = "l",
+    mods = "LEADER",
+    action = act.Multiple({
+      act.SendKey({ key = "f", mods = "CTRL" }),
+      act.SendKey({ key = "RightArrow" }),
+    }),
+  },
+
   {
     key = "z",
     mods = "LEADER",

@@ -12,7 +12,7 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 # If you are looking for other colors, see the color picker:
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
-sketchybar --bar position=top height=25 blur_radius=30 color=0x00000000 margin=0 padding_left=10 padding_right=10 y_offset=1
+sketchybar --bar position=top height=25 blur_radius=30 color=0x00000000 margin=0 padding_left=8 padding_right=3 y_offset=1
 
 ##### Changing Defaults #####
 # We now change some default values, which are applied to all further items.
@@ -29,9 +29,16 @@ default=(
   label.color=0xffdfbf8e
   background.height=20
   icon.padding_left=4
+  icon.font.size=12
   icon.padding_right=4
   label.padding_left=4
   label.padding_right=4
+          icon.padding_left=10
+        label.padding_right=10
+                                              # background.border_color=0x88aaaaaa
+           # background.border_width=1
+
+
 )
 sketchybar --default "${default[@]}"
 
@@ -83,24 +90,103 @@ sketchybar --default "${default[@]}"
 # https://felixkratz.github.io/SketchyBar/config/events
 
 sketchybar --add item clock right \
-           --set clock update_freq=10 icon=  script="$PLUGIN_DIR/clock.sh" \
-                   background.color=0x77050505\
-        background.border_color=0x0505054D \
+           --set clock update_freq=10 icon=󰃰  script="$PLUGIN_DIR/clock.sh" \
+         background.border_color=0x88aaaaaa \
+           background.border_width=0 \
+               background.color=0x77050505 \
         background.corner_radius=5 \
-           --add item volume right \
+        icon.padding_left=10 \
+        label.padding_right=10
+        # background.border_color=0x0505054D
+
+    sketchybar --add item volume right \
            --set volume script="$PLUGIN_DIR/volume.sh" \
-        background.color=0x77050505\
-        background.border_color=0x0505054D \
-        background.corner_radius=5 \
+           icon.font.size=14 \
+        background.color=0x77050505 \
+         background.border_color=0x88aaaaaa \
+                  background.border_width=0 \
+           background.corner_radius=5 \
            --subscribe volume volume_change \
-           --add item battery right \
+
+sketchybar --add item battery right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
-                              background.color=0x77050505\
+                      background.border_width=0 \
+                   background.color=0x77050505 \
+                              background.color=0x77050505 \
         background.border_color=0x0505054D \
         background.corner_radius=5 \
+          background.border_color=0x88aaaaaa \
+           background.border_width=0 \
            --subscribe battery system_woke power_source_change
 
+
+# sketchybar --add item time_logo3 right\
+#            --set time_logo3 icon="x" \
+#                            label.drawing=off \
+#                            icon.color=0xff121219 \
+#                            label.drawing=off \
+#                            background.color=0x00F5E3B5
+
+
+# sketchybar --add item music right \
+#            --set music label.drawing=on \
+# 		       icon.drawing=on \
+#                        icon.font="sketchybar-app-font:Regular:11.0" \
+#                        icon.y_offset=0 \
+#                        icon=":statistics:" \
+#                        script="$PLUGIN_DIR/spotify.sh" \
+#                        click_script="open -a Spotify"
+
+# sketchybar --add item spotifyIndicator right \
+#                         background.border_width=2 \
+#                    background.color=0x77050505 \
+# 	      icon.drawing=on \
+#           icon="X" \
+#                               background.color=0x77050505 \
+#         background.border_color=0xff05054D \
+#         background.corner_radius=5 \
+#           background.border_color=0x88aaaaaa \
+#            background.border_width=0
+
+  # --set spotifyIndicator click_script="osascript -e 'tell application \"Spotify\" to pause'" \
+  # --subscribe spotifyIndicator spotify_change
+
+# sketchybar --add item cpu right \
+#            --set cpu script="$PLUGIN_DIR/cpu.sh" \
+#                      update_freq=5 \
+#                      icon=""􀧓
+#
+#
+#
+
+
+sketchybar --add event spotify_change com.spotify.client.PlaybackStateChanged
+# sketchybar --add event appclose "NSApplicationWillTerminateNotification"
+# sketchybar --add event appclose "NSWorkspaceDidTerminateApplicationNotification"
+
+sketchybar --add item spotify.playpause right \
+  --set spotify.playpause \
+  script="$PLUGIN_DIR/spotify.sh" \
+           background.border_color=0x88aaaaaa \
+           background.border_width=0 \
+               background.color=0x77050505 \
+        background.corner_radius=5 \
+        icon.padding_left=10 \
+        label.padding_right=10 \
+  --subscribe spotify.playpause spotify_change
+
+
 sketchybar --add event aerospace_workspace_change
+
+sketchybar --add item time_logo left\
+           --set time_logo icon="" \
+                           label.drawing=off \
+                           icon.color=0x00121219 \
+                           label.drawing=off \
+                           background.color=0x00F5E3B5
+
+
+
 
 for sid in $(aerospace list-workspaces --all); do
     sketchybar --add item space.$sid left \
@@ -108,18 +194,31 @@ for sid in $(aerospace list-workspaces --all); do
         --set space.$sid \
         background.color=0x44ffffff \
         icon.color=0xffdfbf8e \
-        icon.padding_left=0 \
-        icon.padding_right=0 \
-        background.corner_radius=5 \
+        icon.padding_left=2 \
+        icon.padding_right=2 \
+        background.corner_radius=10 \
         background.height=20 \
         background.drawing=off \
         background.padding_right=2 \
         background.padding_left=2 \
         label.drawing=off \
-        icon.font.size=16 \
+        icon.font.size=12 \
         label="$sid" \
         click_script="aerospace workspace $sid" \
         script="$CONFIG_DIR/plugins/aerospace.sh $sid"
 done
+
+sketchybar --add item time_logo2 left\
+           --set time_logo2 icon="" \
+                           label.drawing=off \
+                           icon.color=0x00121219 \
+                           label.drawing=off \
+                           background.color=0x00F5E3B5
+
+sketchybar --add bracket spaces '/space\..*/' time_logo time_logo2           \
+           --set         spaces background.color=0x77050505 \
+           background.corner_radius=7 \
+           background.border_color=0x88aaaaaa \
+           background.border_width=0
 
 sketchybar --update

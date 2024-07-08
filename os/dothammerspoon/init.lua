@@ -1,3 +1,8 @@
+if not hs.ipc.cliStatus() then
+  hs.ipc.cliInstall()
+end
+hs.ipc.cliInstall()
+
 -------------------------------------------------------------------------------
 hs.alert.defaultStyle.radius = 5
 hs.alert.defaultStyle.strokeWidth = 1.0
