@@ -1,0 +1,14 @@
+{
+  "workbench.colorTheme": "Catppuccin Macchiato",
+  "terminal.external.osxExec": "WezTerm.app",
+  "terminal.explorerKind": "external",
+  "terminal.integrated.fontWeight": "normal",
+  "terminal.integrated.fontWeightBold": "normal",
+  "window.zoomLevel": 0.25,
+  "customWindowZoom.zoomLevelChangeValue": 0.15,
+  "catppuccin.italicKeywords": false,
+  "editor.minimap.enabled": false,
+  "telemetry.enableCrashReporter": false,
+  "telemetry.enableTelemetry": false
+}
+
