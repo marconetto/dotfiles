@@ -6,12 +6,10 @@
 
 WS=$(aerospace list-workspaces --focused)
 
-# labelfont="Monaco:Bold:11.0"
-labelfont="SF Mono:SemiBold:11.0"
+labelfont="SF Mono:SemiBold:12.0"
 if [ "$WS" == "8" ]; then
     WS=""
-    labelfont="Hack Nerd Font:Bold:11.0"
+    labelfont="Hack Nerd Font:Bold:12.0"
 
 fi
-# sketchybar --set "$NAME" label="$WS " label.font="$labelfont"
-sketchybar --set "$NAME" label="$WS " label.font="$labelfont" width=50
+sketchybar --set "$NAME" label="$WS " label.font="$labelfont" width=46
