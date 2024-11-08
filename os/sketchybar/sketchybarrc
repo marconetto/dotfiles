@@ -23,7 +23,7 @@ default=(
   padding_left=5
   padding_right=5
   # icon.font="Droid Sans Mono:Bold:11.0"
-  icon.font="Hack Nerd Font:Bold:10.0"
+  icon.font="Hack Nerd Font:Bold:11.0"
   label.font="SF Pro:SemiBold:11.0"
   # label.font="SF Pro:Condensed SemiBold:11.0"
   # label.font="Hack Nerd Font:Bold:11.0"
@@ -174,39 +174,68 @@ sketchybar --add item time_logo left\
                            background.color=0x00F5E3B5
 
 
-for sid in $(aerospace list-workspaces --all); do
-    sketchybar --add item space.$sid left \
-        --subscribe space.$sid aerospace_workspace_change \
-        --set space.$sid \
-        background.color=0x44ffffff \
-        icon.color=0xffdfbf8e \
-        icon.padding_left=2 \
-        icon.padding_right=2 \
-        background.corner_radius=10 \
-        background.height=20 \
-        background.drawing=off \
-        background.padding_right=2 \
-        background.padding_left=2 \
-        label.drawing=off \
-        icon.font.size=12 \
-        label="$sid" \
-        click_script="aerospace workspace $sid" \
-        script="$CONFIG_DIR/plugins/aerospace.sh $sid"
-done
+# for sid in $(aerospace list-workspaces --all); do
+#     sketchybar --add item space.$sid left \
+#         --subscribe space.$sid aerospace_workspace_change \
+#         --set space.$sid \
+#         background.color=0x44ffffff \
+#         icon.color=0xffdfbf8e \
+#         icon.padding_left=2 \
+#         icon.padding_right=2 \
+#         background.corner_radius=10 \
+#         background.height=20 \
+#         background.drawing=off \
+#         background.padding_right=2 \
+#         background.padding_left=2 \
+#         label.drawing=off \
+#         icon.font.size=12 \
+#         label="$sid" \
+#         click_script="aerospace workspace $sid" \
+#         script="$CONFIG_DIR/plugins/aerospace.sh $sid"
+# done
+#
+# sketchybar --add item time_logo2 left\
+#            --set time_logo2 icon="" \
+#                            label.drawing=off \
+#                            icon.color=0x00121219 \
+#                            background.padding_right=0 \
+#                            background.padding_left=0 \
+#                            label.drawing=off \
+#                            background.color=0x00F5E3B5
+#
+# sketchybar --add bracket spaces '/space\..*/' time_logo time_logo2           \
+#            --set         spaces background.color=0x77050505 \
+#            background.corner_radius=7 \
+#            background.border_color=0x88aaaaaa \
+#            background.border_width=0
 
-sketchybar --add item time_logo2 left\
-           --set time_logo2 icon="" \
-                           label.drawing=off \
-                           icon.color=0x00121219 \
-                           background.padding_right=0 \
-                           background.padding_left=0 \
-                           label.drawing=off \
-                           background.color=0x00F5E3B5
+# ------------------------------------ WORKSPACENUM
+#
+sketchybar --add item workspacenum left \
+    --subscribe workspacenum aerospace_workspace_change \
+    --set workspacenum \
+    script="$CONFIG_DIR/plugins/workspace.sh" \
+    icon=󰌪 \
+    padding_left=-5 \
+               background.border_color=0x88aaaaaa \
+           background.border_width=0 \
+           background.color=0x77050505 \
+           background.corner_radius=5 \
+           icon.padding_left=5 \
+           label.padding_right=15 \
+           label.padding_left=10
 
-sketchybar --add bracket spaces '/space\..*/' time_logo time_logo2           \
-           --set         spaces background.color=0x77050505 \
-           background.corner_radius=7 \
-           background.border_color=0x88aaaaaa \
-           background.border_width=0
+ #
+ #
+ # sketchybar --add item workspacenum left \
+ #           --set workspacenum update_freq=2 icon=  script="$PLUGIN_DIR/workspacenum.sh" \
+ #           background.border_color=0x88aaaaaa \
+ #           background.border_width=0 \
+ #           background.color=0x77050505 \
+ #           background.corner_radius=5 \
+ #           icon.padding_left=5 \
+ #           label.padding_right=5
+# ------------------------------------ WORKSPACENUM
+
 
 sketchybar --update
