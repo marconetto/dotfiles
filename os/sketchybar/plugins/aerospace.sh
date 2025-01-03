@@ -17,6 +17,9 @@ for app in "${apps[@]}"; do
     "Google Chrome")
         icon="󰊯"
         ;;
+    "Preview")
+        icon=""
+        ;;
     "WezTerm")
         icon=""
         ;;
@@ -27,7 +30,9 @@ for app in "${apps[@]}"; do
         icon="󰻞"
         ;;
     "Microsoft AutoUpdate")
-        icon="󰚰"
+        # do not show this annoying app
+        icon=""
+        # icon="󰚰"
         ;;
     *)
         icon="󱤆"
