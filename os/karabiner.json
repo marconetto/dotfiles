@@ -1,8 +1,5 @@
 {
-  "global": {
-    "show_in_menu_bar": false,
-    "show_profile_name_in_menu_bar": true
-  },
+  "name": "Default profile",
   "profiles": [
     {
       "complex_modifications": {
@@ -94,41 +91,23 @@
             ]
           },
           {
-            "description": "Double Right Shift to Capslock",
+            "description": "Change right_shift + left_shift to caps_lock",
             "manipulators": [
               {
-                "conditions": [
-                  {
-                    "name": "right_shift_pressed",
-                    "type": "variable_if",
-                    "value": 1
-                  }
-                ],
                 "from": {
-                  "key_code": "right_shift",
+                  "key_code": "left_shift",
                   "modifiers": {
+                    "mandatory": [
+                      "right_shift"
+                    ],
                     "optional": [
-                      "any"
+                      "caps_lock"
                     ]
                   }
                 },
-                "parameters": {
-                  "basic.to_if_alone_timeout_milliseconds": 500
-                },
                 "to": [
                   {
-                    "key_code": "right_shift"
-                  }
-                ],
-                "to_if_alone": [
-                  {
                     "key_code": "caps_lock"
-                  },
-                  {
-                    "set_variable": {
-                      "name": "right_shift_pressed",
-                      "value": 0
-                    }
                   }
                 ],
                 "type": "basic"
@@ -137,52 +116,23 @@
                 "from": {
                   "key_code": "right_shift",
                   "modifiers": {
+                    "mandatory": [
+                      "left_shift"
+                    ],
                     "optional": [
-                      "any"
+                      "caps_lock"
                     ]
                   }
                 },
-                "parameters": {
-                  "basic.to_delayed_action_delay_milliseconds": 500,
-                  "basic.to_if_alone_timeout_milliseconds": 500
-                },
                 "to": [
                   {
-                    "key_code": "right_shift"
-                  }
-                ],
-                "to_delayed_action": {
-                  "to_if_canceled": [
-                    {
-                      "set_variable": {
-                        "name": "right_shift_pressed",
-                        "value": 0
-                      }
-                    }
-                  ],
-                  "to_if_invoked": [
-                    {
-                      "set_variable": {
-                        "name": "right_shift_pressed",
-                        "value": 0
-                      }
-                    }
-                  ]
-                },
-                "to_if_alone": [
-                  {
-                    "set_variable": {
-                      "name": "right_shift_pressed",
-                      "value": 1
-                    }
-                  },
-                  {
-                    "key_code": "right_shift"
+                    "key_code": "caps_lock"
                   }
                 ],
                 "type": "basic"
               }
-            ]
+            ],
+            "title": "Change right_shift + left_shift to caps_lock"
           },
           {
             "description": "right/left shift to f10-f19 key",
@@ -377,155 +327,6 @@
                     ],
                     "optional": [
                       "any"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f19"
-                  }
-                ],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "description": "cmd+n to f10-f19 key",
-            "manipulators": [
-              {
-                "from": {
-                  "key_code": "1",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f18"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "2",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f12"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "3",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f13"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "4",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f14"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "5",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f15"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "6",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f16"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "7",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f17"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "8",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f18"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "9",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
                     ]
                   }
                 },
@@ -1353,7 +1154,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "bash ~/misc/spotifyuber.sh play"
+                    "shell_command": "bash ~/sys/scripts/spotifyuber.sh play"
                   }
                 ],
                 "type": "basic"
@@ -1369,7 +1170,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "bash ~/misc/spotifyuber.sh previous"
+                    "shell_command": "bash ~/sys/scripts/spotifyuber.sh previous"
                   }
                 ],
                 "type": "basic"
@@ -1385,7 +1186,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "bash ~/misc/spotifyuber.sh next"
+                    "shell_command": "bash ~/sys/scripts/spotifyuber.sh next"
                   }
                 ],
                 "type": "basic"
@@ -1401,7 +1202,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "bash ~/misc/spotifyuber.sh track"
+                    "shell_command": "bash ~/sys/scripts/spotifyuber.sh track"
                   }
                 ],
                 "type": "basic"
@@ -1700,6 +1501,162 @@
                     "modifiers": [
                       "command"
                     ]
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Open Terminal",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "1",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a Wezterm"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Open Browser",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "2",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a 'Google Chrome'"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Open Teams",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "3",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "osascript -e 'tell application \"Microsoft Teams\" to activate'"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Open Outlook",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "4",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a 'Microsoft Outlook'"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Open powerpoint",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "q",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_shift",
+                      "left_control",
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a 'Microsoft Powerpoint'"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Open excel",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "e",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_shift",
+                      "left_control",
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a 'Microsoft Excel'"
+                  }
+                ],
+                "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Open word",
+            "manipulators": [
+              {
+                "from": {
+                  "key_code": "w",
+                  "modifiers": {
+                    "mandatory": [
+                      "left_command",
+                      "left_shift",
+                      "left_control",
+                      "left_option"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "shell_command": "open -a 'Microsoft Word'"
                   }
                 ],
                 "type": "basic"
@@ -2508,7 +2465,8 @@
             "product_id": 591,
             "vendor_id": 1452
           },
-          "ignore": false
+          "ignore": false,
+          "treat_as_built_in_keyboard": true
         },
         {
           "identifiers": {
@@ -2519,6 +2477,16 @@
           "simple_modifications": [
             {
               "from": {
+                "key_code": "left_command"
+              },
+              "to": [
+                {
+                  "key_code": "left_option"
+                }
+              ]
+            },
+            {
+              "from": {
                 "key_code": "left_option"
               },
               "to": [
@@ -2526,7 +2494,17 @@
                   "key_code": "left_command"
                 }
               ]
-            },
+            }
+          ],
+          "treat_as_built_in_keyboard": true
+        },
+        {
+          "identifiers": {
+            "is_keyboard": true,
+            "product_id": 64518,
+            "vendor_id": 13652
+          },
+          "simple_modifications": [
             {
               "from": {
                 "key_code": "left_command"
@@ -2536,9 +2514,79 @@
                   "key_code": "left_option"
                 }
               ]
+            },
+            {
+              "from": {
+                "key_code": "left_option"
+              },
+              "to": [
+                {
+                  "key_code": "left_command"
+                }
+              ]
             }
           ],
           "treat_as_built_in_keyboard": true
+        },
+        {
+          "identifiers": {
+            "is_keyboard": true,
+            "product_id": 20616,
+            "vendor_id": 12815
+          },
+          "simple_modifications": [
+            {
+              "from": {
+                "key_code": "left_command"
+              },
+              "to": [
+                {
+                  "key_code": "left_option"
+                }
+              ]
+            },
+            {
+              "from": {
+                "key_code": "left_option"
+              },
+              "to": [
+                {
+                  "key_code": "left_command"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "identifiers": {
+            "is_keyboard": true,
+            "is_pointing_device": true,
+            "product_id": 20565,
+            "vendor_id": 12815
+          },
+          "ignore": false,
+          "simple_modifications": [
+            {
+              "from": {
+                "key_code": "left_command"
+              },
+              "to": [
+                {
+                  "key_code": "left_option"
+                }
+              ]
+            },
+            {
+              "from": {
+                "key_code": "left_option"
+              },
+              "to": [
+                {
+                  "key_code": "left_command"
+                }
+              ]
+            }
+          ]
         }
       ],
       "fn_function_keys": [
@@ -2605,6 +2653,22 @@
               "key_code": "right_option"
             }
           ]
+        }
+      ],
+      "virtual_hid_keyboard": {
+        "keyboard_type_v2": "ansi"
+      }
+    }
+  ],
+  "selected": true,
+  "simple_modifications": [
+    {
+      "from": {
+        "key_code": "right_command"
+      },
+      "to": [
+        {
+          "key_code": "right_option"
         }
       ]
     }
