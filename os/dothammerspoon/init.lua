@@ -77,7 +77,7 @@ function funcCycleColour()
   current_image = screen:desktopImageURL()
   print("call cycle colour")
 
-  backdir = (os.getenv("HOME")) .. "/misc/simplebackgrounds/"
+  backdir = (os.getenv("HOME")) .. "/sys/simplebackgrounds/"
   print("Background Dir = " .. backdir)
   files = GetFiles(backdir)
   maxfiles = 0
@@ -127,6 +127,7 @@ hs.hotkey.bind(threekeys, "0", cycleColour())
 -- Outlook see calendar and email
 -------------------------------------------------------------------------------
 function seeCalendar()
+  print("----")
   local app = hs.application.find("Microsoft Outlook")
   app:selectMenuItem({ "View", "Go To", "Calendar" })
 end
@@ -193,6 +194,101 @@ ev = hs.eventtap
     end
   end)
   :start()
+
+local _all_wins_filter = hs.window.filter.new():setDefaultFilter()
+_all_wins_filter:subscribe(hs.window.filter.windowCreated, function(window, appName)
+  win_title = window:title()
+  print("Window created ... maximising: " .. win_title)
+  print("Window created ... DONE: " .. win_title)
+
+  -- if win_title == "Teams" then
+  --   hs.timer.usleep(2000000)
+  --   focusedanother = window:focusWindowWest(false)
+  --   print("Refocused other window " .. tostring(focusedanother))
+  -- end
+end)
+
+local frameMaxCache = {}
 -------------------------------------------------------------------------------
+-- make window full screen with border
+-------------------------------------------------------------------------------
+function borderFullScreen()
+  return function()
+    if hs.window.focusedWindow() then
+      local win = hs.window.frontmostWindow()
+      if frameMaxCache[win:id()] then
+        win:setFrame(frameMaxCache[win:id()])
+        frameMaxCache[win:id()] = nil
+      else
+        local id = win:id()
+        local screen = win:screen()
+        frameMaxCache[win:id()] = win:frame()
+
+        h = screen:currentMode().h
+        w = screen:currentMode().w
+        local f = win:frame()
+        -- border = WINDOW_BORDER
+        -- f.x = border
+        -- f.y = border + 00
+        -- f.w = w - border * 2
+        -- f.h = h - border * 2 - 00
+
+        -- TODO: fix hardcoded values
+
+        f.x = 16
+        f.y = 28 + 00
+        f.w = w - 16 * 2
+        f.h = h - 28 - 16 - 00
+        -- border = 30
+        -- f.x = border
+        -- f.y = border + border
+        -- f.w = w-border*2
+        -- f.h = h-border*2 - border
+        win:setFrame(f)
+      end
+    end
+  end
+end
+
+hs.hotkey.bind({ "cmd" }, "m", borderFullScreen())
+
+-------------------------------------------------------------------------------
+-- make window full screen with border
+-------------------------------------------------------------------------------
+function allBorderFullScreen()
+  return function()
+    local allWindows = hs.window.allWindows() -- Get all windows
+    for _, win in ipairs(allWindows) do
+      if win:isStandard() then -- Skip non-standard windows (like hidden or minimized ones)
+        local id = win:id()
+        if frameMaxCache[id] then
+          win:setFrame(frameMaxCache[id]) -- Restore original frame
+          frameMaxCache[id] = nil
+        else
+          local screen = win:screen()
+          frameMaxCache[id] = win:frame() -- Cache the original frame
+
+          -- Get screen dimensions
+          local h = screen:currentMode().h
+          local w = screen:currentMode().w
+
+          -- Set the new frame with desired dimensions
+          local f = win:frame()
+          f.x = 16
+          f.y = 28 + 00
+          f.w = w - 16 * 2
+          f.h = h - 28 - 16 - 00
+
+          win:setFrame(f)
+        end
+      end
+    end
+  end
+end
+
+hs.hotkey.bind({ "cmd", "shift" }, "m", allBorderFullScreen())
+
+-------------------------------------------------------------------------------
+---
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
