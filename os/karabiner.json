@@ -702,36 +702,6 @@
                   }
                 ],
                 "from": {
-                  "key_code": "w",
-                  "modifiers": {
-                    "mandatory": [
-                      "control",
-                      "shift",
-                      "command",
-                      "option"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "delete_or_backspace",
-                    "modifiers": [
-                      "left_option"
-                    ]
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "conditions": [
-                  {
-                    "bundle_identifiers": [
-                      "^com\\.google\\.Chrome"
-                    ],
-                    "type": "frontmost_application_if"
-                  }
-                ],
-                "from": {
                   "key_code": "u",
                   "modifiers": {
                     "mandatory": [
@@ -2310,31 +2280,6 @@
                     "key_code": "home"
                   }
                 ],
-                "type": "basic"
-              }
-            ]
-          },
-          {
-            "description": "new delete word with capslock",
-            "manipulators": [
-              {
-                "from": {
-                  "key_code": "w",
-                  "modifiers": {
-                    "mandatory": [
-                      "command",
-                      "shift",
-                      "option",
-                      "control"
-                    ]
-                  }
-                },
-                "to": {
-                  "key_code": "w",
-                  "modifiers": [
-                    "control"
-                  ]
-                },
                 "type": "basic"
               }
             ]
