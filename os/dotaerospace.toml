@@ -17,7 +17,7 @@ after-login-command = []
 after-startup-command = ['exec-and-forget sketchybar']
 
 # Start AeroSpace at login
-start-at-login = false
+start-at-login = true
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
@@ -110,6 +110,14 @@ alt-j = 'focus down'
 alt-k = 'focus up'
 alt-l = 'focus right'
 
+# cmd-left = 'focus left'
+alt-shift-cmd-ctrl-left = 'focus left'
+alt-shift-cmd-ctrl-right = 'focus right'
+# alt-j = 'focus down'
+# alt-k = 'focus up'
+# alt-l = 'focus right'
+
+
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 alt-shift-h = 'move left'
 alt-shift-j = 'move down'
@@ -121,15 +129,17 @@ alt-shift-minus = 'resize smart -50'
 alt-shift-equal = 'resize smart +50'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
-f18 = 'workspace 1'
-f12 = 'workspace 2'
-f13 = 'workspace 3'
-f14 = 'workspace 4'
-f15 = 'workspace 5'
-f16 = 'workspace 6'
-f17 = 'workspace 7'
-f19 = 'workspace 8'
+alt-t = 'workspace 1'
+alt-p = 'workspace 2'
+# f12 = 'workspace 2'
+# f13 = 'workspace 3'
+# f14 = 'workspace 4'
+# f15 = 'workspace 5'
+# f16 = 'workspace 6'
+# f17 = 'workspace 7'
+# f19 = 'workspace 8'
 
+# alt-shift-ctrl-cmd-m = 'fullscreen'
 cmd-m = 'fullscreen'
 # alt-9 = 'workspace 9'
 # alt-a = 'workspace A' # In your config, you can drop workspace bindings that you don't need
@@ -156,16 +166,16 @@ cmd-m = 'fullscreen'
 # alt-z = 'workspace Z'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-cmd-shift-backtick = 'move-node-to-workspace 8'
-cmd-shift-1 = 'move-node-to-workspace 1'
-cmd-shift-2 = 'move-node-to-workspace 2'
-cmd-shift-3 = 'move-node-to-workspace 3'
-cmd-shift-4 = 'move-node-to-workspace 4'
-cmd-shift-5 = 'move-node-to-workspace 5'
-cmd-shift-6 = 'move-node-to-workspace 6'
-cmd-shift-7 = 'move-node-to-workspace 7'
-cmd-shift-8 = 'move-node-to-workspace 8'
-
+cmd-shift-backtick = ['move-node-to-workspace 8', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
+cmd-shift-esc = ['move-node-to-workspace 8', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
+cmd-shift-1 = ['move-node-to-workspace 1', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
+cmd-shift-2 = ['move-node-to-workspace 2', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
+cmd-shift-3 = ['move-node-to-workspace 3', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
+cmd-shift-4 = ['move-node-to-workspace 4', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
+cmd-shift-5 = ['move-node-to-workspace 5', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
+cmd-shift-6 = ['move-node-to-workspace 6', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
+cmd-shift-7 = ['move-node-to-workspace 7', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
+cmd-shift-8 = ['move-node-to-workspace 8', 'exec-and-forget sketchybar --trigger aerospace_workspace_change ']
 
 cmd-alt-shift-ctrl-t = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
 
@@ -191,28 +201,30 @@ alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
+# [[on-window-detected]]
+# run = 'layout floating'
 
-[[on-window-detected]]
-if.app-id = 'com.github.wez.wezterm'
-run = 'move-node-to-workspace 1'
-
-[[on-window-detected]]
-if.app-id = 'com.google.Chrome'
-run = 'move-node-to-workspace 2'
-
-
-[[on-window-detected]]
-if.app-id = 'com.microsoft.Outlook'
-run = 'move-node-to-workspace 6'
-
-
-[[on-window-detected]]
-if.app-id = 'com.microsoft.teams2'
-run = 'move-node-to-workspace 5'
+# [[on-window-detected]]
+# if.app-id = 'com.github.wez.wezterm'
+# run = 'move-node-to-workspace 1'
+#
+# [[on-window-detected]]
+# if.app-id = 'com.google.Chrome'
+# run = 'move-node-to-workspace 2'
+#
+#
+# [[on-window-detected]]
+# if.app-id = 'com.microsoft.Outlook'
+# run = 'move-node-to-workspace 4'
 
 
-[[on-window-detected]]
-if.app-id = 'com.spotify.client'
-run = 'move-node-to-workspace 7'
+# [[on-window-detected]]
+# if.app-id = 'com.microsoft.teams2'
+# run = 'move-node-to-workspace 5'
 
+
+# [[on-window-detected]]
+# if.app-id = 'com.spotify.client'
+# run = 'move-node-to-workspace 7'
+#
 
