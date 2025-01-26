@@ -12,7 +12,7 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 # If you are looking for other colors, see the color picker:
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
-sketchybar --bar position=top height=25 blur_radius=30 color=0x00000000 margin=0 padding_left=8 padding_right=3 y_offset=1
+sketchybar --bar position=top height=25 blur_radius=30 color=0x00000000 margin=0 padding_left=8 padding_right=15 y_offset=1
 
 ##### Changing Defaults #####
 # We now change some default values, which are applied to all further items.
@@ -94,13 +94,17 @@ sketchybar --default "${default[@]}"
 # https://felixkratz.github.io/SketchyBar/config/events
 
 
+ITEMBACKGROUND=0x00050505
+CLOCKICON=󰌪
+# CLOCKICON=󰃰
+
 # ------------------------------------ CLOCK
 sketchybar --add item clock right \
-           --set clock update_freq=10 icon=󰃰  script="$PLUGIN_DIR/clock.sh" \
+           --set clock update_freq=10 icon=$CLOCKICON  script="$PLUGIN_DIR/clock.sh" \
            background.border_color=0x88aaaaaa \
            background.border_width=0 \
-           background.color=0x77050505 \
-           background.corner_radius=5 \
+           background.color=$ITEMBACKGROUND \
+           background.corner_radius=15 \
            icon.padding_left=5 \
            label.padding_right=5
         # background.border_color=0x0505054D
@@ -110,10 +114,10 @@ sketchybar --add item clock right \
 sketchybar --add item volume right \
            --set volume script="$PLUGIN_DIR/volume.sh" \
            icon.font.size=14 \
-           background.color=0x77050505 \
+           background.color=$ITEMBACKGROUND \
            background.border_color=0x88aaaaaa \
            background.border_width=0 \
-           background.corner_radius=5 \
+           background.corner_radius=15 \
            --subscribe volume volume_change
 # ------------------------------------ VOLUME
 
@@ -121,10 +125,9 @@ sketchybar --add item volume right \
 sketchybar --add item battery right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            background.border_width=0 \
-           background.color=0x77050505 \
-           background.color=0x77050505 \
+           background.color=$ITEMBACKGROUND \
            background.border_color=0x0505054D \
-           background.corner_radius=5 \
+           background.corner_radius=15 \
            background.border_color=0x88aaaaaa \
            background.border_width=0 \
            --subscribe battery system_woke power_source_change
@@ -375,6 +378,17 @@ sketchybar --add item battery right \
  #           icon.padding_left=5 \
  #           label.padding_right=5
 # ------------------------------------ WORKSPACENUM
+
+sketchybar --add bracket rightgroup  clock volume battery \
+           --set         rightgroup background.color=0x77050505 \
+           background.corner_radius=16 \
+           background.border_color=0xffdfbf8e \
+           background.border_width=0.0 \
+           background.height=19
+
+# sketchybar --reorder volume clock
+
+
 
 
 sketchybar --update
