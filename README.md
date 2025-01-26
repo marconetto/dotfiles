@@ -8,7 +8,8 @@ Dotfiles using the following major technologies:
 - neovim: <https://neovim.io/>
 - hammerspoon: <https://www.hammerspoon.org/>
 - tmux: <https://github.com/tmux/tmux/wiki>
-- aerospace: <https://github.com/nikitabobko/AeroSpace>
+- menuwhere: <https://manytricks.com/menuwhere/>
+- aerospace (currently not using): <https://github.com/nikitabobko/AeroSpace>
 - sketchybar: <https://github.com/FelixKratz/SketchyBar>
 - yabai (currently not using): <https://github.com/koekeishiya/yabai>
 - kitty (currently not using): <https://sw.kovidgoyal.net/kitty/>
