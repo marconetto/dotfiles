@@ -1566,12 +1566,9 @@
             "manipulators": [
               {
                 "from": {
-                  "key_code": "q",
+                  "key_code": "1",
                   "modifiers": {
                     "mandatory": [
-                      "left_command",
-                      "left_shift",
-                      "left_control",
                       "left_option"
                     ]
                   }
@@ -1590,12 +1587,9 @@
             "manipulators": [
               {
                 "from": {
-                  "key_code": "e",
+                  "key_code": "3",
                   "modifiers": {
                     "mandatory": [
-                      "left_command",
-                      "left_shift",
-                      "left_control",
                       "left_option"
                     ]
                   }
@@ -1614,12 +1608,9 @@
             "manipulators": [
               {
                 "from": {
-                  "key_code": "w",
+                  "key_code": "2",
                   "modifiers": {
                     "mandatory": [
-                      "left_command",
-                      "left_shift",
-                      "left_control",
                       "left_option"
                     ]
                   }
@@ -2319,6 +2310,79 @@
                   }
                 },
                 "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "Menuwhere activate",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": {
+                  "key_code": "left_command",
+                  "modifiers": {
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "m",
+                    "modifiers": [
+                      "left_option",
+                      "left_control"
+                    ]
+                  }
+                ],
+                "conditions": [
+                  {
+                    "type": "variable_if",
+                    "name": "key pressed",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": {
+                  "key_code": "left_command",
+                  "modifiers": {
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "set_variable": {
+                      "name": "key pressed",
+                      "value": 1
+                    }
+                  },
+                  {
+                    "key_code": "left_command"
+                  }
+                ],
+                "description": "to_delayed_action is set to 400ms in karabiner.json",
+                "to_delayed_action": {
+                  "to_if_invoked": [
+                    {
+                      "set_variable": {
+                        "name": "key pressed",
+                        "value": 0
+                      }
+                    }
+                  ],
+                  "to_if_canceled": [
+                    {
+                      "set_variable": {
+                        "name": "key pressed",
+                        "value": 0
+                      }
+                    }
+                  ]
+                }
               }
             ]
           }
