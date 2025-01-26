@@ -10,6 +10,7 @@ Dotfiles using the following major technologies:
 - tmux: <https://github.com/tmux/tmux/wiki>
 - menuwhere: <https://manytricks.com/menuwhere/>
 - sketchybar: <https://github.com/FelixKratz/SketchyBar>
+- lazygit: <https://github.com/jesseduffield/lazygit>
 - aerospace (currently not using): <https://github.com/nikitabobko/AeroSpace>
 - yabai (currently not using): <https://github.com/koekeishiya/yabai>
 - kitty (currently not using): <https://sw.kovidgoyal.net/kitty/>
