@@ -1575,7 +1575,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "open -a 'Microsoft Powerpoint'"
+                    "shell_command": "bash ~/sys/scripts/focus_window.sh Microsoft Powerpoint"
                   }
                 ],
                 "type": "basic"
@@ -1596,7 +1596,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "open -a 'Microsoft Excel'"
+                    "shell_command": "bash ~/sys/scripts/focus_window.sh Microsoft Excel"
                   }
                 ],
                 "type": "basic"
@@ -1617,7 +1617,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "open -a 'Microsoft Word'"
+                    "shell_command": "bash ~/sys/scripts/focus_window.sh Microsoft Word"
                   }
                 ],
                 "type": "basic"
