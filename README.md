@@ -9,8 +9,8 @@ Dotfiles using the following major technologies:
 - hammerspoon: <https://www.hammerspoon.org/>
 - tmux: <https://github.com/tmux/tmux/wiki>
 - menuwhere: <https://manytricks.com/menuwhere/>
-- aerospace (currently not using): <https://github.com/nikitabobko/AeroSpace>
 - sketchybar: <https://github.com/FelixKratz/SketchyBar>
+- aerospace (currently not using): <https://github.com/nikitabobko/AeroSpace>
 - yabai (currently not using): <https://github.com/koekeishiya/yabai>
 - kitty (currently not using): <https://sw.kovidgoyal.net/kitty/>
 - uebersicht (currently not using): <https://github.com/felixhageloh/uebersicht>
