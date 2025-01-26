@@ -12,7 +12,7 @@ PLUGIN_DIR="$CONFIG_DIR/plugins"
 # If you are looking for other colors, see the color picker:
 # https://felixkratz.github.io/SketchyBar/config/tricks#color-picker
 
-sketchybar --bar position=top height=25 blur_radius=30 color=0x00000000 margin=0 padding_left=8 padding_right=15 y_offset=1
+sketchybar --bar position=top height=25 blur_radius=30 color=0x00000000 margin=0 padding_left=8 padding_right=15 y_offset=1  shadow=on
 
 ##### Changing Defaults #####
 # We now change some default values, which are applied to all further items.
@@ -20,9 +20,10 @@ sketchybar --bar position=top height=25 blur_radius=30 color=0x00000000 margin=0
 # https://felixkratz.github.io/SketchyBar/config/items
 
 default=(
-  padding_left=5
-  padding_right=5
+  padding_left=8
+  padding_right=8
   # icon.font="Droid Sans Mono:Bold:11.0"
+  # icon.font="SF Symbols:Bold:11.0"
   icon.font="Hack Nerd Font:Bold:11.0"
   label.font="SF Pro:SemiBold:11.0"
   # label.font="SF Pro:Condensed SemiBold:11.0"
@@ -106,25 +107,18 @@ sketchybar --add item clock right \
            background.color=$ITEMBACKGROUND \
            background.corner_radius=15 \
            icon.padding_left=5 \
+           icon.font.size=14 \
            label.padding_right=5
         # background.border_color=0x0505054D
 # ------------------------------------ CLOCK
 
-# ------------------------------------ VOLUME
-sketchybar --add item volume right \
-           --set volume script="$PLUGIN_DIR/volume.sh" \
-           icon.font.size=14 \
-           background.color=$ITEMBACKGROUND \
-           background.border_color=0x88aaaaaa \
-           background.border_width=0 \
-           background.corner_radius=15 \
-           --subscribe volume volume_change
-# ------------------------------------ VOLUME
+
 
 # ------------------------------------ BATTERY
 sketchybar --add item battery right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            background.border_width=0 \
+           icon.font.size=14 \
            background.color=$ITEMBACKGROUND \
            background.border_color=0x0505054D \
            background.corner_radius=15 \
@@ -133,6 +127,17 @@ sketchybar --add item battery right \
            --subscribe battery system_woke power_source_change
 # ------------------------------------ BATTERY
 
+# ------------------------------------ VOLUME
+sketchybar --add item volume right \
+           --set volume script="$PLUGIN_DIR/volume.sh" \
+           icon.font.size=14 \
+           width=60 \
+           background.color=$ITEMBACKGROUND \
+           background.border_color=0x88aaaaaa \
+           background.border_width=0 \
+           background.corner_radius=15 \
+           --subscribe volume volume_change
+# ------------------------------------ VOLUME
 
 # ------------------------------------ POMODORO
  sketchybar --add item pomodoro right \
@@ -382,9 +387,9 @@ sketchybar --add item battery right \
 sketchybar --add bracket rightgroup  clock volume battery \
            --set         rightgroup background.color=0x77050505 \
            background.corner_radius=16 \
-           background.border_color=0xffdfbf8e \
-           background.border_width=0.0 \
-           background.height=19
+           background.border_color=0x99dfbf8e \
+           background.border_width=1.0 \
+           background.height=20 \
 
 # sketchybar --reorder volume clock
 
