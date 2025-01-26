@@ -132,14 +132,14 @@ function seeCalendar()
   app:selectMenuItem({ "View", "Go To", "Calendar" })
 end
 
-hs.hotkey.bind({ "alt" }, "2", seeCalendar)
+hs.hotkey.bind({ "ctrl" }, "2", seeCalendar)
 
 function seeMail()
   local app = hs.application.find("Microsoft Outlook")
   app:selectMenuItem({ "View", "Go To", "Mail" })
 end
 
-hs.hotkey.bind({ "alt" }, "1", seeMail)
+hs.hotkey.bind({ "ctrl" }, "1", seeMail)
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -174,6 +174,22 @@ hs.hotkey.bind({ "ctrl", "cmd" }, "space", cycleKeyboardLayout())
 -------------------------------------------------------------------------------
 menubar_allowed = false
 
+-- ev2 = hs.eventtap
+--   .new({ hs.eventtap.event.types.leftMouseDown, hs.eventtap.event.types.flagsChanged }, function(e)
+--     mods = e:getFlags()
+--     if e:getType() == hs.eventtap.event.types.leftMouseDown then
+--       print("first")
+--     end
+--     print(button)
+--
+--     print(mods)
+--     if mods["cmd"] then
+--       print("hey")
+--     end
+--     return false
+--   end)
+--   :start()
+--
 ev = hs.eventtap
   .new({ hs.eventtap.event.types.mouseMoved, hs.eventtap.event.types.flagsChanged }, function(e)
     unlock_access = false
@@ -261,26 +277,26 @@ function allBorderFullScreen()
     for _, win in ipairs(allWindows) do
       if win:isStandard() then -- Skip non-standard windows (like hidden or minimized ones)
         local id = win:id()
-        if frameMaxCache[id] then
-          win:setFrame(frameMaxCache[id]) -- Restore original frame
-          frameMaxCache[id] = nil
-        else
-          local screen = win:screen()
-          frameMaxCache[id] = win:frame() -- Cache the original frame
+        -- if frameMaxCache[id] then
+        -- win:setFrame(frameMaxCache[id]) -- Restore original frame
+        -- frameMaxCache[id] = nil
+        -- else
+        local screen = win:screen()
+        frameMaxCache[id] = win:frame() -- Cache the original frame
 
-          -- Get screen dimensions
-          local h = screen:currentMode().h
-          local w = screen:currentMode().w
+        -- Get screen dimensions
+        local h = screen:currentMode().h
+        local w = screen:currentMode().w
 
-          -- Set the new frame with desired dimensions
-          local f = win:frame()
-          f.x = 16
-          f.y = 28 + 00
-          f.w = w - 16 * 2
-          f.h = h - 28 - 16 - 00
+        -- Set the new frame with desired dimensions
+        local f = win:frame()
+        f.x = 16
+        f.y = 28 + 00
+        f.w = w - 16 * 2
+        f.h = h - 28 - 16 - 00
 
-          win:setFrame(f)
-        end
+        win:setFrame(f)
+        -- end
       end
     end
   end
@@ -292,3 +308,61 @@ hs.hotkey.bind({ "cmd", "shift" }, "m", allBorderFullScreen())
 ---
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
+function allBorderHalfLeft()
+  return function()
+    local win = hs.window.focusedWindow() -- Get the currently focused window
+    if not win then
+      print("No focused window")
+      return
+    end
+
+    print("allBorderHalfLeft")
+    local id = win:id()
+    -- Cache the original frame for potential restoration
+    frameMaxCache[id] = win:frame()
+
+    -- Get screen dimensions
+    local screen = win:screen()
+    local h = screen:currentMode().h
+    local w = screen:currentMode().w
+
+    -- Set the new frame to occupy the left half of the screen
+    local f = win:frame()
+    f.x = 16 -- Offset from the left edge
+    f.y = 28 + 00 -- Offset from the top edge
+    f.w = (w / 2) - 16 -- Half the screen width, minus padding
+    f.h = h - 28 - 16 - 00 -- Adjust height to fit within the screen bounds
+
+    win:setFrame(f)
+  end
+end
+hs.hotkey.bind({ "cmd", "shift", "ctrl", "alt" }, "[", allBorderHalfLeft())
+
+function allBorderHalfRight()
+  return function()
+    local win = hs.window.focusedWindow() -- Get the currently focused window
+    if not win then
+      print("No focused window")
+      return
+    end
+    local id = win:id()
+    -- Cache the original frame for potential restoration
+    frameMaxCache[id] = win:frame()
+
+    -- Get screen dimensions
+    local screen = win:screen()
+    local h = screen:currentMode().h
+    local w = screen:currentMode().w
+
+    -- Set the new frame to occupy the right half of the screen
+    local f = win:frame()
+    f.x = (w / 2) + 16 -- Start from the middle of the screen, add left padding
+    f.y = 28 + 00 -- Offset from the top edge
+    f.w = (w / 2) - 16 -- Half the screen width, minus padding
+    f.h = h - 28 - 16 - 00 -- Adjust height to fit within the screen bounds
+
+    win:setFrame(f)
+  end
+end
+
+hs.hotkey.bind({ "cmd", "shift", "ctrl", "alt" }, "]", allBorderHalfRight())
