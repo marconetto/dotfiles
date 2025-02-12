@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
 global isDragging := false
+global startX := 0, startY := 0, winID := 0
 
-; Detect three-finger tap as a trigger (Mouse Button 1 Down)
 ~LButton::
 {
     if (!isDragging) {
@@ -24,6 +24,16 @@ global isDragging := false
 
 ; Move window with pointer while dragging
 #HotIf isDragging
-MouseMove(x, y, 0) ; Instantly moves window with cursor
+~MouseMove::
+{
+    if (isDragging) {
+        MouseGetPos &newX, &newY
+        dx := newX - startX
+        dy := newY - startY
+        startX := newX
+        startY := newY
+        WinMove(winID,,, A_ScreenWidth + dx, A_ScreenHeight + dy)
+    }
+}
 #HotIf
 
