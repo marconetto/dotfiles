@@ -1,8 +1,8 @@
 #Requires AutoHotkey v2.0
 
 CapsLock::{
-    KeyWait("CapsLock", "T0.2") ; Wait 0.2s to check if CapsLock is held
-    if (ErrorLevel) { ; If held, send Hyper Key (Ctrl + Shift + Alt + Win)
+    held := KeyWait("CapsLock", "T0.2") ; Returns TRUE if released before timeout
+    if (!held) { ; If held, send Hyper Key (Ctrl + Shift + Alt + Win)
         Send("{Ctrl Down}{Shift Down}{Alt Down}{LWin Down}")
         KeyWait("CapsLock") ; Wait for release
         Send("{Ctrl Up}{Shift Up}{Alt Up}{LWin Up}")
