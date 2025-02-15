@@ -389,7 +389,7 @@ sketchybar --add bracket rightgroup  clock volume battery \
            background.corner_radius=16 \
            background.border_color=0x99dfbf8e \
            background.border_width=1.0 \
-           background.height=18 \
+           background.height=18
 
 # sketchybar --reorder volume clock
 
