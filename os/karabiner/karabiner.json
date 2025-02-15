@@ -942,25 +942,6 @@
                   }
                 ],
                 "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "spacebar",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command",
-                      "left_option",
-                      "left_control",
-                      "left_shift"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "delete_or_backspace"
-                  }
-                ],
-                "type": "basic"
               }
             ]
           },
@@ -1513,7 +1494,8 @@
                   "key_code": "1",
                   "modifiers": {
                     "mandatory": [
-                      "left_option"
+                      "left_command",
+                      "left_shift"
                     ]
                   }
                 },
@@ -1531,10 +1513,11 @@
             "manipulators": [
               {
                 "from": {
-                  "key_code": "3",
+                  "key_code": "2",
                   "modifiers": {
                     "mandatory": [
-                      "left_option"
+                      "left_command",
+                      "left_shift"
                     ]
                   }
                 },
@@ -1552,10 +1535,10 @@
             "manipulators": [
               {
                 "from": {
-                  "key_code": "2",
+                  "key_code": "5",
                   "modifiers": {
                     "mandatory": [
-                      "left_option"
+                      "left_command"
                     ]
                   }
                 },
