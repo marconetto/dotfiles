@@ -85,4 +85,5 @@ alias b='popd > /dev/null'
 alias icat='wezterm imgcat'
 alias python=python3
 
-[ -f ~/misc/aliases.sh ] && source ~/misc/aliases.sh
+aliasesfile=$HOME/sys/scripts/aliases.sh
+[ -f "$aliasesfile" ] && source "$aliasesfile"

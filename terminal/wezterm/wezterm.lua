@@ -411,14 +411,14 @@ config.keys = {
   },
   { key = "w", mods = "CMD", action = wezterm.action.CloseCurrentPane({ confirm = false }) },
   --Pane resize
-  { key = "LeftArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Left", 1 }) },
-  { key = "j", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Left", 1 }) },
-  { key = "RightArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Right", 1 }) },
-  { key = "l", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Right", 1 }) },
-  { key = "UpArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Up", 1 }) },
-  { key = "i", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Up", 1 }) },
-  { key = "DownArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Down", 1 }) },
-  { key = "k", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Down", 1 }) },
+  { key = "LeftArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Left", 3 }) },
+  { key = "j", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Left", 3 }) },
+  { key = "RightArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Right", 3 }) },
+  { key = "l", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Right", 3 }) },
+  { key = "UpArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Up", 3 }) },
+  { key = "i", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Up", 3 }) },
+  { key = "DownArrow", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Down", 3 }) },
+  { key = "k", mods = "CMD|ALT", action = act.AdjustPaneSize({ "Down", 3 }) },
   -- Pane zoom
   { key = "z", mods = "CMD", action = wezterm.action.TogglePaneZoomState },
   --Tab navigation
