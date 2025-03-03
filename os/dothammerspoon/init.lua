@@ -217,6 +217,32 @@ _all_wins_filter:subscribe(hs.window.filter.windowCreated, function(window, appN
   print("Window created ... maximising: " .. win_title)
   print("Window created ... DONE: " .. win_title)
 
+  local f = window:frame()
+  print("Window created ... f.y: " .. f.y)
+  if f.y < 28 then
+    f.y = 28
+    window:setFrame(f)
+  end
+  if f.x < 16 then
+    f.x = 16
+    window:setFrame(f)
+  end
+
+  local screen = window:screen()
+  local h = screen:currentMode().h
+  max_h = h - 28 - 16 - 00
+  if f.h > max_h then
+    f.h = max_h
+    window:setFrame(f)
+  end
+
+  w = screen:currentMode().w
+  max_w = w - 16 * 2
+  if f.w > max_w then
+    f.w = max_w
+    window:setFrame(f)
+  end
+
   -- if win_title == "Teams" then
   --   hs.timer.usleep(2000000)
   --   focusedanother = window:focusWindowWest(false)
@@ -230,6 +256,7 @@ local frameMaxCache = {}
 -------------------------------------------------------------------------------
 function borderFullScreen()
   return function()
+    print("borderFullScreen")
     if hs.window.focusedWindow() then
       local win = hs.window.frontmostWindow()
       if frameMaxCache[win:id()] then
@@ -273,6 +300,7 @@ hs.hotkey.bind({ "cmd" }, "m", borderFullScreen())
 -------------------------------------------------------------------------------
 function allBorderFullScreen()
   return function()
+    print("all borderFullScreen")
     local allWindows = hs.window.allWindows() -- Get all windows
     for _, win in ipairs(allWindows) do
       if win:isStandard() then -- Skip non-standard windows (like hidden or minimized ones)
@@ -358,7 +386,7 @@ function allBorderHalfRight()
     local f = win:frame()
     f.x = (w / 2) + 16 -- Start from the middle of the screen, add left padding
     f.y = 28 + 00 -- Offset from the top edge
-    f.w = (w / 2) - 16 -- Half the screen width, minus padding
+    f.w = (w / 2) - 16 * 2 -- Half the screen width, minus padding
     f.h = h - 28 - 16 - 00 -- Adjust height to fit within the screen bounds
 
     win:setFrame(f)
@@ -366,3 +394,49 @@ function allBorderHalfRight()
 end
 
 hs.hotkey.bind({ "cmd", "shift", "ctrl", "alt" }, "]", allBorderHalfRight())
+
+-- windowFilter = hs.window.filter.new():setOverrideFilter({ allowTitles = 1 })
+--
+-- windowFilter:subscribe(hs.window.filter.windowCreated, function(win)
+--   print("Window created")
+--   if win then
+--     local f = win:frame()
+--     print("Window created ... f.y: " .. f.y)
+--     if f.y < 30 then
+--       f.y = 30
+--       win:setFrame(f)
+--     end
+--   end
+-- end)
+--
+--
+local function enforceWindowPosition()
+  local win = hs.window.focusedWindow()
+  if win then
+    local f = win:frame()
+    if f.y < 28 then
+      f.y = 28
+      win:setFrame(f)
+    end
+    if f.x < 16 then
+      f.x = 16
+      win:setFrame(f)
+    end
+    if f.x + f.w > hs.screen.mainScreen():frame().w - 16 then
+      f.x = hs.screen.mainScreen():frame().w - f.w - 16
+      win:setFrame(f)
+    end
+    if f.y + f.h > hs.screen.mainScreen():frame().h - 16 then
+      f.y = hs.screen.mainScreen():frame().h - f.h - 16
+      win:setFrame(f)
+    end
+  end
+end
+
+-- Monitor window movement and enforce the position
+moveWatcher = hs.eventtap.new({ hs.eventtap.event.types.leftMouseUp }, function(event)
+  hs.timer.doAfter(0.1, enforceWindowPosition) -- Slight delay to let the window move
+  return false -- Allow the event to pass through
+end)
+
+moveWatcher:start()
