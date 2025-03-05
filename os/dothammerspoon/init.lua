@@ -406,6 +406,7 @@ local function enforceWindowPosition()
       print("do not enforce for iScreen Shoter")
       return
     end
+    screen_h = hs.screen.mainScreen():frame().h
     if f.y < TOP_GAP then
       f.y = TOP_GAP
       win:setFrame(f)
@@ -417,19 +418,21 @@ local function enforceWindowPosition()
     h = hs.screen.mainScreen():currentMode().h
     if f.h > h - TOP_GAP - BOTTOM_GAP then
       f.h = h - TOP_GAP - BOTTOM_GAP
+      f.y = TOP_GAP
       win:setFrame(f)
     end
     w = hs.screen.mainScreen():currentMode().w
     if f.w > w - SIDE_GAP * 2 then
       f.w = w - SIDE_GAP * 2
+      f.x = SIDE_GAP
       win:setFrame(f)
     end
     if f.x + f.w > hs.screen.mainScreen():frame().w - SIDE_GAP then
       f.x = hs.screen.mainScreen():frame().w - f.w - SIDE_GAP
       win:setFrame(f)
     end
-    if f.y + f.h > hs.screen.mainScreen():frame().h - TOP_GAP then
-      f.y = hs.screen.mainScreen():frame().h - f.h - TOP_GAP
+    if f.y + f.h > screen_h - BOTTOM_GAP then
+      f.y = screen_h - BOTTOM_GAP - f.h
       win:setFrame(f)
     end
   end
