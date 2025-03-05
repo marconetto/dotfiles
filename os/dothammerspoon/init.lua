@@ -15,6 +15,10 @@ hs.alert.defaultStyle.textFont = "Monaco"
 local hyperkeys = { "ctrl", "alt", "cmd", "shift" }
 local threekeys = { "ctrl", "alt", "cmd" }
 
+local TOP_GAP = 28
+local BOTTOM_GAP = 24
+local SIDE_GAP = 24
+
 -------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------
@@ -219,8 +223,8 @@ _all_wins_filter:subscribe(hs.window.filter.windowCreated, function(window, appN
 
   local f = window:frame()
   print("Window created ... f.y: " .. f.y)
-  if f.y < 28 then
-    f.y = 28
+  if f.y < TOP_GAP then
+    f.y = TOP_GAP
     window:setFrame(f)
   end
   if f.x < 16 then
@@ -230,7 +234,7 @@ _all_wins_filter:subscribe(hs.window.filter.windowCreated, function(window, appN
 
   local screen = window:screen()
   local h = screen:currentMode().h
-  max_h = h - 28 - 16 - 00
+  max_h = h - TOP_GAP - 16 - 00
   if f.h > max_h then
     f.h = max_h
     window:setFrame(f)
@@ -270,23 +274,11 @@ function borderFullScreen()
         h = screen:currentMode().h
         w = screen:currentMode().w
         local f = win:frame()
-        -- border = WINDOW_BORDER
-        -- f.x = border
-        -- f.y = border + 00
-        -- f.w = w - border * 2
-        -- f.h = h - border * 2 - 00
 
-        -- TODO: fix hardcoded values
-
-        f.x = 16
-        f.y = 28 + 00
-        f.w = w - 16 * 2
-        f.h = h - 28 - 16 - 00
-        -- border = 30
-        -- f.x = border
-        -- f.y = border + border
-        -- f.w = w-border*2
-        -- f.h = h-border*2 - border
+        f.x = SIDE_GAP
+        f.y = TOP_GAP
+        f.w = w - SIDE_GAP * 2
+        f.h = h - TOP_GAP - BOTTOM_GAP
         win:setFrame(f)
       end
     end
@@ -298,6 +290,7 @@ hs.hotkey.bind({ "cmd" }, "m", borderFullScreen())
 -------------------------------------------------------------------------------
 -- make window full screen with border
 -------------------------------------------------------------------------------
+
 function allBorderFullScreen()
   return function()
     print("all borderFullScreen")
@@ -305,26 +298,19 @@ function allBorderFullScreen()
     for _, win in ipairs(allWindows) do
       if win:isStandard() then -- Skip non-standard windows (like hidden or minimized ones)
         local id = win:id()
-        -- if frameMaxCache[id] then
-        -- win:setFrame(frameMaxCache[id]) -- Restore original frame
-        -- frameMaxCache[id] = nil
-        -- else
         local screen = win:screen()
-        frameMaxCache[id] = win:frame() -- Cache the original frame
+        frameMaxCache[id] = win:frame()
 
-        -- Get screen dimensions
         local h = screen:currentMode().h
         local w = screen:currentMode().w
 
-        -- Set the new frame with desired dimensions
         local f = win:frame()
-        f.x = 16
-        f.y = 28 + 00
-        f.w = w - 16 * 2
-        f.h = h - 28 - 16 - 00
+        f.x = SIDE_GAP
+        f.y = TOP_GAP
+        f.w = w - SIDE_GAP * 2
+        f.h = h - TOP_GAP - BOTTOM_GAP
 
         win:setFrame(f)
-        -- end
       end
     end
   end
@@ -356,10 +342,10 @@ function allBorderHalfLeft()
 
     -- Set the new frame to occupy the left half of the screen
     local f = win:frame()
-    f.x = 16 -- Offset from the left edge
-    f.y = 28 + 00 -- Offset from the top edge
-    f.w = (w / 2) - 16 -- Half the screen width, minus padding
-    f.h = h - 28 - 16 - 00 -- Adjust height to fit within the screen bounds
+    f.x = SIDE_GAP
+    f.y = TOP_GAP
+    f.w = (w / 2) - SIDE_GAP
+    f.h = h - TOP_GAP - BOTTOM_GAP
 
     win:setFrame(f)
   end
@@ -384,10 +370,10 @@ function allBorderHalfRight()
 
     -- Set the new frame to occupy the right half of the screen
     local f = win:frame()
-    f.x = (w / 2) + 16 -- Start from the middle of the screen, add left padding
-    f.y = 28 + 00 -- Offset from the top edge
-    f.w = (w / 2) - 16 * 2 -- Half the screen width, minus padding
-    f.h = h - 28 - 16 - 00 -- Adjust height to fit within the screen bounds
+    f.x = (w / 2) + SIDE_GAP
+    f.y = TOP_GAP
+    f.w = (w / 2) - SIDE_GAP * 2
+    f.h = h - TOP_GAP - BOTTOM_GAP
 
     win:setFrame(f)
   end
@@ -395,39 +381,55 @@ end
 
 hs.hotkey.bind({ "cmd", "shift", "ctrl", "alt" }, "]", allBorderHalfRight())
 
--- windowFilter = hs.window.filter.new():setOverrideFilter({ allowTitles = 1 })
---
--- windowFilter:subscribe(hs.window.filter.windowCreated, function(win)
---   print("Window created")
---   if win then
---     local f = win:frame()
---     print("Window created ... f.y: " .. f.y)
---     if f.y < 30 then
---       f.y = 30
---       win:setFrame(f)
---     end
---   end
--- end)
---
---
-local function enforceWindowPosition()
-  local win = hs.window.focusedWindow()
+windowFilter = hs.window.filter.new():setOverrideFilter({ allowTitles = 1 })
+
+windowFilter:subscribe(hs.window.filter.windowCreated, function(win)
+  print("Window created")
   if win then
     local f = win:frame()
-    if f.y < 28 then
-      f.y = 28
+    print("Window created ... f.y: " .. f.y)
+    if f.y < TOP_GAP then
+      f.y = TOP_GAP
       win:setFrame(f)
     end
-    if f.x < 16 then
-      f.x = 16
+  end
+end)
+
+local function enforceWindowPosition()
+  local win = hs.window.focusedWindow()
+  print("Enforce window position")
+  if win then
+    local f = win:frame()
+    app = win:application()
+    print("Window enforced for application: " .. app:name())
+    if app:name() == "iScreen Shoter" then
+      print("do not enforce for iScreen Shoter")
+      return
+    end
+    if f.y < TOP_GAP then
+      f.y = TOP_GAP
       win:setFrame(f)
     end
-    if f.x + f.w > hs.screen.mainScreen():frame().w - 16 then
-      f.x = hs.screen.mainScreen():frame().w - f.w - 16
+    if f.x < SIDE_GAP then
+      f.x = SIDE_GAP
       win:setFrame(f)
     end
-    if f.y + f.h > hs.screen.mainScreen():frame().h - 16 then
-      f.y = hs.screen.mainScreen():frame().h - f.h - 16
+    h = hs.screen.mainScreen():currentMode().h
+    if f.h > h - TOP_GAP - BOTTOM_GAP then
+      f.h = h - TOP_GAP - BOTTOM_GAP
+      win:setFrame(f)
+    end
+    w = hs.screen.mainScreen():currentMode().w
+    if f.w > w - SIDE_GAP * 2 then
+      f.w = w - SIDE_GAP * 2
+      win:setFrame(f)
+    end
+    if f.x + f.w > hs.screen.mainScreen():frame().w - SIDE_GAP then
+      f.x = hs.screen.mainScreen():frame().w - f.w - SIDE_GAP
+      win:setFrame(f)
+    end
+    if f.y + f.h > hs.screen.mainScreen():frame().h - TOP_GAP then
+      f.y = hs.screen.mainScreen():frame().h - f.h - TOP_GAP
       win:setFrame(f)
     end
   end
