@@ -3,6 +3,7 @@ if not hs.ipc.cliStatus() then
 end
 hs.ipc.cliInstall()
 
+hs.window.animationDuration = 0.0
 -------------------------------------------------------------------------------
 hs.alert.defaultStyle.radius = 5
 hs.alert.defaultStyle.strokeWidth = 1.0
