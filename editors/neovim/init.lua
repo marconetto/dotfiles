@@ -87,6 +87,19 @@ require('lazy').setup {
       custom_theme.replace.a.gui = ''
       custom_theme.visual.a.gui = ''
       custom_theme.command.a.gui = ''
+      local function getWords()
+        if vim.bo.filetype == 'md' or vim.bo.filetype == 'text' or vim.bo.filetype == 'markdown' then
+          if vim.fn.wordcount().visual_words == 1 then
+            return tostring(vim.fn.wordcount().visual_words) .. ' word'
+          elseif not (vim.fn.wordcount().visual_words == nil) then
+            return tostring(vim.fn.wordcount().visual_words) .. ' words'
+          else
+            return tostring(vim.fn.wordcount().words) .. ' words'
+          end
+        else
+          return ''
+        end
+      end
 
       require('lualine').setup {
         options = {
@@ -102,6 +115,7 @@ require('lazy').setup {
               'filename',
               symbols = { modified = '[+]', readonly = ' ' },
             },
+            { getWords },
           },
           lualine_c = {
             { 'branch', separator = '' },
@@ -377,6 +391,15 @@ require('lazy').setup {
       vim.g.mkdp_page_title = '${name}'
     end,
   },
+  -- preview markdown in neovim n--------------------------------------------------------
+  {
+    'MeanderingProgrammer/markdown.nvim',
+    name = 'render-markdown', -- Only needed if you have another plugin named markdown.nvim
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    config = function()
+      require('render-markdown').setup { start_enabled = false }
+    end,
+  },
   -- wezterm navigator ----------------------------------------------------------------
   {
     'numToStr/Navigator.nvim',
@@ -398,7 +421,7 @@ require('lazy').setup {
 
     config = function()
       vim.g.copilot_no_tab_map = true
-      vim.g.copilot_assume_mapped = true
+      -- vim.g.copilot_assume_mapped = true
       vim.api.nvim_set_keymap('i', '<C-Enter>', 'copilot#Accept("<CR>")', { silent = true, expr = true })
       vim.api.nvim_set_keymap('i', '<C-;>', '<Plug>(copilot-next)', {})
       vim.g.copilot_filetypes = {
@@ -417,6 +440,43 @@ require('lazy').setup {
       }
     end,
   },
+  -- {
+  --   'jackMort/ChatGPT.nvim',
+  --   event = 'VeryLazy',
+  --   config = function()
+  --     require('chatgpt').setup()
+  --   end,
+  --   dependencies = {
+  --     'MunifTanjim/nui.nvim',
+  --     'nvim-lua/plenary.nvim',
+  --     'folke/trouble.nvim', -- optional
+  --     'nvim-telescope/telescope.nvim',
+  --   },
+  -- },
+  -- {
+  --   'folke/noice.nvim',
+  --   event = 'VeryLazy',
+  --   opts = {
+  --     messages = { enabled = true },
+  --     lsp = {
+  --       hover = { enabled = false }, -- <-- HERE!
+  --       signature = { enabled = false }, -- <-- HERE!
+  --     },
+  --     presets = {
+  --       bottom_search = true, -- use a classic bottom cmdline for search
+  --       long_message_to_split = true, -- long messages will be sent to a split
+  --     },
+  --     -- add any options here
+  --   },
+  --   dependencies = {
+  --     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+  --     'MunifTanjim/nui.nvim',
+  --     -- OPTIONAL:
+  --     --   `nvim-notify` is only needed, if you want to use the notification view.
+  --     --   If not available, we use `mini` as the fallback
+  --     'rcarriga/nvim-notify',
+  --   },
+  -- },
   {
     'kevinhwang91/nvim-bqf',
     ft = 'qf',
@@ -690,7 +750,6 @@ end)
 require('mason').setup {}
 require('mason-lspconfig').setup {
   ensure_installed = {
-    'tsserver',
     'bashls',
     'cssls',
     'lua_ls',
@@ -843,7 +902,8 @@ vim.api.nvim_set_keymap('n', '<Leader>rn', ':lua vim.lsp.buf.rename()<CR>', { no
 vim.api.nvim_set_keymap('n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap('n', '<leader>gg', ':LazyGitCurrentFile<CR>', { silent = true })
-vim.api.nvim_set_keymap('n', '<leader>m', ':MarkdownPreview<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<leader>m1', ':MarkdownPreview<CR>', { silent = true })
+vim.api.nvim_set_keymap('n', '<leader>m2', ':RenderMarkdownToggle<CR>', { silent = true })
 
 vim.api.nvim_set_keymap('n', 'cd', 'ciw', { silent = true })
 
@@ -1000,15 +1060,16 @@ require('conform').setup {
   },
   format_after_save = {
     lsp_fallback = true,
-    timeout_ms = 200,
+    timeout_ms = 2500,
+    async = true,
   },
 }
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = '*',
-  callback = function(args)
-    require('conform').format { bufnr = args.buf }
-  end,
-})
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--   pattern = '*',
+--   callback = function(args)
+--     require('conform').format { bufnr = args.buf }
+--   end,
+-- })
 
 -------------------------------------------------------------------------------
 --- misc ----------------------------------------------------------------------
@@ -1150,7 +1211,7 @@ nnoremap d* /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap d# ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 ]]
 
--- vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
+vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line", focus=false,close_events = {"CursorMoved", "CursorMovedI", "BufHidden", "InsertCharPre", "WinLeave","InsertEnter"}})]]
 
 if vim.fn.has 'mac' == 1 then
   vim.cmd [[
@@ -1261,7 +1322,7 @@ let g:VM_highlight_matches = 'hi Search guifg=#ffffff'
 ]]
 
 vim.cmd [[
-set lazyredraw
+"set lazyredraw
 let g:loaded_matchparen=0
 let g:vimtex_matchparen_enabled =0
 let g:matchparen_timeout = 2
@@ -1348,3 +1409,31 @@ vim.api.nvim_set_keymap('i', '<C-s>', '<Esc>:w<CR>:echo""<CR>', { noremap = true
 --
 -- autocmd ColorScheme * call SetLSPHighlights()
 -- ]]
+--
+require('conform').setup {
+  format_on_save = function(bufnr)
+    -- Disable with a global or buffer-local variable
+    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+      return
+    end
+    return { timeout_ms = 2500, lsp_format = 'fallback' }
+  end,
+}
+
+vim.api.nvim_create_user_command('FormatDisable', function(args)
+  if args.bang then
+    -- FormatDisable! will disable formatting just for this buffer
+    vim.b.disable_autoformat = true
+  else
+    vim.g.disable_autoformat = true
+  end
+end, {
+  desc = 'Disable autoformat-on-save',
+  bang = true,
+})
+vim.api.nvim_create_user_command('FormatEnable', function()
+  vim.b.disable_autoformat = false
+  vim.g.disable_autoformat = false
+end, {
+  desc = 'Re-enable autoformat-on-save',
+})
