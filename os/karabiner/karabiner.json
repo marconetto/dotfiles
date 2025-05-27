@@ -543,43 +543,6 @@
             ]
           },
           {
-            "description": "move to escape workspace",
-            "manipulators": [
-              {
-                "from": {
-                  "key_code": "grave_accent_and_tilde",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f19"
-                  }
-                ],
-                "type": "basic"
-              },
-              {
-                "from": {
-                  "key_code": "escape",
-                  "modifiers": {
-                    "mandatory": [
-                      "left_command"
-                    ]
-                  }
-                },
-                "to": [
-                  {
-                    "key_code": "f19"
-                  }
-                ],
-                "type": "basic"
-              }
-            ]
-          },
-          {
             "description": "lock screen",
             "manipulators": [
               {
@@ -1458,7 +1421,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "osascript -e 'tell application \"Microsoft Teams\" to activate'"
+                    "shell_command": "bash ~/sys/scripts/focus_window.sh Microsoft Teams"
                   }
                 ],
                 "type": "basic"
@@ -1479,7 +1442,7 @@
                 },
                 "to": [
                   {
-                    "shell_command": "open -a 'Microsoft Outlook'"
+                    "shell_command": "bash ~/sys/scripts/focus_window.sh Microsoft Outlook"
                   }
                 ],
                 "type": "basic"
@@ -2237,6 +2200,78 @@
                   }
                 },
                 "type": "basic"
+              }
+            ]
+          },
+          {
+            "description": "test previous window",
+            "manipulators": [
+              {
+                "type": "basic",
+                "from": {
+                  "key_code": "right_shift",
+                  "modifiers": {
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "key_code": "tab",
+                    "modifiers": [
+                      "left_command"
+                    ]
+                  }
+                ],
+                "conditions": [
+                  {
+                    "type": "variable_if",
+                    "name": "key pressed",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "type": "basic",
+                "from": {
+                  "key_code": "right_shift",
+                  "modifiers": {
+                    "optional": [
+                      "any"
+                    ]
+                  }
+                },
+                "to": [
+                  {
+                    "set_variable": {
+                      "name": "key pressed",
+                      "value": 1
+                    }
+                  },
+                  {
+                    "key_code": "right_shift"
+                  }
+                ],
+                "description": "to_delayed_action is set to 400ms in karabiner.json",
+                "to_delayed_action": {
+                  "to_if_invoked": [
+                    {
+                      "set_variable": {
+                        "name": "key pressed",
+                        "value": 0
+                      }
+                    }
+                  ],
+                  "to_if_canceled": [
+                    {
+                      "set_variable": {
+                        "name": "key pressed",
+                        "value": 0
+                      }
+                    }
+                  ]
+                }
               }
             ]
           },
