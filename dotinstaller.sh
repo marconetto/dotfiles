@@ -234,3 +234,4 @@ setup_tmux
 hash -r
 source "$BASHRCFILE" >/dev/null 2>&1
 echo -e "New bashrc has been sourced. Enjoy!"
+conda deactivate >/dev/null 2>&1
