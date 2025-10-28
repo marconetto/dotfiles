@@ -16,9 +16,9 @@ hs.alert.defaultStyle.textFont = "Monaco"
 local hyperkeys = { "ctrl", "alt", "cmd", "shift" }
 local threekeys = { "ctrl", "alt", "cmd" }
 
-local TOP_GAP = 28
-local BOTTOM_GAP = 24
-local SIDE_GAP = 24
+local TOP_GAP = 30
+local BOTTOM_GAP = 30
+local SIDE_GAP = 30
 
 -------------------------------------------------------------------------------
 
@@ -216,45 +216,45 @@ ev = hs.eventtap
   end)
   :start()
 
-local _all_wins_filter = hs.window.filter.new():setDefaultFilter()
-_all_wins_filter:subscribe(hs.window.filter.windowCreated, function(window, appName)
-  win_title = window:title()
-  print("Window created ... maximising: " .. win_title)
-  print("Window created ... DONE: " .. win_title)
-
-  local f = window:frame()
-  print("Window created ... f.y: " .. f.y)
-  if f.y < TOP_GAP then
-    f.y = TOP_GAP
-    window:setFrame(f)
-  end
-  if f.x < 16 then
-    f.x = 16
-    window:setFrame(f)
-  end
-
-  local screen = window:screen()
-  local h = screen:currentMode().h
-  max_h = h - TOP_GAP - 16 - 00
-  if f.h > max_h then
-    f.h = max_h
-    window:setFrame(f)
-  end
-
-  w = screen:currentMode().w
-  max_w = w - 16 * 2
-  if f.w > max_w then
-    f.w = max_w
-    window:setFrame(f)
-  end
-
-  -- if win_title == "Teams" then
-  --   hs.timer.usleep(2000000)
-  --   focusedanother = window:focusWindowWest(false)
-  --   print("Refocused other window " .. tostring(focusedanother))
-  -- end
-end)
-
+-- local _all_wins_filter = hs.window.filter.new():setDefaultFilter()
+-- _all_wins_filter:subscribe(hs.window.filter.windowCreated, function(window, appName)
+--   win_title = window:title()
+--   print("Window created ... maximising: " .. win_title)
+--   print("Window created ... DONE: " .. win_title)
+--
+--   local f = window:frame()
+--   print("Window created ... f.y: " .. f.y)
+--   if f.y < TOP_GAP then
+--     f.y = TOP_GAP
+--     window:setFrame(f)
+--   end
+--   if f.x < 16 then
+--     f.x = 16
+--     window:setFrame(f)
+--   end
+--
+--   local screen = window:screen()
+--   local h = screen:currentMode().h
+--   max_h = h - TOP_GAP - 16 - 00
+--   if f.h > max_h then
+--     f.h = max_h
+--     window:setFrame(f)
+--   end
+--
+--   w = screen:currentMode().w
+--   max_w = w - 16 * 2
+--   if f.w > max_w then
+--     f.w = max_w
+--     window:setFrame(f)
+--   end
+--
+--   -- if win_title == "Teams" then
+--   --   hs.timer.usleep(2000000)
+--   --   focusedanother = window:focusWindowWest(false)
+--   --   print("Refocused other window " .. tostring(focusedanother))
+--   -- end
+-- end)
+--
 local frameMaxCache = {}
 -------------------------------------------------------------------------------
 -- make window full screen with border
@@ -319,6 +319,12 @@ end
 
 hs.hotkey.bind({ "cmd", "shift" }, "m", allBorderFullScreen())
 
+-- hs.hotkey.bind({ "cmd", "shift" }, "m", function()
+--   for _, win in ipairs(hs.window.visibleWindows()) do
+--     win:maximize()
+--   end
+-- end)
+
 -------------------------------------------------------------------------------
 ---
 -------------------------------------------------------------------------------
@@ -382,66 +388,89 @@ end
 
 hs.hotkey.bind({ "cmd", "shift", "ctrl", "alt" }, "]", allBorderHalfRight())
 
+function fix_window_size(win)
+  local f = win:frame()
+  app = win:application()
+  local title = win:title()
+
+  print("Window title: " .. win:title() .. " for application: " .. app:name())
+  if win and win:isFullScreen() then
+    print("Window is ---FULL--- screen, no enforcement needed for application: " .. app:name())
+    return
+  end
+
+  if app:name() == "Microsoft PowerPoint" then
+    print("PowerPoint detected, checking for presentation mode")
+    if title:find("Slide Show", 1, true) or title:find("Presentation", 1, true) then
+      print("PowerPoint presentation detected. Ignoring window position enforcement.")
+      return
+    end
+  end
+
+  if app:name() == "iScreen Shoter" then
+    print("do not enforce for iScreen Shoter")
+    return
+  end
+
+  print("Enforce window position")
+  screen_h = hs.screen.mainScreen():frame().h
+  if f.y < TOP_GAP then
+    f.y = TOP_GAP
+    win:setFrame(f)
+  end
+  if f.x < SIDE_GAP then
+    f.x = SIDE_GAP
+    win:setFrame(f)
+  end
+  h = hs.screen.mainScreen():currentMode().h
+  if f.h > h - TOP_GAP - BOTTOM_GAP then
+    f.h = h - TOP_GAP - BOTTOM_GAP
+    f.y = TOP_GAP
+    win:setFrame(f)
+  end
+  w = hs.screen.mainScreen():currentMode().w
+  if f.w > w - SIDE_GAP * 2 then
+    f.w = w - SIDE_GAP * 2
+    f.x = SIDE_GAP
+    win:setFrame(f)
+  end
+  if f.x + f.w > hs.screen.mainScreen():frame().w - SIDE_GAP then
+    f.x = hs.screen.mainScreen():frame().w - f.w - SIDE_GAP
+    win:setFrame(f)
+  end
+  if f.y + f.h > screen_h - BOTTOM_GAP then
+    f.y = screen_h - BOTTOM_GAP - f.h
+    win:setFrame(f)
+  end
+end
+
 windowFilter = hs.window.filter.new():setOverrideFilter({ allowTitles = 1 })
 
 windowFilter:subscribe(hs.window.filter.windowCreated, function(win)
-  print("Window created")
+  app = win:application()
+  print("Window created for application: " .. app:name())
+
   if win then
-    local f = win:frame()
-    print("Window created ... f.y: " .. f.y)
-    if f.y < TOP_GAP then
-      f.y = TOP_GAP
-      win:setFrame(f)
-    end
+    -- local f = win:frame()
+    -- print("Window created ... f.y: " .. f.y)
+    fix_window_size(win)
+    -- if f.y < TOP_GAP then
+    --   f.y = TOP_GAP
+    --   win:setFrame(f)
+    -- end
   end
 end)
 
 local function enforceWindowPosition()
   local win = hs.window.focusedWindow()
-  print("Enforce window position")
   if win then
-    local f = win:frame()
-    app = win:application()
-    print("Window enforced for application: " .. app:name())
-    if app:name() == "iScreen Shoter" then
-      print("do not enforce for iScreen Shoter")
-      return
-    end
-    screen_h = hs.screen.mainScreen():frame().h
-    if f.y < TOP_GAP then
-      f.y = TOP_GAP
-      win:setFrame(f)
-    end
-    if f.x < SIDE_GAP then
-      f.x = SIDE_GAP
-      win:setFrame(f)
-    end
-    h = hs.screen.mainScreen():currentMode().h
-    if f.h > h - TOP_GAP - BOTTOM_GAP then
-      f.h = h - TOP_GAP - BOTTOM_GAP
-      f.y = TOP_GAP
-      win:setFrame(f)
-    end
-    w = hs.screen.mainScreen():currentMode().w
-    if f.w > w - SIDE_GAP * 2 then
-      f.w = w - SIDE_GAP * 2
-      f.x = SIDE_GAP
-      win:setFrame(f)
-    end
-    if f.x + f.w > hs.screen.mainScreen():frame().w - SIDE_GAP then
-      f.x = hs.screen.mainScreen():frame().w - f.w - SIDE_GAP
-      win:setFrame(f)
-    end
-    if f.y + f.h > screen_h - BOTTOM_GAP then
-      f.y = screen_h - BOTTOM_GAP - f.h
-      win:setFrame(f)
-    end
+    fix_window_size(win)
   end
 end
 
 -- Monitor window movement and enforce the position
 moveWatcher = hs.eventtap.new({ hs.eventtap.event.types.leftMouseUp }, function(event)
-  hs.timer.doAfter(0.1, enforceWindowPosition) -- Slight delay to let the window move
+  hs.timer.doAfter(0.0, enforceWindowPosition) -- Slight delay to let the window move
   return false -- Allow the event to pass through
 end)
 
