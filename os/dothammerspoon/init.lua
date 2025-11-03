@@ -394,6 +394,11 @@ function fix_window_size(win)
   local title = win:title()
 
   print("Window title: " .. win:title() .. " for application: " .. app:name())
+
+  if app:name() == "loginwindow" then
+    print("do not enforce for loginwindow")
+    return
+  end
   if win and win:isFullScreen() then
     print("Window is ---FULL--- screen, no enforcement needed for application: " .. app:name())
     return
