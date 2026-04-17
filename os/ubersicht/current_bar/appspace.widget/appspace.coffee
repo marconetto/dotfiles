@@ -12,35 +12,35 @@ refreshFrequency: false
 #Body Style
 style: """
 
-  left:50%
-  top:04px
+  right:210px
+  top:03px
   color: #fff
 font-family: Droid Sans Mono
   justify-content: center
   align-items: center
-  transform: translate(50%,0%)
-  margin-left: 110px
+  transform: translate(00%,0%)
+  margin-left: 60px
 
 
 
   .container
    right:10px
    height:100px
-   width:040px
+   width:140px
    text-align:center
 
   .text
-     font-size: 11px
+     font-size: 13px
      color:#dfbf8e
-     height: 14px
+     height: 16px
      line-height: 15px
      margin-top:00%
      font-weight:400
      background: rgba(005, 005, 005, 0.30);
-     border-radius: 3px;
-     border-top-left-radius: 3px;
-     border-top-right-radius: 3px;
-     box-shadow: -02px 02px 2px 0px rgba(0,0,0,0.25);
+     border-radius: 5px;
+     border-top-left-radius: 5px;
+     border-top-right-radius: 5px;
+     box-shadow: -02px 02px 2px 0px rgba(0,0,0,0.70);
 
 
 """
@@ -59,10 +59,12 @@ render: -> """
   #Update function
 update: (output, domEl) ->
 
-  name = output.split(' ')
+  #name = output.split(' ')
 
   #DOM manipulation
-  $(domEl).find('.myspace').text("#{name[0]}·#{name[1]}")
+  $(domEl).find('.myspace').text("#{output}")
+
+  # $(domEl).find('.myspace').text("#{name[0]}·#{name[1]}")
   # $(domEl).find('.myspace').text("#{name[0]}≡#{name[1]}")
   # $(domEl).find('.space').text("#{name[0]}☯◈◆▪#{name[1]}")
   # $(domEl).find('.space').text("#{name[0]}·#{name[1]}")

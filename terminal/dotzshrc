@@ -305,3 +305,19 @@ function yy() {
 	fi
 	rm -f -- "$tmp"
 }
+# # The following lines have been added by Docker Desktop to enable Docker CLI completions.
+# fpath=(/Users/marco/.docker/completions $fpath)
+# autoload -Uz compinit
+# compinit
+# export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
+# # End of Docker CLI completions
+#
+alias d1='~/sys/scripts/display_default.sh'
+alias d2='~/sys/scripts/display_new.sh'
+
+# bun completions
+[ -s "/Users/marco/.bun/_bun" ] && source "/Users/marco/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

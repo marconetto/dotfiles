@@ -24,8 +24,13 @@ default=(
   padding_right=4
   # icon.font="Droid Sans Mono:Bold:11.0"
   # icon.font="SF Symbols:Bold:11.0"
-  icon.font="Hack Nerd Font:Bold:11.0"
-  label.font="SF Pro:SemiBold:11.0"
+  # label.font="SF Mono:Regular:12"
+  # label.font="Monaco:Regular:12.0"
+ # label.font="SF Mono:Bold:11.0"
+  # label.font="Menlo:Bold:11.0"
+   # label.font="sketchybar-app-font:Regular:10.0"
+    label.font="Source Code Pro:SemiBold:11.0"
+    #---- label.font="SF Pro:SemiBold:11.0"
   # label.font="SF Pro:Condensed SemiBold:11.0"
   # label.font="Hack Nerd Font:Bold:11.0"
   icon.color=0xccFFA500
@@ -107,7 +112,7 @@ sketchybar --add item clock right \
            background.color=$ITEMBACKGROUND \
            background.corner_radius=15 \
            icon.padding_left=5 \
-           icon.font.size=14 \
+           icon.font.size=12 \
            label.padding_right=5
         # background.border_color=0x0505054D
 # ------------------------------------ CLOCK
@@ -139,16 +144,40 @@ sketchybar --add item volume right \
            --subscribe volume volume_change
 # ------------------------------------ VOLUME
 
-# ------------------------------------ POMODORO
- sketchybar --add item pomodoro right \
-           --set pomodoro update_freq=2 icon=  script="$PLUGIN_DIR/pomodoro.py" \
+sketchybar --add event aerospace_workspace_change
+
+sketchybar --add item aerospace_workspaces right \
+         --set aerospace_workspaces icon=󰇄 width=40 \
+           background.color=$ITEMBACKGROUND \
            background.border_color=0x88aaaaaa \
            background.border_width=0 \
-           background.color=0x77050505 \
-           background.corner_radius=5 \
+           background.corner_radius=15 \
+         label.drawing=on \
+           label.padding_right=5 \
            icon.padding_left=5 \
-           label.padding_right=5
-# ------------------------------------ POMODORO
+           background.padding_right=10 \
+              script="$HOME/.config/sketchybar/plugins/aerospace2.sh"
+
+# sketchybar --set aerospace_workspaces icon.align=center
+# sketchybar --set aerospace_workspaces icon.padding_left=20
+# sketchybar --set aerospace_workspaces icon.padding_right=20
+sketchybar --subscribe aerospace_workspaces aerospace_workspace_change
+
+
+
+
+
+#
+# # ------------------------------------ POMODORO
+#  sketchybar --add item pomodoro right \
+#            --set pomodoro update_freq=2 icon=  script="$PLUGIN_DIR/pomodoro.py" \
+#            background.border_color=0x88aaaaaa \
+#            background.border_width=0 \
+#            background.color=0x77050505 \
+#            background.corner_radius=5 \
+#            icon.padding_left=5 \
+#            label.padding_right=5
+# # ------------------------------------ POMODORO
 
 
 # sketchybar --add event spotify_change com.spotify.client.PlaybackStateChanged
@@ -171,8 +200,8 @@ sketchybar --add item volume right \
 
 
 # sketchybar --add event aerospace_workspace_change
-
-#############################################################
+#
+# #############################################################
 # sketchybar --add item workspacenum left \
 #     --subscribe workspacenum aerospace_workspace_change space_windows_change \
 #     --set workspacenum \
@@ -187,7 +216,7 @@ sketchybar --add item volume right \
 #            label.padding_right=15 \
 #            label.padding_left=10
 #############################################################
-#
+
 #
 # sketchybar --add item time_logo left\
 #            --set time_logo icon="" \
@@ -198,7 +227,8 @@ sketchybar --add item volume right \
 #                            background.padding_left=0 \
 #                            background.color=0x00F5E3B5
 #
-
+#
+# sketchybar --add event aerospace_workspace_change
 # background.color=0x44ffffff \
 # for sid in $(aerospace list-workspaces --all); do
 #     sketchybar --add item space.$sid left \
@@ -222,7 +252,7 @@ sketchybar --add item volume right \
 #         click_script="aerospace workspace $sid" \
 #         script="$CONFIG_DIR/plugins/aerospace.sh $sid"
 # done
-#
+# #
 
 ######################
 # playing with padding_left
@@ -295,8 +325,8 @@ sketchybar --add item volume right \
 
 
 
-
-#############################################################
+#
+# ############################################################
 # sketchybar --add item workspacenum left \
 #     --subscribe workspacenum aerospace_workspace_change space_windows_change \
 #     --set workspacenum \
@@ -310,7 +340,7 @@ sketchybar --add item volume right \
 #            icon.padding_left=5 \
 #            label.padding_right=15 \
 #            label.padding_left=10
-#############################################################
+# ############################################################
 
 
 
@@ -384,16 +414,37 @@ sketchybar --add item volume right \
  #           label.padding_right=5
 # ------------------------------------ WORKSPACENUM
 
-sketchybar --add bracket rightgroup  clock volume battery \
+sketchybar --add bracket rightgroup  clock volume battery  aerospace_workspaces \
            --set         rightgroup background.color=0x77050505 \
            background.corner_radius=16 \
-           background.border_color=0x99dfbf8e \
+           background.border_color=0xbbdfbf8e \
            background.border_width=1.0 \
-           background.height=18
+           background.height=20
 
-# sketchybar --reorder volume clock
-
-
+# # sketchybar --reorder volume clock
+#
+#
+# sketchybar --add event aerospace_workspace_change
+# sketchybar --add item aerospace_workspaces right \
+#            --subscribe space.$sid aerospace_workspace_change space_windows_change \
+#            --set aerospace_workspaces \
+#                    background.color=0x77a50505 \
+#         icon.color=0xffdfbf8e \
+#         label.drawing=on \
+#         icon.font.size=12 \
+#              script="$HOME/.config/sketchybar/plugins/aerospace.sh" \
+#              label.font="SF Mono:Bold:12"
+#
+# sketchybar --add item aerospace_workspaces right \
+#            --subscribe aerospace_workspace_change space_changed space_windows_change \
+#            --set aerospace_workspaces \
+#                    background.color=0x77a50505 \
+#                    icon.color=0xffdfbf8e \
+#                    label.drawing=on \
+#                    icon.font.size=12 \
+#                    label.font="SF Mono:Bold:12" \
+#                    script="$HOME/.config/sketchybar/plugins/aerospace.sh"
+#
 
 
 sketchybar --update

@@ -8,7 +8,7 @@ yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
 yabai -m config window_shadow off
 yabai -m config window_border_blur off
 
-yabai -m config layout bsp
+# yabai -m config layout bsp
 yabai -m config auto_balance                    on
 
 yabai -m config top_padding 24
@@ -22,23 +22,23 @@ yabai -m config window_border off
 # yabai -m config window_border_width 3
 # yabai -m config window_border_radius   20
 
-yabai -m rule --add app="^WezTerm$" space=1
-yabai -m rule --add app="^Google Chrome$" space=2
-yabai -m rule --add app="^System Settings$" manage=off
-yabai -m rule --add title="^Hammerspoon Console$" manage=off
-yabai -m rule --add app="^Share content$" manage=off
-yabai -m rule --add app="^New Folder$" manage=off
-yabai -m rule --add app="^Azure VPN Client$" manage=off
-yabai -m rule --add app="^Find$" manage=off
-yabai -m rule --add app="^Microsoft Teams$" space=5
-yabai -m rule --add app="^Microsoft Teams$" manage=off
-yabai -m rule --add title="^Teams$" manage=off
-
-yabai -m rule --add title='^Share' manage=off
-yabai -m rule --add title='^End' manage=off
-yabai -m rule --add app="Spotify"  space=7
-
-yabai -m rule --add app='^Microsoft Outlook$'   space=6
+# yabai -m rule --add app="^WezTerm$" space=1
+# yabai -m rule --add app="^Google Chrome$" space=2
+# yabai -m rule --add app="^System Settings$" manage=off
+# yabai -m rule --add title="^Hammerspoon Console$" manage=off
+# yabai -m rule --add app="^Share content$" manage=off
+# yabai -m rule --add app="^New Folder$" manage=off
+# yabai -m rule --add app="^Azure VPN Client$" manage=off
+# yabai -m rule --add app="^Find$" manage=off
+# yabai -m rule --add app="^Microsoft Teams$" space=5
+# yabai -m rule --add app="^Microsoft Teams$" manage=off
+# yabai -m rule --add title="^Teams$" manage=off
+#
+# yabai -m rule --add title='^Share' manage=off
+# yabai -m rule --add title='^End' manage=off
+# yabai -m rule --add app="Spotify"  space=7
+#
+# yabai -m rule --add app='^Microsoft Outlook$'   space=6
 # yabai -m rule --add app="^Microsoft Outlook$" title="^Inbox"    manage=on
 # yabai -m rule --add app="^Microsoft Outlook$" title="^Calendar" manage=on
 # yabai -m rule --add app="^Microsoft Outlook$" title="^$"        manage=off
@@ -61,7 +61,8 @@ yabai -m config mouse_modifier               fn
 yabai -m config mouse_action1                move
 yabai -m config mouse_action2                resize
 
-# yabai -m config --space 7 layout             float
+yabai -m config --space 1 layout             float
+yabai -m config --space 2 layout             bsp
 
 # yabai -m signal --add event=space_changed action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"appspace-widget-appspace-coffee\"'"
 # yabai -m signal --add event=window_focused action="osascript -e 'tell application \"Übersicht\" to refresh widget id \"appspace-widget-appspace-coffee\"'"
