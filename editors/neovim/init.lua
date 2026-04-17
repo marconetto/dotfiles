@@ -205,16 +205,16 @@ require('lazy').setup {
       }
     end,
   },
-  {
-    'williamboman/mason-lspconfig.nvim',
-    cond = function()
-      if vim.fn.executable 'npm' == 1 then
-        return true
-      else
-        return false
-      end
-    end,
-  },
+  -- {
+  --   'williamboman/mason-lspconfig.nvim',
+  --   cond = function()
+  --     if vim.fn.executable 'npm' == 1 then
+  --       return true
+  --     else
+  --       return false
+  --     end
+  --   end,
+  -- },
   {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v3.x',
@@ -748,23 +748,24 @@ end)
 -- to learn how to use mason.nvim
 -- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guide/integrate-with-mason-nvim.md
 require('mason').setup {}
-require('mason-lspconfig').setup {
-  ensure_installed = {
-    'bashls',
-    'cssls',
-    'lua_ls',
-    'html',
-    'jsonls',
-    'pyright',
-    'yamlls',
-    'bicep',
-  },
-  handlers = {
-    function(server_name)
-      require('lspconfig')[server_name].setup {}
-    end,
-  },
-}
+-- require('mason-lspconfig').setup {
+--   ensure_installed = {
+--     'bashls',
+--     'cssls',
+--     'lua_ls',
+--     'html',
+--     'jsonls',
+--     'pyright',
+--     'yamlls',
+--     'bicep',
+--   },
+--   -- handlers = {
+--   --   function(server_name)
+--   --     vim.lsp.config[server_name].setup {}
+--   --     --  require('lspconfig')[server_name].setup {}
+--   --   end,
+--   -- },
+-- }
 
 -- have decent autocompletion with ENTER + TAB ---------------
 local cmp = require 'cmp'
@@ -1074,6 +1075,9 @@ require('conform').setup {
 -------------------------------------------------------------------------------
 --- misc ----------------------------------------------------------------------
 -------------------------------------------------------------------------------
+
+-- new stuff
+vim.lsp.enable('pyright')
 
 -- set signs for diagnostics
 -- local signs = { Error = "E", Warn = "W", Hint = "H", Info = "I" }

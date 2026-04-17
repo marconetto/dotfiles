@@ -131,20 +131,20 @@ hs.hotkey.bind(threekeys, "0", cycleColour())
 -------------------------------------------------------------------------------
 -- Outlook see calendar and email
 -------------------------------------------------------------------------------
-function seeCalendar()
-  print("----")
-  local app = hs.application.find("Microsoft Outlook")
-  app:selectMenuItem({ "View", "Go To", "Calendar" })
-end
-
-hs.hotkey.bind({ "ctrl" }, "2", seeCalendar)
-
-function seeMail()
-  local app = hs.application.find("Microsoft Outlook")
-  app:selectMenuItem({ "View", "Go To", "Mail" })
-end
-
-hs.hotkey.bind({ "ctrl" }, "1", seeMail)
+-- function seeCalendar()
+--   print("----")
+--   local app = hs.application.find("Microsoft Outlook")
+--   app:selectMenuItem({ "View", "Go To", "Calendar" })
+-- end
+--
+-- hs.hotkey.bind({ "ctrl" }, "2", seeCalendar)
+--
+-- function seeMail()
+--   local app = hs.application.find("Microsoft Outlook")
+--   app:selectMenuItem({ "View", "Go To", "Mail" })
+-- end
+--
+-- hs.hotkey.bind({ "ctrl" }, "1", seeMail)
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -286,38 +286,68 @@ function borderFullScreen()
   end
 end
 
-hs.hotkey.bind({ "cmd" }, "m", borderFullScreen())
+-- hs.hotkey.bind({ "cmd" }, "m", borderFullScreen())
 
 -------------------------------------------------------------------------------
 -- make window full screen with border
 -------------------------------------------------------------------------------
 
+-- function allBorderFullScreen()
+--   return function()
+--     print("all borderFullScreen")
+--     local allWindows = hs.window.allWindows() -- Get all windows
+--     for _, win in ipairs(allWindows) do
+--       if win:isStandard() then -- Skip non-standard windows (like hidden or minimized ones)
+--         local id = win:id()
+--         local screen = win:screen()
+--         frameMaxCache[id] = win:frame()
+--
+--         local h = screen:currentMode().h
+--         local w = screen:currentMode().w
+--
+--         local f = win:frame()
+--         f.x = SIDE_GAP
+--         f.y = TOP_GAP
+--         f.w = w - SIDE_GAP * 2
+--         f.h = h - TOP_GAP - BOTTOM_GAP
+--
+--         win:setFrame(f)
+--       end
+--     end
+--   end
+-- end
+
 function allBorderFullScreen()
   return function()
     print("all borderFullScreen")
-    local allWindows = hs.window.allWindows() -- Get all windows
-    for _, win in ipairs(allWindows) do
-      if win:isStandard() then -- Skip non-standard windows (like hidden or minimized ones)
+
+    for _, win in ipairs(hs.window.allWindows()) do
+      if win:isStandard() then --- skip non-standard windows (like hidden or minimized ones)
         local id = win:id()
         local screen = win:screen()
+        -- if not screen then
+        --   goto continue
+        -- end
+
         frameMaxCache[id] = win:frame()
 
-        local h = screen:currentMode().h
-        local w = screen:currentMode().w
+        local sf = screen:frame() -- IMPORTANT
 
-        local f = win:frame()
-        f.x = SIDE_GAP
-        f.y = TOP_GAP
-        f.w = w - SIDE_GAP * 2
-        f.h = h - TOP_GAP - BOTTOM_GAP
+        local f = {}
+        f.x = sf.x + SIDE_GAP
+        f.y = sf.y + TOP_GAP
+        f.w = sf.w - SIDE_GAP * 2
+        f.h = sf.h - TOP_GAP - BOTTOM_GAP
 
         win:setFrame(f)
+
+        -- ::continue::
       end
     end
   end
 end
 
-hs.hotkey.bind({ "cmd", "shift" }, "m", allBorderFullScreen())
+-- hs.hotkey.bind({ "cmd", "shift" }, "m", allBorderFullScreen())
 
 -- hs.hotkey.bind({ "cmd", "shift" }, "m", function()
 --   for _, win in ipairs(hs.window.visibleWindows()) do
@@ -479,4 +509,81 @@ moveWatcher = hs.eventtap.new({ hs.eventtap.event.types.leftMouseUp }, function(
   return false -- Allow the event to pass through
 end)
 
-moveWatcher:start()
+-- moveWatcher:start()
+--
+-------------------------------------------------------------------------------
+-- change window to monitor (toggle)
+-------------------------------------------------------------------------------
+function nextMonitor()
+  return function()
+    -- Get the focused window, its window frame dimensions, its screen frame dimensions,
+    -- and the next screen's frame dimensions.
+    local focusedWindow = hs.window.focusedWindow()
+    local focusedScreenFrame = focusedWindow:screen():frame()
+    local nextScreenFrame = focusedWindow:screen():next():frame()
+    local windowFrame = focusedWindow:frame()
+
+    -- Calculate the coordinates of the window frame in the next screen and retain aspect ratio
+    windowFrame.x = (
+      (((windowFrame.x - focusedScreenFrame.x) / focusedScreenFrame.w) * nextScreenFrame.w) + nextScreenFrame.x
+    )
+    windowFrame.y = (
+      (((windowFrame.y - focusedScreenFrame.y) / focusedScreenFrame.h) * nextScreenFrame.h) + nextScreenFrame.y
+    )
+    windowFrame.h = ((windowFrame.h / focusedScreenFrame.h) * nextScreenFrame.h)
+    windowFrame.w = ((windowFrame.w / focusedScreenFrame.w) * nextScreenFrame.w)
+
+    -- Set the focused window's new frame dimensions
+    focusedWindow:setFrame(windowFrame)
+
+    show_alert("next monitor", 3)
+  end
+end
+
+hs.hotkey.bind(threekeys, "9", nextMonitor(), nil, nil)
+--
+-- hs.hotkey.bind({ "cmd" }, "escape", function()
+--   print("⌘+Esc pressed; active app = " .. hs.application.frontmostApplication():name())
+-- end)
+
+--------------------------------------------------
+-- Hotkey binding
+--------------------------------------------------
+
+local function moveAndClampWindow()
+  local win = hs.window.focusedWindow()
+  hs.alert.show("Hotkey triggered")
+  if not win then
+    print("No focused window")
+    return
+  end
+
+  local screenFrame = win:screen():frame()
+  local frame = win:frame()
+
+  print(frame.w)
+  print(screenFrame.w)
+
+  -- Clamp width if larger than screen
+  if frame.w > screenFrame.w then
+    frame.w = screenFrame.w
+    print("Clamping width to screen width: " .. frame.w)
+  end
+
+  -- Clamp height if larger than screen
+  if frame.h > screenFrame.h then
+    frame.h = screenFrame.h
+  end
+
+  -- Move to top-left of current screen
+  frame.x = screenFrame.x
+  frame.y = screenFrame.y
+
+  win:setFrame(frame)
+end
+--------------------------------------------------
+-- Hotkey binding
+--------------------------------------------------
+
+-- Change keys if you want
+hs.hotkey.bind({ "cmd", "alt", "ctrl", "shift" }, "y", moveAndClampWindow)
