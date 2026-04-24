@@ -1,0 +1,10 @@
+[mgr]
+ratio = [1, 2, 5]
+
+[preview]
+# adapter = "wezterm"
+adapter = "kitty"
+max_width = 2500
+max_height = 2500
+image_filter = "lanczos3"
+
