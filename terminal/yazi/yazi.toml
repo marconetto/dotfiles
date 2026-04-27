@@ -1,5 +1,7 @@
 [mgr]
 ratio = [1, 2, 5]
+# This prevents the cursor from jumping from the bottom to the top
+scrolloff = 5
 
 [preview]
 # adapter = "wezterm"
@@ -7,4 +9,5 @@ adapter = "kitty"
 max_width = 2500
 max_height = 2500
 image_filter = "lanczos3"
+wrap = "no"
 

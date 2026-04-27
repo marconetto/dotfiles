@@ -587,3 +587,55 @@ end
 
 -- Change keys if you want
 hs.hotkey.bind({ "cmd", "alt", "ctrl", "shift" }, "y", moveAndClampWindow)
+
+-- hs.hotkey.bind({ "cmd", "alt", "shift", "ctrl" }, "v", function()
+--   print("hello")
+--   hs.eventtap.keyStroke({ "cmd", "alt", "shift" }, "v")
+-- end)
+
+-- Close Other Tabs in Chrome using Cmd+Shift+W
+hs.hotkey.bind({ "cmd", "shift" }, "W", function()
+  local chrome = hs.application.get("Google Chrome")
+  if chrome and chrome:isFrontmost() then
+    -- Select the "File" menu, then the "Close Other Tabs" item
+    -- Note: In some Chrome versions, this is under the 'Tab' or 'Window' menu
+    chrome:selectMenuItem("Close Other Tabs")
+  else
+    -- Fallback: Allow the system to handle the keystroke if Chrome isn't focused
+    -- This prevents breaking Cmd+Shift+W (Close Window) in other apps
+    hs.eventtap.keyStroke({ "cmd", "shift" }, "W", 0)
+  end
+end)
+
+-- Define the callback function for system events
+local function systemWatcher(eventType)
+  -- "screensDidUnlock" triggers when the lock screen is dismissed
+  -- "sessionDidBecomeActive" is a good backup for fast-user switching
+  if eventType == hs.caffeinate.watcher.screensDidUnlock then
+    hs.printf("System unlocked! Running dry script...")
+
+    -- Execute the shell command
+    -- We use os.getenv("HOME") to ensure $HOME is expanded correctly
+    local home = os.getenv("HOME")
+    local cmd = home .. "/dotfiles/os/dry/dry 0.0166666666667"
+
+    -- hs.execute returns (output, status, type, rc)
+    local output, status, type, rc = hs.execute(cmd)
+
+    -- 1. Print to the Hammerspoon Console (Command + Option + C to view)
+    print("Dry Output: " .. (output or "No output"))
+
+    -- 2. Show a macOS Notification
+    hs.notify
+      .new({
+        title = "Dry Script Executed",
+        informativeText = output or "Command finished with no output.",
+        withdrawAfter = 5, -- Auto-dismiss after 5 seconds
+      })
+      :send()
+  end
+end
+
+-- Create and start the watcher
+unlockWatcher = hs.caffeinate.watcher.new(systemWatcher)
+unlockWatcher:start()

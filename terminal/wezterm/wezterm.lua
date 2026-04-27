@@ -23,6 +23,7 @@ local function lighten_color(hex, percent)
   return rgb_to_hex(r, g, b)
 end
 
+-- local mybackground = "#ff302f"
 local mybackground = "#202235"
 -- local tabbg2 = lighten_color("#292c4c", 0.10)
 
@@ -31,6 +32,8 @@ local mybackground = "#202235"
 if wezterm.config_builder then
   config = wezterm.config_builder()
 end
+
+config.term = "wezterm"
 
 config.show_new_tab_button_in_tab_bar = false
 -- config.tab_bar_appearance = "Fancy"
@@ -93,7 +96,8 @@ config.tab_max_width = 20
 -- config.color_scheme = "SpaceGray Eighties"
 -- config.color_scheme = "Rosé Pine (Gogh)"
 config.color_scheme = "Catppuccin Macchiato"
--- config.color_scheme = "Everforest Dark (Gogh)"
+-- config.color_scheme = "Gruvbox Material (Gogh)"
+-- config.color_scheme = "Everforest Dark Soft (Gogh)"
 -- config.color_scheme = "nord"
 -- config.color_scheme = "Tokyo Night"
 config.colors = {
@@ -140,6 +144,7 @@ config.inactive_pane_hsb = {
   brightness = 0.6,
 }
 
+-- config.colors.foreground = "#cCcCcC"
 config.foreground_text_hsb = {
   hue = 1.0,
   saturation = 1.0,
@@ -686,7 +691,7 @@ wezterm.on("update-right-status", function(window, pane)
 end)
 
 config.max_fps = 120
--- config.front_end = "WebGpu"
+config.front_end = "WebGpu"
 -- config.front_end = "OpenGL"
 -- config.webgpu_power_preference = "HighPerformance"
 

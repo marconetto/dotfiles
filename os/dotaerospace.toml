@@ -62,10 +62,10 @@ key-mapping.preset = 'qwerty'
 [gaps]
 inner.horizontal = 14
 inner.vertical =   14
-outer.left =       34
-outer.bottom =     34
-outer.top =        34
-outer.right =      34
+outer.left =       24
+outer.bottom =     24
+outer.top =        8
+outer.right =      24
 
 # See https://nikitabobko.github.io/AeroSpace/guide#exec-env-vars
 [exec]                   # Again, you don't need to copy all config sections to your config.
@@ -79,13 +79,13 @@ PATH = '/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}'
 
 
 [mode.main.binding]
-cmd-1 = "exec-and-forget /usr/local/bin/aerospace workspace 1 --fail-if-noop || /usr/local/bin/aerospace focus left --boundaries-action wrap-around-the-workspace"
-cmd-2 = "exec-and-forget /usr/local/bin/aerospace workspace 2 --fail-if-noop || /usr/local/bin/aerospace focus left --boundaries-action wrap-around-the-workspace"
-cmd-3 = "exec-and-forget /usr/local/bin/aerospace workspace 3 --fail-if-noop || /usr/local/bin/aerospace focus left --boundaries-action wrap-around-the-workspace"
+cmd-1 = "exec-and-forget aerospace workspace 1 --fail-if-noop || aerospace focus left --boundaries-action wrap-around-the-workspace"
+cmd-2 = "exec-and-forget aerospace workspace 2 --fail-if-noop || aerospace focus left --boundaries-action wrap-around-the-workspace"
+cmd-3 = "exec-and-forget aerospace workspace 3 --fail-if-noop || aerospace focus left --boundaries-action wrap-around-the-workspace"
 # cmd-3 = "exec-and-forget ~/.config/aerospace/w3.sh"
 # cmd-4 = "exec-and-forget ~/.config/aerospace/w4.sh"
-cmd-4 = "exec-and-forget /usr/local/bin/aerospace workspace 4 --fail-if-noop || /usr/local/bin/aerospace focus left --boundaries-action wrap-around-the-workspace"
-cmd-5 = "exec-and-forget /usr/local/bin/aerospace workspace 5 --fail-if-noop || /usr/local/bin/aerospace focus left --boundaries-action wrap-around-the-workspace"
+cmd-4 = "exec-and-forget aerospace workspace 4 --fail-if-noop || aerospace focus left --boundaries-action wrap-around-the-workspace"
+# cmd-5 = "exec-and-forget /usr/local/bin/aerospace workspace 5 --fail-if-noop || /usr/local/bin/aerospace focus left --boundaries-action wrap-around-the-workspace"
 alt-tab = 'focus left --boundaries-action wrap-around-the-workspace'
 # alt-shift-tab = 'focus  dfs-prev'
 # alt-comma = 'layout accordion horizontal vertical'
@@ -155,7 +155,7 @@ cmd-esc = 'workspace 8'
 # cmd-2 = 'workspace 2'
 # cmd-3 = 'workspace 3'
 # cmd-4 = 'workspace 4'
-# cmd-5 = 'workspace 5'
+cmd-5 = 'workspace 5'
 cmd-6 = 'workspace 6'
 cmd-7 = 'workspace 7'
 cmd-8 = 'workspace 8'

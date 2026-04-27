@@ -21,6 +21,9 @@ export TERM=xterm-256color
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 PATH=.:$HOME/.local/bin:/usr/local/bin:$PATH
 PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+export PATH="/opt/homebrew/opt/binutils/bin:$PATH"
+export PATH="/opt/homebrew/opt/coreutils/bin:$PATH"
+export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin/:$PATH"
 export PATH=$HOME/.local/nvim/bin:$PATH
 
 export VISUAL="nvim"

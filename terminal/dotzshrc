@@ -1,4 +1,3 @@
-
 # FUNCTIONS -------------------------------------------------
 source "$HOME"/dotfiles/terminal/zshfunctions.zsh
 source "$HOME"/dotfiles/terminal/commonfunctions.sh
@@ -13,18 +12,17 @@ setopt prompt_subst
 source "$HOME"/dotfiles/terminal/zshprompt.zsh
 # -----------------------------------------------------------
 
-
 # PLUGINS----------------------------------------------------
 install_zsh_plugin "zsh-autosuggestions"
 install_zsh_plugin "zsh-syntax-highlighting"
 install_zsh_plugin "zsh-history-substring-search"
-autoload -U compaudit compinit; compinit
+autoload -U compaudit compinit
+compinit
 
 if [[ ! -d "$HOME"/.zsh/zsh-histdb ]]; then
-  git clone https://github.com/larkery/zsh-histdb "$HOME"/.zsh/zsh-histdb
+    git clone https://github.com/larkery/zsh-histdb "$HOME"/.zsh/zsh-histdb
 fi
 # -----------------------------------------------------------
-
 
 # ZSH OPTIONS----------------------------------------------
 ZSH_HIGHLIGHT_STYLES[arg0]=fg=#7daea3
@@ -43,13 +41,13 @@ setopt INC_APPEND_HISTORY
 
 # allows autocompletion typing any part of the name, not just beginning of it
 if [[ "$CASE_SENSITIVE" = true ]]; then
-  zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
+    zstyle ':completion:*' matcher-list 'r:|=*' 'l:|=* r:|=*'
 else
-  if [[ "$HYPHEN_INSENSITIVE" = true ]]; then
-    zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
-  else
-    zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
-  fi
+    if [[ "$HYPHEN_INSENSITIVE" = true ]]; then
+        zstyle ':completion:*' matcher-list 'm:{a-zA-Z-_}={A-Za-z_-}' 'r:|=*' 'l:|=* r:|=*'
+    else
+        zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
+    fi
 fi
 
 HISTFILE=~/.zsh_history
@@ -63,10 +61,10 @@ add-zsh-hook preexec set-title-preexec
 add-zsh-hook precmd set-title-precmd
 
 # remove underline while typing commands
-(( ${+ZSH_HIGHLIGHT_STYLES} )) || typeset -A ZSH_HIGHLIGHT_STYLES
+((${+ZSH_HIGHLIGHT_STYLES})) || typeset -A ZSH_HIGHLIGHT_STYLES
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-ZSH_HIGHLIGHT_STYLES[precommand]=fg=yellow,normal  # style for sudo
+ZSH_HIGHLIGHT_STYLES[precommand]=fg=yellow,normal # style for sudo
 ZSH_HIGHLIGHT_STYLES[autodirectory]=fg=#7daea3,normal
 
 # zstyle ':completion:*:*:cdr:*:*' menu select
@@ -100,7 +98,6 @@ zstyle ':completion:*' rehash true # to get new binaries into PATH
 zstyle ':completion:*' file-sort access
 # zstyle ':completion:*' file-sort modification
 
-
 zstyle ':completion:*:*:(vim|nvim|vi|cat|more|less):*' ignored-patterns '*.(o|png|pptx|pdf|docx|jpeg|jpg|xlsx)'
 
 # https://stackoverflow.com/questions/72705377/zsh-how-to-limit-file-completion-to-current-directory-only-like-bash
@@ -110,18 +107,18 @@ unset '_comps[source]'
 #set -o autopushd
 
 # KEYBOARD --------------------------------------------------
-bindkey '^[[1;5C' forward-word               # "option key + arrow"
-bindkey '^[[1;5D' backward-word              # "option key + arrow"
+bindkey '^[[1;5C' forward-word  # "option key + arrow"
+bindkey '^[[1;5D' backward-word # "option key + arrow"
 
 #bindkey '^[j' backward-word              # "option key + arrow"
 
-bindkey '^?' backward-delete-char            # [Backspace] - delete backward
+bindkey '^?' backward-delete-char # [Backspace] - delete backward
 if [[ "${terminfo[kdch1]}" != "" ]]; then
-  bindkey "${terminfo[kdch1]}" delete-char   # [Delete] - delete forward
+    bindkey "${terminfo[kdch1]}" delete-char # [Delete] - delete forward
 else
-  bindkey "^[[3~" delete-char
-  bindkey "^[3;5~" delete-char
-  bindkey "\e[3~" delete-char
+    bindkey "^[[3~" delete-char
+    bindkey "^[3;5~" delete-char
+    bindkey "\e[3~" delete-char
 fi
 
 bindkey -v
@@ -139,8 +136,8 @@ bindkey "\e\e[D" backward-word
 bindkey "^[OH" beginning-of-line
 bindkey "^[OF" end-of-line
 
-bindkey '^[[1;5C' forward-word    # [alt-RightArrow] - move forward one word
-bindkey '^[[1;5D' backward-word   # [alt-LeftArrow] - move backward one word
+bindkey '^[[1;5C' forward-word  # [alt-RightArrow] - move forward one word
+bindkey '^[[1;5D' backward-word # [alt-LeftArrow] - move backward one word
 
 #bindkey '^[j' backward-word   # [alt-LeftArrow] - move backward one word
 #bindkey '^[l' forward-word   # [alt-LeftArrow] - move backward one word
@@ -174,27 +171,27 @@ zmodload -i zsh/complist
 bindkey -M menuselect '^[' undo
 
 # enable press up/down to navigate in history of a command
-if (( ${+terminfo[smkx]} )) && (( ${+terminfo[rmkx]} )); then
-  function zle-line-init() {
-    echoti smkx
-  }
-  function zle-line-finish() {
-    echoti rmkx
-  }
-  zle -N zle-line-init
-  zle -N zle-line-finish
+if ((${+terminfo[smkx]})) && ((${+terminfo[rmkx]})); then
+    function zle-line-init() {
+        echoti smkx
+    }
+    function zle-line-finish() {
+        echoti rmkx
+    }
+    zle -N zle-line-init
+    zle -N zle-line-finish
 fi
 # start typing + [Up-Arrow] - fuzzy find history forward
 if [[ "${terminfo[kcuu1]}" != "" ]]; then
-  autoload -U up-line-or-beginning-search
-  zle -N up-line-or-beginning-search
-  bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
+    autoload -U up-line-or-beginning-search
+    zle -N up-line-or-beginning-search
+    bindkey "${terminfo[kcuu1]}" up-line-or-beginning-search
 fi
 # start typing + [Down-Arrow] - fuzzy find history backward
 if [[ "${terminfo[kcud1]}" != "" ]]; then
-  autoload -U down-line-or-beginning-search
-  zle -N down-line-or-beginning-search
-  bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
+    autoload -U down-line-or-beginning-search
+    zle -N down-line-or-beginning-search
+    bindkey "${terminfo[kcud1]}" down-line-or-beginning-search
 fi
 
 # https://stackoverflow.com/questions/13341900/zsh-how-do-i-set-autocomplete-so-that-it-inserts-the-completion-when-cursor-is
@@ -206,8 +203,7 @@ bindkey '^i' expand-or-complete-prefix
 source "$HOME"/dotfiles/terminal/commonshell.sh
 # -----------------------------------------------------------
 
-
-zstyle  ':completion:*' list-colors "${(s.:.)LS_COLORS}" # after LS_COLOR definition
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}" # after LS_COLOR definition
 
 export TMUXSHELL=/bin/zsh
 [[ -f $HOME/.local/bin/zsh ]] && export TMUXSHELL=$HOME/.local/bin/zsh
@@ -219,7 +215,6 @@ eval "$(zoxide init zsh)"
 
 # interactive cd using history of visited directories
 bindkey -s '^o' 'zi^J'
-
 
 # delete char forward
 bindkey "^[[3~" delete-char
@@ -238,12 +233,12 @@ bindkey -s '\e[6~' ''
 # https://github.com/wez/wezterm/discussions/3718
 _urlencode() {
     local length="${#1}"
-    for (( i = 0; i < length; i++ )); do
+    for ((i = 0; i < length; i++)); do
         local c="${1:$i:1}"
-      case $c in
-           %) printf '%%%02X' "'$c" ;;
-           *) printf "%s" "$c" ;;
-      esac
+        case $c in
+        %) printf '%%%02X' "'$c" ;;
+        *) printf "%s" "$c" ;;
+        esac
     done
 }
 
@@ -281,10 +276,8 @@ _zsh_autosuggest_strategy_histdb_top_fallback() {
 ZSH_AUTOSUGGEST_STRATEGY=histdb_top_fallback
 #################################################################
 
-
 [[ -f $HOME/.mycomp ]] && add-zsh-hook -Uz chpwd osc7_cwd
 ####################################################
-
 
 #### remove bold #########
 # current_ls_colors=$(echo "$LS_COLORS")
@@ -298,12 +291,12 @@ ZSH_AUTOSUGGEST_STRATEGY=histdb_top_fallback
 #########################
 
 function yy() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		cd -- "$cwd" || exit
-	fi
-	rm -f -- "$tmp"
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        cd -- "$cwd" || exit
+    fi
+    rm -f -- "$tmp"
 }
 # # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 # fpath=(/Users/marco/.docker/completions $fpath)
@@ -321,3 +314,4 @@ alias d2='~/sys/scripts/display_new.sh'
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
