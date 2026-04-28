@@ -236,7 +236,7 @@ require('lazy').setup {
       end
     end,
     config = function()
-      require('nvim-treesitter.configs').setup {
+      require('nvim-treesitter.config').setup {
         highlight = {
           enable = true,
           disable = {},
@@ -1077,7 +1077,7 @@ require('conform').setup {
 -------------------------------------------------------------------------------
 
 -- new stuff
-vim.lsp.enable('pyright')
+vim.lsp.enable 'pyright'
 
 -- set signs for diagnostics
 -- local signs = { Error = "E", Warn = "W", Hint = "H", Info = "I" }
@@ -1338,17 +1338,41 @@ nnoremap <C-M-i> <c-i>
 nnoremap <C-M-o> <c-o>
 ]]
 
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+vim.diagnostic.config {
   underline = false,
   virtual_text = false,
   signs = true,
   update_in_insert = true,
-  focusable = false,
-  --- error before gutter sign
   severity_sort = true,
-})
+  -- Note: 'focusable' is now handled via float options if you use diagnostic floats
+  float = {
+    focusable = false,
+    style = 'minimal',
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+  },
+}
 
-vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { focusable = false })
+-- vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+--   underline = false,
+--   virtual_text = false,
+--   signs = true,
+--   update_in_insert = true,
+--   focusable = false,
+--   --- error before gutter sign
+--   severity_sort = true,
+-- })
+--
+-- vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { focusable = false })
+--
+vim.lsp.handlers['textDocument/hover'] = function(_, result, ctx, config)
+  config = config or {}
+  config.focusable = false
+  config.border = 'rounded' -- Optional: adds a nice border
+  return vim.lsp.handlers.hover(_, result, ctx, config)
+end
 
 ----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
