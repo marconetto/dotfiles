@@ -1733,7 +1733,7 @@
                         "manipulators": [
                             {
                                 "from": {
-                                    "key_code": "right_option",
+                                    "key_code": "right_option"
                                 },
                                 "to": [
                                     {
