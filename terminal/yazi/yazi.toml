@@ -11,3 +11,12 @@ max_height = 2500
 image_filter = "lanczos3"
 wrap = "no"
 
+[opener]
+image = [
+    { run = 'open "$@"', desc = "Open image" }
+]
+
+[open]
+rules = [
+    { mime = "image/*", use = "image" },
+]

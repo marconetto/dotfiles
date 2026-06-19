@@ -1,12 +1,12 @@
 # keymap.toml
-# [[mgr.prepend_keymap]]
-# on   = "T"
-# run  = "plugin toggle-pane min-preview"
-# desc = "Show or hide the preview pane"
-
-
-# keymap.toml
 [[mgr.prepend_keymap]]
 on   = "T"
 run  = "plugin toggle-pane max-preview"
 desc = "Maximize or restore the preview pane"
+
+
+
+[[mgr.prepend_keymap]]
+on   = [ "i" ]
+run  = 'search_do --via=fd --args="-d 1 -e jpg -e jpeg -e png -e gif -e webp -e bmp -e tiff -e pdf"'
+desc = "Search for images in current directory"
