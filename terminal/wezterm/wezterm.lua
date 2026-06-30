@@ -96,6 +96,13 @@ config.tab_max_width = 20
 -- config.color_scheme = "SpaceGray Eighties"
 -- config.color_scheme = "Rosé Pine (Gogh)"
 config.color_scheme = "Catppuccin Macchiato"
+-- config.color_scheme = "Kanagawa Dragon (Gogh)"
+-- config.color_scheme = "Kanagawa (Gogh)"
+-- config.color_scheme = "Dracula (Gogh)"
+-- config.color_scheme = "catppuccin-frappe"
+-- config.color_scheme = "Catppuccin Mocha"
+-- config.color_scheme = "Catppuccin Macchiato (Gogh)"
+-- config.color_scheme = "Tokyo Night Storm (Gogh)"
 -- config.color_scheme = "Gruvbox Material (Gogh)"
 -- config.color_scheme = "Everforest Dark Soft (Gogh)"
 -- config.color_scheme = "nord"
@@ -148,7 +155,7 @@ config.inactive_pane_hsb = {
 config.foreground_text_hsb = {
   hue = 1.0,
   saturation = 1.0,
-  brightness = 0.9,
+  brightness = 0.7,
 }
 
 -- window_background_image_hsb = {
@@ -188,6 +195,7 @@ config.use_ime = false
 
 config.font = wezterm.font_with_fallback({
   -- { family = "Menlo", weight = 500 },
+  -- { family = "CaskaydiaCove Nerd Font", weight = 400 },
   { family = "SF Mono", weight = 600 },
   -- { family = "JetBrains Mono", weight = 700 },
   -- { family = "Fira Mono", weight = 600 },
@@ -641,6 +649,7 @@ config.keys = {
       act.SendKey({ key = "m", mods = "CTRL" }),
     }),
   },
+  { key = ",", mods = "CMD", action = wezterm.action.SendString("~/") },
 
   -- { key = "w", mods = "CTRL|SHIFT|CMD|ALT", action = act.SendKey({ key = "w", mods = "CTRL" }) },
   --------------------------------------------------
