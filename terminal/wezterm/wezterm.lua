@@ -650,6 +650,7 @@ config.keys = {
     }),
   },
   { key = ",", mods = "CMD", action = wezterm.action.SendString("~/") },
+  { key = ";", mods = "CMD", action = wezterm.action.SendString("cd ~/") },
 
   -- { key = "w", mods = "CTRL|SHIFT|CMD|ALT", action = act.SendKey({ key = "w", mods = "CTRL" }) },
   --------------------------------------------------
