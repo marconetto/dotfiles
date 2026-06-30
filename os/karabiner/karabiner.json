@@ -162,6 +162,35 @@
                         "title": "Change right_shift + left_shift to caps_lock"
                     },
                     {
+                        "description": "Hold Mouse Button 4 for Ctrl+Shift (Scroll), Tap for Back",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "pointing_button": "button4",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_shift",
+                                        "modifiers": [
+                                            "left_control"
+                                        ]
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "pointing_button": "button4"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "description": "lock screen",
                         "manipulators": [
                             {
@@ -1676,9 +1705,11 @@
                         "description": "Left Shift to Escape if tapped alone (modifier safe)",
                         "manipulators": [
                             {
-                                "type": "basic",
                                 "from": {
                                     "key_code": "left_shift"
+                                },
+                                "parameters": {
+                                    "basic.to_if_alone_timeout_milliseconds": 250
                                 },
                                 "to": [
                                     {
@@ -1690,9 +1721,7 @@
                                         "key_code": "escape"
                                     }
                                 ],
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 250
-                                }
+                                "type": "basic"
                             }
                         ]
                     },
@@ -1700,7 +1729,6 @@
                         "description": "Left Control acts as Control when held, sends Control+C when tapped.",
                         "manipulators": [
                             {
-                                "type": "basic",
                                 "from": {
                                     "key_code": "left_control",
                                     "modifiers": {
@@ -1708,6 +1736,9 @@
                                             "any"
                                         ]
                                     }
+                                },
+                                "parameters": {
+                                    "basic.to_if_alone_timeout_milliseconds": 250
                                 },
                                 "to": [
                                     {
@@ -1722,9 +1753,7 @@
                                         ]
                                     }
                                 ],
-                                "parameters": {
-                                    "basic.to_if_alone_timeout_milliseconds": 250
-                                }
+                                "type": "basic"
                             }
                         ]
                     },
@@ -1974,35 +2003,6 @@
                                 "to": [
                                     {
                                         "key_code": "home"
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Hyper+C to Move Focus to Next Window",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "c",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "left_control",
-                                            "left_shift",
-                                            "left_option",
-                                            "left_command"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "grave_accent_and_tilde",
-                                        "modifiers": [
-                                            "left_command",
-                                            "left_option",
-                                            "left_shift"
-                                        ]
                                     }
                                 ],
                                 "type": "basic"
@@ -2264,27 +2264,6 @@
                                             "left_shift",
                                             "left_option",
                                             "left_command"
-                                        ]
-                                    }
-                                },
-                                "to": [
-                                    {
-                                        "key_code": "delete_or_backspace"
-                                    }
-                                ],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
-                        "description": "Left Shift + Spacebar to Backspace",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "spacebar",
-                                    "modifiers": {
-                                        "mandatory": [
-                                            "left_shift"
                                         ]
                                     }
                                 },
@@ -2582,6 +2561,15 @@
                     },
                     "ignore": false,
                     "treat_as_built_in_keyboard": true
+                },
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 18,
+                        "vendor_id": 12994
+                    },
+                    "ignore": false
                 }
             ],
             "fn_function_keys": [
@@ -2669,3 +2657,4 @@
         }
     ]
 }
+
