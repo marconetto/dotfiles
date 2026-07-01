@@ -2193,7 +2193,7 @@
                         ]
                     },
                     {
-                        "description": "Hold ] for 1 second -> Hyper+O",
+                        "description": "Hold ] for 1 second -> Hyper+O open outlook menubar",
                         "manipulators": [
                             {
                                 "from": {
@@ -2657,4 +2657,3 @@
         }
     ]
 }
-
